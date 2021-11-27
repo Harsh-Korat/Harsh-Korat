@@ -1077,14 +1077,16 @@ color:white;
 }
 
 .facebook{
-margin-left:290px;
-margin-top: 61;
+margin-right:200px;
+float: right;
+margin-top: -10px;
 
 }
 .instagram{
+ float: right;
 margin-left:30;
-margin-right: 100px;
-margin-top: 61;
+margin-right: -80px;
+margin-top: -10px;
 }
 
 .footer{
