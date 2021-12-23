@@ -451,3 +451,14 @@ float: none;
  margin-right: auto;
 }
 }
+
+@media screen and (max-width: 10000px) {
+.top-img img{
+height:500px;
+}
+}
+@media screen and (max-width: 2000px) {
+.top-img img{
+height:370px;
+}
+}
