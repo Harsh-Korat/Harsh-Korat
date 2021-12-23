@@ -210,7 +210,7 @@ margin-top: 40px
 /* Footer */
 .newsletter {
 height: 130px;
-margin-top: 43px;
+margin-top: 47px;
 }
 
 .newsletter h1 {
@@ -225,6 +225,7 @@ padding: 20px;
 font-weight: 400;
 letter-spacing: 1px;
 }
+
 .newsletter input[type=text] {
 width: 233px;
 height: 40px;
@@ -233,6 +234,7 @@ border: 1px solid #565656;
 border-radius: 20px;
 font-family: Roboto-Regular;
 }
+
 .newsletter ::placeholder {
 padding-left: 22px;
 font-size: 14px;
@@ -242,6 +244,7 @@ text-align: left;
 letter-spacing: 0px;
 color: #565656;
 }
+
 .newsletter .ournews {
 letter-spacing: 0px;
 color: #353548;
@@ -249,6 +252,7 @@ font-family: Roboto;
 font-size: 18px;
 font-weight: bold;
 }
+
 .newsletter .btn5 {
 width: 88px;
 height: 40px;
@@ -259,6 +263,7 @@ font-size: 14px;
 padding-top: 9px;
 padding-left: 18px;
 }
+
 .newsletter .btn5 p {
 font-size: 14px;
 width: 44px;
@@ -267,19 +272,23 @@ text-align: center;
 letter-spacing: 0px;
 color: #FFFFFF;
 }
+
 footer .btn3 {
 color: white;
 font-size: 14px;
 }
+
 footer .btn3:hover {
 color: white;
 background-color: teal;
 }
+
 footer {
 margin-top: 53px;
 background-color: #111111;
 overflow: hidden;
 }
+
 .fnavimg {
 width: 120px;
 height: 92px;
@@ -290,6 +299,7 @@ footer .fnav1 {
 margin-top: 20px;
 margin-left: 115px;
 }
+
 footer .fnav2 {
 width: 582px;
 text-align: left;
@@ -299,6 +309,7 @@ display: flex;
 height: 43px;
 font-size: 14px;
 }
+
 footer .fnav3 {
 justify-content: center;
 }
@@ -308,17 +319,20 @@ margin-right: auto;
 margin-top: auto;
 margin-bottom: auto;
 }
+
 footer .fnav5 {
 margin-left: auto;
 margin-right: auto;
 margin-top: auto;
 margin-bottom: auto;
 }
+
 footer hr {
 margin-left: 120px;
 margin-right: 120px;
 border-top: 1px solid #424242;
 }
+
 footer .privacy {
 margin-bottom: 22px;
 margin-top: 25px;
@@ -328,10 +342,12 @@ color: #9BA0A3;
 font-family: Roboto-Regular;
 font-size: 14px;
 }
+
 footer .tp {
 padding-left: 10px;
 display: inline-block;
 }
+
 @media screen and (max-width:1250px) {
 .fnavimg {
 width: fit-content;
