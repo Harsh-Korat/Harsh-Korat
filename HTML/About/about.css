@@ -462,3 +462,18 @@ height:500px;
 height:370px;
 }
 }
+@media screen and (max-width:1200px) {
+.top-img img{
+height:300px;
+}
+}
+@media screen and (max-width:780px) {
+.top-img img{
+height:250px;
+}
+}
+@media screen and (max-width:680px) {
+.top-img img{
+height:200px;
+}
+}
