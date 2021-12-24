@@ -692,3 +692,18 @@ margin-left: auto;
 margin-right: auto;
 }
 }
+@media screen and (max-width:1200px) {
+.top-contat-img img, .map img{
+height:300px;
+}
+}
+@media screen and (max-width:780px) {
+.top-contat-img img, .map img{
+height:250px;
+}
+}
+@media screen and (max-width:680px) {
+.top-contat-img img, .map img{
+height:200px;
+}
+}
