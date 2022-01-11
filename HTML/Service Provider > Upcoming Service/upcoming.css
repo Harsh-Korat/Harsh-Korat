@@ -479,8 +479,8 @@ padding-left: 8%;
 padding-bottom: 20px;
 }
 .footer .logos{
-max-width: 120px;
-max-height: 92px;
+width: 120px;
+height: 92px;
 }
 .links {
 padding-top: 2%;
