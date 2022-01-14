@@ -484,6 +484,16 @@ height:auto;
 font-size: 13px !important;
 }
 
+.completed1{
+color: #FFFFFF !important;
+background: #FF6B6B !important;
+width:auto;
+margin-top: 15px;
+padding:3px 8px 3px 8px !important; 
+height:auto; 
+font-size: 13px !important;
+}
+
 .rate-sp{
 margin-top: 15px;
 width: auto;
@@ -494,7 +504,7 @@ font-size: 14px;
 color: white !important;
 }
 
-.round1{
+.round, .round1{
 width: 40px;
 height: 40px;
 margin-right:8px;
