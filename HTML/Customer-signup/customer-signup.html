@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+      <title>Customer SignUp</title>
+      <link rel="stylesheet" href="customer-signup.css">
+      <meta charset="utf-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Header Navbar -->
+
+<section class="header-nav">
+ <nav class="navbar sticky-top navbar-expand-lg ">
+   <div class="container">
+     <a class="navbar-brand" href="#"><img src="image/logo-small.png" class="header-logo"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+      </button>
+
+     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav  w-100 justify-content-end">
+     
+        <li class="nav-item  book">
+        <a class="nav-link book1" href="#">Book Now</a>
+        </li>
+     
+        <li class="nav-item price">
+        <a class="nav-link prices" href="#">Prices & services</a>
+        </li>
+     
+        <li class="nav-item war">
+        <a class="nav-link" href="#">Warranty</a>
+        </li>
+     
+        <li class="nav-item war">
+        <a class="nav-link" href="#">Blog</a>
+        </li>
+     
+        <li class="nav-item war">
+        <a class="nav-link" href="#">Contact</a>
+        </li>
+     
+        <li class="nav-item  login">
+        <a class="nav-link login1" href="#">Login</a>
+        </li>
+     
+        <li class="nav-item  become">
+        <a class="nav-link helper" href="#">Become a Helper</a>
+        </li>
+       </ul>
+      </div>
+     </div>
+    </nav>
+   </section>
+
+
+<!-- Mobile Navbar -->
+
+
+<section class="mobile-nav">
+
+<nav class="navbar sticky-top navbar-expand-lg ">
+   <a class="navbar-brand" href="#"><img src="image/logo-small.png" class="header-logo"></a>
+     <button class="btn bttn" type="button" data-bs-toggle="offcanvas" data-bs-target="#demo"> <i class="fas fa-bars"></i></button>
+
+ <div class="offcanvas offcanvas-end" id="demo" style="width:255px;">
+
+   <div class="offcanvas-body">
+   <div class="dash">
+   
+    <a href="#">Book Now</a>
+    <a href="#">Prices & services</a>
+    <a href="#">Warrant</a>
+    <a href="#">Blog</a>
+    <a href="#">Contact</a>
+    <a href="#">Login</a>
+    <a href="#">Become a Helper</a>
+    <a class="activ" href="#" style="color: #146371 !important;">Register</a>
+    <div class="hrr"><hr></div>
+    <div class="face">
+    <a href="#" class="btn"><img src="image/ic-facebook.png" alt=""></a>
+    <a href="#" class="btn"><img src="image/ic-instagram.png" alt=""></a>
+   </div>
+  </div>
+ </div>
+</div>
+</nav>
+</section>
+
+
+<!-- Register Table -->
+
+<div class="account">Create an account</div>
+  <div class="container">
+    <div class="sepretor-bg">
+      <img src="Image/separator.png" class="sepretor">
+    </div>
+  </div>
+
+<!-- Register Table -->
+
+<div class="container">
+ <div class="form-start">
+   <form method="post">
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <input type="text" class="form-control" placeholder="First Name" name="fname" autocomplete="off">
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+       <input type="text" class="form-control" placeholder="Last Name" name="lname" autocomplete="off">
+     </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <input type="email" class="form-control" placeholder="E-mail address" name="email" autocomplete="off">
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <div class="input-group" id="number">
+          <span class="input-group-text">+49</span>
+          <input type="text" class="form-control" placeholder="Mobile number" name="number">
+      </div>
+     </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <input type="Password" class="form-control" placeholder="Password" name="Password">
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <input type="Password" class="form-control" placeholder="Confirm Password" name="Confirm Password">
+      </div>
+    </div>
+
+    <div class="checkbox">  
+      <input type="checkbox" name="private policy">
+      <label> I have read the <a href="#" class="login-btn">privacy policy</a></label><br>
+    </div>
+    <div class="form-row register mt-4">
+      <button type="submit" class="btn register-bttn">Register</button>
+    </div>
+   </form>
+ </div>
+</div>
+
+<div class="login-now mt-3"><p>Already registered?  <a href="#" class="login-btn">Login Now</a></p></div>
+
+
+<!-- Footer Section -->
+
+
+<footer class="footers">
+  <div class="row footer">
+    <div class="col-lg-2 bottom-logo">
+      <a href="#" ><img src="image/logo-small.png" alt="helperland" class="logos"></a>
+    </div>
+    
+    <div class="col-lg-8 links">
+    <nav >
+    <div class="nav menu">
+     <a href="#" class="btn">HOME</a>
+     <a href="#" class="btn">ABOUT</a>
+     <a href="#" class="btn">TESTIMONIALS</a>
+     <a href="#" class="btn">FAQS</a>
+     <a href="#" class="btn">INSURANCE POLICY</a>
+     <a href="#" class="btn">IMPRESSUM</a>
+    </div>
+   </nav>
+  </div>
+  
+  <div class="col-lg-2 fi-logo">
+  <nav>
+  <div class="nav icons">
+     <a href="#" class="btn facebook" ><img src="image/ic-facebook.png" alt=""></a>
+     <a href="#" class="btn instagram" ><img src="image/ic-instagram.png" alt=""></a>
+  </div>
+ </nav>
+ </div>
+</div>
+          
+  <div class="row policy">
+  <p>©2018 Helperland. All rights reserved. <span>Terms and Conditions | Privacy Policy</span></p>
+  </div>
+</footer>
+ 
+
+
+<!-- Boostrap -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  
+
+</body>
+</html>
