@@ -37,7 +37,7 @@
         </li>
 
         <li class="nav-item ">
-          <a class="nav-link " id="nav2" href="#">Login </a>
+          <a class="nav-link " id="nav2" href="#" data-toggle="modal" data-target="#myModal">Login </a>
         </li>
   
         <li class="nav-item ">
@@ -119,8 +119,8 @@
 
 </section>
   
+       
 <!-- Mobile Navbar -->
-
 
 <div class="mobile-nav">
 <nav class="navbar navbar-expand-lg fixed-top navbar-light">
@@ -137,7 +137,7 @@
   <a href="#">Our Guaruntee</a>
   <a href="#">Blog</a>
   <a href="#">Contact Us</a>
-  <a href="#">Login</a>
+  <a href="#" data-toggle="modal" data-target="#myModal">Login</a>
   <a href="#">Become a Helper </a>
   <div class="dropdown" id="drop">
   <a class="nav-link dropdown-toggle " href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -159,6 +159,79 @@
 </div>
 </nav>
 </div>
+
+<!-- Login Modal -->
+  
+<div class="modal fade" id="myModal">
+ <div class="modal-dialog modal-dialog-centered">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h4 class="modal-title"><b>Log in</b></h4>
+       <button type="button" class="close" data-dismiss="modal">&times;</button>
+     </div>
+      
+     <div class="modal-body">
+      <div class="container mt-1">
+        <form  method="POST">
+         <div class="mt-3">
+           <input type="email" class="form-control" id="login" placeholder="E-Mail" name="email" autocomplete="off">
+           <span><i class="fa fa-user mail"></i></span>
+         </div>
+    
+         <div class="mt-3 mb-3">
+           <input type="password" class="form-control" id="password" placeholder="Password" name="pswd">
+           <span><i class="fa fa-lock locks"></i></span>
+         </div>
+
+         <div class="checkbox mb-3">  
+           <input type="checkbox" name="checkbox">
+           <label>Save on computer</label>
+         </div>
+
+         <div class="form-group mt-2">
+           <button type="submit" class="btn btn-login form-control">Login</button>
+         </div>
+        </form>
+      </div>
+   
+      <div class="footer mt-2"><a class="forgot-password" href="#" data-toggle="modal" data-target="#forgot-modal" data-dismiss="modal">Forgot Password?</a></div>
+      <div class="footer mt-2"><p>Don't Have an account yet?</p></div>
+      <div class="footer" id="creat-account"><a class="creat-account" href="#">Create an account</a></div>
+      </div>
+     </div>
+    </div>
+   </div>
+ </div>
+
+
+<!-- Forgot Modal -->
+
+<div class="modal fade" id="forgot-modal">
+   <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="forgot"><b>Forgot Password</b></h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+         <div class="container">
+          <form  method="POST">
+           <div class="mt-3">
+             <input type="email" class="form-control" id="login" placeholder="E-Mail" name="email" autocomplete="off">
+           </div>
+
+           <div class="form-group mt-4">
+              <button type="submit" class="btn btn-login form-control">Send</button>
+           </div>
+          </form>
+         </div>
+ 
+         <div class="footer mt-3"><a class="forgot-password" href="#" data-toggle="modal" data-target="#myModal" data-dismiss="modal">Log in now</a></div>
+         </div>
+        </div>
+      </div>
+   </div>
 
 
 <!-- Helperland -->
