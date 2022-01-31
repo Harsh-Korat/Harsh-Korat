@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"> 
 
     <?php
-    $base_url = "http://localhost/helperland/";
+    $base_url = "http://localhost/Helperland/";
     ?>
 
 </head>
