@@ -79,11 +79,11 @@
    </div>
 
  <div class="texts">
-  <input type="text" name="lastname" placeholder="Last name" autocomplete="off" required>
+  <input type="text" name="lastname" placeholder="Last name" autocomplete="off">
  </div>
    <div class="non">
    <div class="text">
-    <input type="text" name="email" placeholder="Email address">
+    <input type="text" name="lastname" placeholder="Last name">
    </div>
 </div>
 </div>
@@ -98,9 +98,13 @@
 
 
    <div class="texts">
-    <input type="text" name="email" placeholder="Email address" autocomplete="off" required>
+    <input type="text" name="email" placeholder="Email address" autocomplete="off">
    </div>
-
+ <div class="non">
+   <div class="text">
+    <input type="text" name="email" placeholder="Email address">
+   </div>
+</div>
   </div>
 
 
