@@ -115,10 +115,16 @@
    </select>
 
 <input type="text" id="message" name="message" placeholder="Message" autocomplete="off">
-<input type="submit" id="submit" value="Submit">
+<input type="submit" id="submit" value="Submit" onclick="myFunction()">
  </div>
 </form>
 </div>
+
+<script>
+function myFunction() {
+  alert("Your Message Has been Sended Successfully");
+}
+</script>
 
 
 
