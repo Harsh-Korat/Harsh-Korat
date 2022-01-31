@@ -69,60 +69,53 @@
 
 
 <!-- Touch -->
-            
-<form class="cntfm" method="POST" action=<?= $base_url."./?controller=helperland&function=ContactUs"?>>
-  <?php if(isset($_SESSION['message'])){ ?>
-    <?php echo $_SESSION['message']; } ?>
 
 <div class="touch-container">
- <form>
+ <form method="POST" action=<?= $base_url."./?controller=Helperland&function=ContactUs"?>>
+
   <div class="clearfix">
    <div class="text">
-    <input type="text" name="first-name" placeholder="First name">
+    <input type="text" name="firstname" placeholder="First name" autocomplete="off" required>
    </div>
 
  <div class="texts">
-  <input type="text" id="last-name" name="last-name" placeholder="Last name">
+  <input type="text" name="lastname" placeholder="Last name" autocomplete="off" required>
  </div>
    <div class="non">
    <div class="text">
-    <input type="text" name="Email address" placeholder="Email address">
+    <input type="text" name="email" placeholder="Email address">
    </div>
 </div>
 </div>
-
 
   <div class="clearfix">
    <div class="text">
     <div class="input-group">
       <span class="input-group-text" id="number">+49</span>
-      <input type="text" style="width:242px;" class="form-control" placeholder="Mobile-number" name="Mobile-number">
+      <input type="tel" pattern="^\d{10}$" style="width:242px;" class="form-control" placeholder="Mobile-number" name="mobile" autocomplete="off" required>
     </div>
  </div>
 
 
    <div class="texts">
-    <input type="text" name="Email address" placeholder="Email address">
+    <input type="text" name="email" placeholder="Email address" autocomplete="off" required>
    </div>
-    <div class="non">
-   <div class="text">
-    <input type="text" name="Email address" placeholder="Email address">
-   </div>
-</div>
+
   </div>
 
 
-   <select style="width:100%;" id="option">
+   <select style="width:100%;" id="option" name="subject" required>
     <option>Subject</option>
     <option>Subscription</option>
     <option>Feedback</option>
    </select>
 
-<input type="text" id="message" name="Message" placeholder="Message">
-<input type="button" id="submit" value="Submit">
+<input type="text" id="message" name="message" placeholder="Message" autocomplete="off">
+<input type="submit" id="submit" value="Submit">
  </div>
 </form>
 </div>
+
 
 
 <!-- Map -->
