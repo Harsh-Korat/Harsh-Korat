@@ -1,6 +1,6 @@
 <?php
 
-$base_url = "http://localhost/helperland/";
+$base_url = "http://localhost/Helperland/";
 
 
 // Header Nav
