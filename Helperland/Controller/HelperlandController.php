@@ -4,7 +4,7 @@ class HelperlandController
 {
   function __construct()
     {
-      include('Models/Helperland-model.php');
+      include('./Models/Helperland-model.php');
       $this->model = new Helperland();
       session_start();
     }
@@ -16,33 +16,28 @@ public function HomePage()
   }
 
 
+
 public function ContactUs()
 {
  if (isset($_POST)) {
-   $base_url = "http://localhost/helper/Contact";
-   $mobile =  $_POST['mobile'];
-   $email = $_POST['email'];
-   $subject = $_POST['sub'];
-   $message = $_POST['message'];
+   $base_url = "http://localhost/Helperland/Views/Contact.php";
    $name = $_POST['firstname'] . " " . $_POST['lastname'];
+   $email = $_POST['email'];
+   $mobile =  $_POST['mobile'];
+   $subject = $_POST['subject'];
+   $message = $_POST['message'];
    $array = [
       'name' => $name,
       'email' => $email,
       'subject' => $subject,
-      'mobile' => $_POST['mobile'],
+      'mobile' => $mobile,
       'message' => $message,
       'creationdt' => date('Y-m-d H:i:s'),
       'status' => 'success',
       'priority' => 4,
             ];
    $result = $this->model->Contactus($array);
-   $results = $this->model->ResetKey($email);
-   $_SESSION['firstname'] = $results[0];
-   $_SESSION['status_msg'] = $result[0];
-   $_SESSION['status_txt'] = $result[1]; 
-   $_SESSION['status'] = $result[2];
    header('Location:' . $base_url);
       }
     }
-
 }
