@@ -132,27 +132,19 @@ margin-top: -2px;
 }
 
 .become a:hover{
-padding-top: 6px;
 display: inline-flex;
 justify-content: center;
 color: #29626D !important;
-width: 161px;
-height: 40px;
 background: white;
 border: 1px solid #FFFFFF80;
 border-radius: 20px;
 }
 
 .login a:hover{
-padding-top: 6px;
-width: 83px;
-height: 40px;
 background: white;
 border: 1px solid #FFFFFF80;
 color: #29626D !important;
 border-radius: 20px;
-display: inline-flex;
-justify-content: center;
 }
 
 
