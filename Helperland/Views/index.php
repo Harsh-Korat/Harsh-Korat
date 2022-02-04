@@ -41,7 +41,7 @@
  </ul>
 
  <div class="text-center">
-  <a class="book-btn" href="#" role="button">Let’s Book a Cleaner</a>
+  <a class="book-btn" href="./book-service.php" role="button">Let’s Book a Cleaner</a>
  </div>
 
     <div class="svg-imges">
