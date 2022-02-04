@@ -1,10 +1,15 @@
-
-<?php include('./header.php'); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
    
       <title>Customer SignUp</title>
       <link rel="stylesheet" href="../assets/css/customer-signup.css">
       <link rel="stylesheet" href="../assets/css/validation.css">
-
+      <meta charset="utf-8">
+       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 </head>
 
@@ -14,7 +19,7 @@
   
 <?php
   include('./nav.php');
-   
+   session_start();
    if(isset($_SESSION['message'])){
      $register= $_SESSION['message'];
      echo '<script> alert("'.$register.'");</script>';
@@ -33,10 +38,9 @@
   </div>
 
 <!-- Register Table -->
-
 <div class="container">
  <div class="form-start">
-   <form method="post" action=<?= $base_url."./?controller=Helperland&function=User"?>>
+   <form method="POST" action=<?= $base_url."./?controller=Helperland&function=User"?>>
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-12 col-12">
         <input type="text" class="form-control" id="firstname" placeholder="First Name" name="firstname" autocomplete="off" required>
@@ -53,7 +57,7 @@
       <div class="col-lg-6 col-md-6 col-sm-12 col-12">
         <input type="email" class="form-control" id="email" placeholder="E-mail address" name="email" autocomplete="off" required>
        <div class="email-msg float-left mb-2"></div>
-       <div class="error-email float-right mb-2"></div>      
+       <div class="error-email float-right mb-2"></div>  
       </div>
 
       <div class="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -88,7 +92,8 @@
  </div>
 </div>
 
-<div class="login-now mt-3"><p>Already registered?  <a href="./index.php#LoginModal" class="login-btn">Login Now</a></p></div>
+<div class="login-now mt-3"><p>Already registered?  <a href="./index.php" class="login-btn">Login Now</a></p></div>
+
 
 
 <!-- Footer Section -->
