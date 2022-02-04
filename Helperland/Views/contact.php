@@ -103,7 +103,7 @@
 
 
    <div class="text" id="inp">
-    <input type="text" id="useremail" name="email" placeholder="Email address" autocomplete="off" required>
+    <input type="text" id="email" name="email" placeholder="Email address" autocomplete="off" required>
     <div class="email-msg mb-2"></div>
    </div>
   </div>
