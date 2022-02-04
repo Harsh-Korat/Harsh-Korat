@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+ /* Top Image*/   
+
+.top-img img{
+width: 100%;
+height: 370px;
+margin-top: 62px;
+}
+
+/* Few word */
+
+.abtext {
+margin-left:auto;
+margin-right: auto;
+max-width: 354px;
+height: 43px;
+letter-spacing: 0px;
+color: #4F4F4F;
+font-size: 36px;
+font-family: Roboto;
+font-weight: 400;
+margin-top: 32px;
+}
+
+.abtexts {
+margin-left:auto;
+margin-right: auto;
+max-width: 354px;
+height: 43px;
+letter-spacing: 0px;
+color: #4F4F4F;
+font-size: 36px;
+font-family: Roboto;
+font-weight: 400;
+margin-top: 32px;
+}
+
+.sepretor-bg{
+position: relative;
+margin-left: auto;
+margin-right: auto;
+}
+.sepretor-bg::after,.sepretor-bg::before{
+content: '';
+position: absolute;
+margin: auto;
+height: 1px;
+width: 62px;
+left:100px;
+right:100px;
+height: 1px;
+background:#CCCCCC ;
+top:45%;
+}
+.sepretor-bg::before{
+left: 0;
+}
+.sepretor-bg::after{
+right: 0;
+}
+
+.sepretor {
+margin-left: auto;
+margin-right: auto;
+align-items: center;
+justify-content: center;
+display: block;
+width: 24px;
+height: 25px;
+position: relative;
+margin-top: 9px;
+}
+
+.fewInnerText {
+margin-left: auto;
+margin-right: auto;
+max-width: 991px;
+margin-bottom: 35px;
+}
+.fewText {
+font-size: 16px;
+color: #646464;
+margin-top: 35px;
+}
+
+.abttxt{
+display: block;
+}
+
+.aboutstory{
+margin-top: 40px
+}
+
+
+/* Footer */
+
+
+.nsletter {
+height: 130px;
+margin-top: 48px;
+}
+
+.nsletter h1 {
+text-align: center;
+font-size: 36px;
+}
+
+.nsletter h3 {
+text-align: center;
+font-size: 30px;
+padding: 20px;
+font-weight: 400;
+letter-spacing: 1px;
+}
+
+.nsletter input[type=text] {
+width: 233px;
+height: 40px;
+background: #F4F5F8 0% 0% no-repeat padding-box;
+border: 1px solid #565656;
+border-radius: 20px;
+font-family: Roboto-Regular;
+}
+
+.nsletter ::placeholder {
+padding-left: 15px;
+font-size: 14px;
+width: 90px;
+height: 16px;
+text-align: left;
+letter-spacing: 0px;
+color: #565656;
+}
+
+.nsletter .news {
+letter-spacing: 0px;
+color: #353548;
+font-family: Roboto;
+font-size: 18px;
+font-weight: bold;
+}
+
+.nsletter .submit {
+width: 88px;
+height: 40px;
+background: #FF7B6D 0% 0% no-repeat padding-box;
+border-radius: 20px;
+font-family: Roboto-Regular;
+padding-top: 9px;
+padding-left: 18px;
+}
+
+.nsletter .submit p {
+font-size: 14px;
+width: 44px;
+height: 16px;
+text-align: center;
+letter-spacing: 0px;
+color: #FFFFFF;
+}
+
+
+
+/* Media Quries for all */
+
+@media screen and (max-width:1600px) {
+.top-img img{
+height:auto;
+}
+}
+
+
+@media screen and (max-width: 389px) {
+.abtext, .abtexts{
+font-size: 28px;
+}
+.nsletter input[type=text] {
+width: 180px;
+}
+}
+
