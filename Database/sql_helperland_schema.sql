@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2022 at 11:31 AM
+-- Generation Time: Feb 05, 2022 at 05:50 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.11
 
@@ -24,346 +24,480 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `address`
+-- Table structure for table `city`
 --
 
-CREATE TABLE `address` (
-  `address_id` int(11) NOT NULL,
-  `customer_id` int(10) NOT NULL,
-  `street_address` varchar(255) NOT NULL,
-  `house_no` int(10) NOT NULL,
-  `postal_code` int(10) NOT NULL,
-  `telephone_no` int(10) NOT NULL,
-  `city` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `city` (
+  `Id` int(11) NOT NULL,
+  `CityName` varchar(50) NOT NULL,
+  `StateId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_details`
+-- Table structure for table `contactus`
 --
 
-CREATE TABLE `admin_details` (
-  `admin_id` int(11) NOT NULL,
-  `admin_name` varchar(100) NOT NULL,
-  `admin_email` varchar(100) NOT NULL,
-  `admin_password` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `contactus` (
+  `ContactUsId` int(11) NOT NULL,
+  `Name` varchar(50) NOT NULL,
+  `Email` varchar(200) NOT NULL,
+  `SubjectType` varchar(100) NOT NULL,
+  `Subject` varchar(500) DEFAULT NULL,
+  `PhoneNumber` varchar(20) NOT NULL,
+  `Message` longtext NOT NULL,
+  `UploadFileName` varchar(100) DEFAULT NULL,
+  `CreatedOn` datetime(3) DEFAULT NULL,
+  `CreatedBy` int(11) DEFAULT NULL,
+  `Status` int(11) DEFAULT NULL,
+  `Priority` int(11) DEFAULT NULL,
+  `AssignedToUser` int(11) DEFAULT NULL,
+  `IsDeleted` tinyint(4) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin_refund`
+-- Table structure for table `contactusattachment`
 --
 
-CREATE TABLE `admin_refund` (
-  `refund_id` int(11) NOT NULL,
-  `admin_id` int(11) NOT NULL,
-  `paid_id` int(11) NOT NULL,
-  `refunded_amount` float NOT NULL,
-  `total_refund_amount` float NOT NULL,
-  `refund_comment` varchar(255) NOT NULL,
-  `call_center_comment` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `contactusattachment` (
+  `ContactUsAttachmentId` int(11) NOT NULL,
+  `Name` varchar(100) NOT NULL,
+  `FileName` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer_details`
+-- Table structure for table `favoriteandblocked`
 --
 
-CREATE TABLE `customer_details` (
-  `customer_id` int(11) NOT NULL,
-  `first_name` varchar(120) NOT NULL,
-  `last_name` varchar(120) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `mobile_no` int(10) NOT NULL,
-  `password` varchar(50) NOT NULL,
-  `encryption_key` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `favoriteandblocked` (
+  `Id` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `TargetUserId` int(11) NOT NULL,
+  `IsFavorite` tinyint(4) NOT NULL,
+  `IsBlocked` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `customer_service_booking`
+-- Table structure for table `rating`
 --
 
-CREATE TABLE `customer_service_booking` (
-  `service_id` int(11) NOT NULL,
-  `service_date` date NOT NULL,
-  `service_start_time` time NOT NULL,
-  `service_end_time` time NOT NULL,
-  `service_provider` int(11) NOT NULL,
-  `service_amount` float NOT NULL,
-  `service_status` varchar(100) NOT NULL,
-  `customer_id` int(11) NOT NULL,
-  `address` int(11) NOT NULL,
-  `pets_at_home` varchar(100) NOT NULL,
-  `service_inside_cabinets` time DEFAULT NULL,
-  `service_inside_fridge` time DEFAULT NULL,
-  `service_inside_oven` time DEFAULT NULL,
-  `Service_Laundry_wash_dry` time DEFAULT NULL,
-  `service_interior_windows` time DEFAULT NULL,
-  `service_need_time` time NOT NULL,
-  `comments` varchar(255) DEFAULT NULL,
-  `status` varchar(100) DEFAULT NULL,
-  `admin_id` int(11) DEFAULT NULL,
-  `admin_reschedule_comment` varchar(255) DEFAULT NULL,
-  `call_center_emp_notes` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `rating` (
+  `RatingId` int(11) NOT NULL,
+  `ServiceRequestId` int(11) NOT NULL,
+  `RatingFrom` int(11) NOT NULL,
+  `RatingTo` int(11) NOT NULL,
+  `Ratings` decimal(2,1) NOT NULL,
+  `Comments` varchar(2000) DEFAULT NULL,
+  `RatingDate` datetime(3) NOT NULL,
+  `IsApproved` tinyint(4) DEFAULT 1,
+  `VisibleOnHomeScreen` tinyint(4) NOT NULL DEFAULT 0,
+  `OnTimeArrival` decimal(2,1) NOT NULL DEFAULT 0.0,
+  `Friendly` decimal(2,1) NOT NULL DEFAULT 0.0,
+  `QualityOfService` decimal(2,1) NOT NULL DEFAULT 0.0
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `favourite_sp`
+-- Table structure for table `servicerequest`
 --
 
-CREATE TABLE `favourite_sp` (
-  `favourite_id` int(11) NOT NULL,
-  `service_provider_id` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
-  `favourite` varchar(100) DEFAULT NULL,
-  `unfavourite` varchar(100) DEFAULT NULL,
-  `block_sp` varchar(200) DEFAULT NULL,
-  `block_customer` varchar(200) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `servicerequest` (
+  `ServiceRequestId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `ServiceId` int(11) NOT NULL,
+  `ServiceStartDate` datetime(3) NOT NULL,
+  `ZipCode` varchar(10) NOT NULL,
+  `ServiceFrequency` tinyint(3) UNSIGNED DEFAULT NULL,
+  `ServiceHourlyRate` decimal(8,2) DEFAULT NULL,
+  `ServiceHours` double NOT NULL,
+  `ExtraHours` double DEFAULT NULL,
+  `SubTotal` decimal(8,2) NOT NULL,
+  `Discount` decimal(8,2) DEFAULT NULL,
+  `TotalCost` decimal(8,2) NOT NULL,
+  `Comments` varchar(500) DEFAULT NULL,
+  `PaymentTransactionRefNo` varchar(50) DEFAULT NULL,
+  `PaymentDue` tinyint(4) NOT NULL DEFAULT 0,
+  `JobStatus` tinyint(3) UNSIGNED DEFAULT NULL,
+  `ServiceProviderId` int(11) DEFAULT NULL,
+  `SPAcceptedDate` datetime(3) DEFAULT NULL,
+  `HasPets` tinyint(4) NOT NULL DEFAULT 0,
+  `Status` int(11) DEFAULT NULL,
+  `CreatedDate` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+  `ModifiedDate` datetime(3) NOT NULL DEFAULT current_timestamp(3),
+  `ModifiedBy` int(11) DEFAULT NULL,
+  `RefundedAmount` decimal(8,2) DEFAULT NULL,
+  `Distance` decimal(18,2) NOT NULL DEFAULT 0.00,
+  `HasIssue` tinyint(4) DEFAULT NULL,
+  `PaymentDone` tinyint(4) DEFAULT NULL,
+  `RecordVersion` char(36) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notification`
+-- Table structure for table `servicerequestaddress`
 --
 
-CREATE TABLE `notification` (
-  `notification_id` int(11) NOT NULL,
-  `customer_id` int(11) DEFAULT NULL,
-  `admin_id` int(11) DEFAULT NULL,
-  `service_provider_id` int(11) DEFAULT NULL,
-  `notification_message` varchar(200) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `servicerequestaddress` (
+  `Id` int(11) NOT NULL,
+  `ServiceRequestId` int(11) DEFAULT NULL,
+  `AddressLine1` varchar(200) DEFAULT NULL,
+  `AddressLine2` varchar(200) DEFAULT NULL,
+  `City` varchar(50) DEFAULT NULL,
+  `State` varchar(50) DEFAULT NULL,
+  `PostalCode` varchar(20) DEFAULT NULL,
+  `Mobile` varchar(20) DEFAULT NULL,
+  `Email` varchar(100) DEFAULT NULL,
+  `Type` int(11) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `rating_serviceprovider`
+-- Table structure for table `servicerequestextra`
 --
 
-CREATE TABLE `rating_serviceprovider` (
-  `rating_id` int(11) NOT NULL,
-  `customer_id` int(11) NOT NULL,
-  `service_id` int(11) NOT NULL,
-  `service_provider_id` int(11) NOT NULL,
-  `on_time_arrival` float NOT NULL,
-  `friendly` float NOT NULL,
-  `quality_of_service` float NOT NULL,
-  `feedback_serviceProvider` varchar(255) DEFAULT NULL,
-  `average_rating` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `servicerequestextra` (
+  `ServiceRequestExtraId` int(11) NOT NULL,
+  `ServiceRequestId` int(11) NOT NULL,
+  `ServiceExtraId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `service_provider_details`
+-- Table structure for table `servicesetting`
 --
 
-CREATE TABLE `service_provider_details` (
-  `service_provider_id` int(11) NOT NULL,
-  `first_name` varchar(120) NOT NULL,
-  `last_name` varchar(120) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `mobile_no` int(10) NOT NULL,
-  `Birthdate` date DEFAULT NULL,
-  `nationality` varchar(40) DEFAULT NULL,
-  `gender` enum('Male','Female','Other','') DEFAULT NULL,
-  `status` varchar(25) NOT NULL,
-  `address_tittle` varchar(255) DEFAULT NULL,
-  `house_no` varchar(30) DEFAULT NULL,
-  `postal_code` int(10) DEFAULT NULL,
-  `location` varchar(50) DEFAULT NULL,
-  `tax_no` int(11) DEFAULT NULL,
-  `password` varchar(100) NOT NULL,
-  `encryption_key` varchar(80) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+CREATE TABLE `servicesetting` (
+  `Id` int(11) NOT NULL,
+  `ActionType` int(11) NOT NULL,
+  `Interval` int(11) NOT NULL,
+  `ScheduleTime` time(6) NOT NULL,
+  `LastPoll` datetime(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `state`
+--
+
+CREATE TABLE `state` (
+  `Id` int(11) NOT NULL,
+  `StateName` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `UserId` int(11) NOT NULL,
+  `FirstName` varchar(100) NOT NULL,
+  `LastName` varchar(100) NOT NULL,
+  `Email` varchar(100) NOT NULL,
+  `Password` varchar(100) DEFAULT NULL,
+  `Mobile` varchar(20) NOT NULL,
+  `UserTypeId` int(11) NOT NULL,
+  `RoleId` int(11) DEFAULT NULL,
+  `Gender` int(11) DEFAULT NULL,
+  `DateOfBirth` datetime(3) DEFAULT NULL,
+  `WebSite` varchar(1000) DEFAULT NULL,
+  `UserProfilePicture` varchar(200) DEFAULT NULL,
+  `IsRegisteredUser` tinyint(4) NOT NULL DEFAULT 0,
+  `PaymentGatewayUserRef` varchar(200) DEFAULT NULL,
+  `ZipCode` varchar(20) DEFAULT NULL,
+  `WorksWithPets` tinyint(4) NOT NULL DEFAULT 0,
+  `LanguageId` int(11) DEFAULT NULL,
+  `NationalityId` int(11) DEFAULT NULL,
+  `ResetKey` varchar(200) DEFAULT NULL,
+  `CreatedDate` datetime(3) NOT NULL,
+  `ModifiedDate` datetime(3) NOT NULL,
+  `ModifiedBy` int(11) NOT NULL,
+  `IsApproved` tinyint(4) NOT NULL DEFAULT 0,
+  `IsActive` tinyint(4) NOT NULL DEFAULT 0,
+  `IsDeleted` tinyint(4) NOT NULL DEFAULT 0,
+  `Status` int(11) DEFAULT NULL,
+  `IsOnline` tinyint(4) NOT NULL DEFAULT 0,
+  `BankTokenId` varchar(100) DEFAULT NULL,
+  `TaxNo` varchar(50) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `useraddress`
+--
+
+CREATE TABLE `useraddress` (
+  `AddressId` int(11) NOT NULL,
+  `UserId` int(11) NOT NULL,
+  `AddressLine1` varchar(200) NOT NULL,
+  `AddressLine2` varchar(200) DEFAULT NULL,
+  `City` varchar(50) NOT NULL,
+  `State` varchar(50) DEFAULT NULL,
+  `PostalCode` varchar(20) NOT NULL,
+  `IsDefault` tinyint(4) NOT NULL DEFAULT 0,
+  `IsDeleted` tinyint(4) NOT NULL DEFAULT 0,
+  `Mobile` varchar(20) DEFAULT NULL,
+  `Email` varchar(100) DEFAULT NULL,
+  `Type` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `zipcode`
+--
+
+CREATE TABLE `zipcode` (
+  `Id` int(11) NOT NULL,
+  `ZipcodeValue` varchar(50) NOT NULL,
+  `CityId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `address`
+-- Indexes for table `city`
 --
-ALTER TABLE `address`
-  ADD PRIMARY KEY (`address_id`),
-  ADD KEY `Foreign key` (`customer_id`);
+ALTER TABLE `city`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `StateId` (`StateId`);
 
 --
--- Indexes for table `admin_details`
+-- Indexes for table `contactus`
 --
-ALTER TABLE `admin_details`
-  ADD PRIMARY KEY (`admin_id`);
+ALTER TABLE `contactus`
+  ADD PRIMARY KEY (`ContactUsId`);
 
 --
--- Indexes for table `admin_refund`
+-- Indexes for table `contactusattachment`
 --
-ALTER TABLE `admin_refund`
-  ADD PRIMARY KEY (`refund_id`),
-  ADD KEY `Paid_id` (`paid_id`),
-  ADD KEY `Admin_id` (`admin_id`);
+ALTER TABLE `contactusattachment`
+  ADD PRIMARY KEY (`ContactUsAttachmentId`);
 
 --
--- Indexes for table `customer_details`
+-- Indexes for table `favoriteandblocked`
 --
-ALTER TABLE `customer_details`
-  ADD PRIMARY KEY (`customer_id`);
+ALTER TABLE `favoriteandblocked`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `UserId` (`UserId`),
+  ADD KEY `TargetUserId` (`TargetUserId`);
 
 --
--- Indexes for table `customer_service_booking`
+-- Indexes for table `rating`
 --
-ALTER TABLE `customer_service_booking`
-  ADD PRIMARY KEY (`service_id`),
-  ADD KEY `address` (`address`),
-  ADD KEY `admin_id` (`admin_id`),
-  ADD KEY `service_provider` (`service_provider`),
-  ADD KEY `customer_id` (`customer_id`);
+ALTER TABLE `rating`
+  ADD PRIMARY KEY (`RatingId`),
+  ADD KEY `ServiceRequestId` (`ServiceRequestId`),
+  ADD KEY `RatingFrom` (`RatingFrom`),
+  ADD KEY `RatingTo` (`RatingTo`);
 
 --
--- Indexes for table `favourite_sp`
+-- Indexes for table `servicerequest`
 --
-ALTER TABLE `favourite_sp`
-  ADD PRIMARY KEY (`favourite_id`),
-  ADD KEY `customer_id` (`customer_id`),
-  ADD KEY `service_provider_id` (`service_provider_id`);
+ALTER TABLE `servicerequest`
+  ADD PRIMARY KEY (`ServiceRequestId`),
+  ADD KEY `UserId` (`UserId`),
+  ADD KEY `ServiceProviderId` (`ServiceProviderId`);
 
 --
--- Indexes for table `notification`
+-- Indexes for table `servicerequestaddress`
 --
-ALTER TABLE `notification`
-  ADD PRIMARY KEY (`notification_id`),
-  ADD KEY `admin_id` (`admin_id`),
-  ADD KEY `customer_id` (`customer_id`),
-  ADD KEY `service_provider_id` (`service_provider_id`);
+ALTER TABLE `servicerequestaddress`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `ServiceRequestId` (`ServiceRequestId`);
 
 --
--- Indexes for table `rating_serviceprovider`
+-- Indexes for table `servicerequestextra`
 --
-ALTER TABLE `rating_serviceprovider`
-  ADD PRIMARY KEY (`rating_id`),
-  ADD KEY `customer_id` (`customer_id`),
-  ADD KEY `service_provider_id` (`service_provider_id`),
-  ADD KEY `service_id` (`service_id`);
+ALTER TABLE `servicerequestextra`
+  ADD PRIMARY KEY (`ServiceRequestExtraId`),
+  ADD KEY `ServiceRequestId` (`ServiceRequestId`);
 
 --
--- Indexes for table `service_provider_details`
+-- Indexes for table `servicesetting`
 --
-ALTER TABLE `service_provider_details`
-  ADD PRIMARY KEY (`service_provider_id`);
+ALTER TABLE `servicesetting`
+  ADD PRIMARY KEY (`Id`);
+
+--
+-- Indexes for table `state`
+--
+ALTER TABLE `state`
+  ADD PRIMARY KEY (`Id`);
+
+--
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`UserId`);
+
+--
+-- Indexes for table `useraddress`
+--
+ALTER TABLE `useraddress`
+  ADD PRIMARY KEY (`AddressId`),
+  ADD KEY `UserId` (`UserId`);
+
+--
+-- Indexes for table `zipcode`
+--
+ALTER TABLE `zipcode`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `CityId` (`CityId`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `address`
+-- AUTO_INCREMENT for table `city`
 --
-ALTER TABLE `address`
-  MODIFY `address_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `city`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `admin_details`
+-- AUTO_INCREMENT for table `contactus`
 --
-ALTER TABLE `admin_details`
-  MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `contactus`
+  MODIFY `ContactUsId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
--- AUTO_INCREMENT for table `admin_refund`
+-- AUTO_INCREMENT for table `contactusattachment`
 --
-ALTER TABLE `admin_refund`
-  MODIFY `refund_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `contactusattachment`
+  MODIFY `ContactUsAttachmentId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `customer_details`
+-- AUTO_INCREMENT for table `favoriteandblocked`
 --
-ALTER TABLE `customer_details`
-  MODIFY `customer_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `favoriteandblocked`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `customer_service_booking`
+-- AUTO_INCREMENT for table `rating`
 --
-ALTER TABLE `customer_service_booking`
-  MODIFY `service_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `rating`
+  MODIFY `RatingId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `favourite_sp`
+-- AUTO_INCREMENT for table `servicerequest`
 --
-ALTER TABLE `favourite_sp`
-  MODIFY `favourite_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `servicerequest`
+  MODIFY `ServiceRequestId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `notification`
+-- AUTO_INCREMENT for table `servicerequestaddress`
 --
-ALTER TABLE `notification`
-  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `servicerequestaddress`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `rating_serviceprovider`
+-- AUTO_INCREMENT for table `servicerequestextra`
 --
-ALTER TABLE `rating_serviceprovider`
-  MODIFY `rating_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `servicerequestextra`
+  MODIFY `ServiceRequestExtraId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `service_provider_details`
+-- AUTO_INCREMENT for table `servicesetting`
 --
-ALTER TABLE `service_provider_details`
-  MODIFY `service_provider_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `servicesetting`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `state`
+--
+ALTER TABLE `state`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT for table `useraddress`
+--
+ALTER TABLE `useraddress`
+  MODIFY `AddressId` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `zipcode`
+--
+ALTER TABLE `zipcode`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
 --
 
 --
--- Constraints for table `address`
+-- Constraints for table `city`
 --
-ALTER TABLE `address`
-  ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer_details` (`customer_id`);
+ALTER TABLE `city`
+  ADD CONSTRAINT `city_ibfk_1` FOREIGN KEY (`StateId`) REFERENCES `state` (`Id`);
 
 --
--- Constraints for table `admin_refund`
+-- Constraints for table `favoriteandblocked`
 --
-ALTER TABLE `admin_refund`
-  ADD CONSTRAINT `admin_refund_ibfk_1` FOREIGN KEY (`paid_id`) REFERENCES `customer_service_booking` (`service_id`),
-  ADD CONSTRAINT `admin_refund_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin_details` (`admin_id`);
+ALTER TABLE `favoriteandblocked`
+  ADD CONSTRAINT `favoriteandblocked_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`),
+  ADD CONSTRAINT `favoriteandblocked_ibfk_2` FOREIGN KEY (`TargetUserId`) REFERENCES `user` (`UserId`);
 
 --
--- Constraints for table `customer_service_booking`
+-- Constraints for table `rating`
 --
-ALTER TABLE `customer_service_booking`
-  ADD CONSTRAINT `customer_service_booking_ibfk_1` FOREIGN KEY (`service_provider`) REFERENCES `service_provider_details` (`service_provider_id`),
-  ADD CONSTRAINT `customer_service_booking_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer_details` (`customer_id`),
-  ADD CONSTRAINT `customer_service_booking_ibfk_3` FOREIGN KEY (`address`) REFERENCES `address` (`address_id`),
-  ADD CONSTRAINT `customer_service_booking_ibfk_4` FOREIGN KEY (`admin_id`) REFERENCES `admin_details` (`admin_id`);
+ALTER TABLE `rating`
+  ADD CONSTRAINT `rating_ibfk_1` FOREIGN KEY (`ServiceRequestId`) REFERENCES `servicerequest` (`ServiceRequestId`),
+  ADD CONSTRAINT `rating_ibfk_2` FOREIGN KEY (`RatingFrom`) REFERENCES `user` (`UserId`),
+  ADD CONSTRAINT `rating_ibfk_3` FOREIGN KEY (`RatingTo`) REFERENCES `user` (`UserId`);
 
 --
--- Constraints for table `favourite_sp`
+-- Constraints for table `servicerequest`
 --
-ALTER TABLE `favourite_sp`
-  ADD CONSTRAINT `favourite_sp_ibfk_1` FOREIGN KEY (`service_provider_id`) REFERENCES `service_provider_details` (`service_provider_id`),
-  ADD CONSTRAINT `favourite_sp_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer_details` (`customer_id`);
+ALTER TABLE `servicerequest`
+  ADD CONSTRAINT `servicerequest_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`),
+  ADD CONSTRAINT `servicerequest_ibfk_2` FOREIGN KEY (`ServiceProviderId`) REFERENCES `user` (`UserId`);
 
 --
--- Constraints for table `notification`
+-- Constraints for table `servicerequestaddress`
 --
-ALTER TABLE `notification`
-  ADD CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer_details` (`customer_id`),
-  ADD CONSTRAINT `notification_ibfk_2` FOREIGN KEY (`admin_id`) REFERENCES `admin_details` (`admin_id`),
-  ADD CONSTRAINT `notification_ibfk_3` FOREIGN KEY (`service_provider_id`) REFERENCES `service_provider_details` (`service_provider_id`);
+ALTER TABLE `servicerequestaddress`
+  ADD CONSTRAINT `servicerequestaddress_ibfk_1` FOREIGN KEY (`ServiceRequestId`) REFERENCES `servicerequest` (`ServiceRequestId`);
 
 --
--- Constraints for table `rating_serviceprovider`
+-- Constraints for table `servicerequestextra`
 --
-ALTER TABLE `rating_serviceprovider`
-  ADD CONSTRAINT `rating_serviceprovider_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer_details` (`customer_id`),
-  ADD CONSTRAINT `rating_serviceprovider_ibfk_2` FOREIGN KEY (`service_id`) REFERENCES `customer_service_booking` (`service_id`),
-  ADD CONSTRAINT `rating_serviceprovider_ibfk_3` FOREIGN KEY (`service_provider_id`) REFERENCES `service_provider_details` (`service_provider_id`);
+ALTER TABLE `servicerequestextra`
+  ADD CONSTRAINT `servicerequestextra_ibfk_1` FOREIGN KEY (`ServiceRequestId`) REFERENCES `servicerequest` (`ServiceRequestId`);
+
+--
+-- Constraints for table `useraddress`
+--
+ALTER TABLE `useraddress`
+  ADD CONSTRAINT `useraddress_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `user` (`UserId`);
+
+--
+-- Constraints for table `zipcode`
+--
+ALTER TABLE `zipcode`
+  ADD CONSTRAINT `zipcode_ibfk_1` FOREIGN KEY (`CityId`) REFERENCES `city` (`Id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
