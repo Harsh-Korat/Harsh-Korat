@@ -132,6 +132,8 @@ margin-top: -2px;
 }
 
 .become a:hover{
+width: 161px;
+height: 40px;
 display: inline-flex;
 justify-content: center;
 color: #29626D !important;
@@ -141,6 +143,10 @@ border-radius: 20px;
 }
 
 .login a:hover{
+width: 83px;
+height: 40px;
+display: inline-flex;
+justify-content: center;
 background: white;
 border: 1px solid #FFFFFF80;
 color: #29626D !important;
