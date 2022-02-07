@@ -109,7 +109,7 @@ if (!isset($_SESSION['username'])) { ?>
           <a class="nav-link" href="./Prices.php">Prices</a>
           <a class="nav-link" href="#">Our Guaruntee</a>
           <a class="nav-link" href="#">Blog</a>
-          <a class="nav-link" href="./Contact.php">Contact Us</a>
+          <a class="nav-link" style="margin-right: -15px;" href="./Contact.php">Contact Us</a>
         </li>
 
         <li class="nav-item dropdown notification-bttn" style="margin-top: -8px;">
