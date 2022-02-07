@@ -8,6 +8,6 @@
       <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
       <link rel="stylesheet" href="../assets/css/footer.css">
-      <link rel="stylesheet" href="../assets/css/navigationbar.css">
+      <link rel="stylesheet" href="../assets/css/navbar.css">
 
 <?php session_start(); ?>
