@@ -19,29 +19,30 @@ public function __construct() {
   }    
 
 
+
     public function ResetKey($email)
     {
         $sql = "select * from user where Email = '$email'";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
         $row  = $stmt->fetch(PDO::FETCH_ASSOC);
-        $username = $row['FirstName'];
+        $firstname = $row['FirstName'];
+        $lastname = $row['LastName'];
+        $username = $firstname . ' ' . $lastname;
+        $userid = $row['UserId'];
         $resetkey = $row['ResetKey'];
         $count = $stmt->rowCount();
-        return array($username, $resetkey, $count);
+        return array($username, $resetkey, $count, $userid);
     }
+
 
  public function ResetPass($array)
     {
         $sql = "UPDATE user SET Password = :password , ModifiedDate = :updatedate , ModifiedBy = :modifiedby WHERE ResetKey = :resetkey";
         $stmt =  $this->conn->prepare($sql);
         $result = $stmt->execute($array);
-        if ($result) {
-            $_SESSION['message'] = "Password Updated Successfully";
-        } else {
-            $_SESSION['message'] = "Password Not Updated. Please Try Again. ";
-        }
-        return array($_SESSION['message']);
+        return ($result);
+
     }
 
 
@@ -84,6 +85,11 @@ public function __construct() {
 
 
 
+
+
+
+
+
 public function Contact($array)
    {
     $sql = "INSERT INTO contactus (Name , Email , Subject , PhoneNumber , Message , CreatedOn , Status , Priority )
@@ -112,6 +118,131 @@ public function Customer_SP($array)
         $stmt->execute();
         $count = $stmt->rowCount();
         return $count;
+    }
+
+
+
+    public function PostalExists($postal)
+    {
+        $sql = "SELECT * FROM zipcode WHERE ZipcodeValue = $postal";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+
+
+public function CityLocation($pincode)
+    {
+
+        $sql  = " SELECT
+        zipcode.ZipcodeValue,
+        city.CityName, state.StateName  FROM zipcode 
+      JOIN city
+        ON zipcode.CityId = city.Id  AND ZipcodeValue = $pincode
+        JOIN state 
+        ON state.Id = city.StateId";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+
+        $row  = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        $zipcode = $row['ZipcodeValue'];
+        $city = $row['CityName'];
+        $state = $row['StateName'];
+
+        return array($city, $state);
+    }
+
+
+    public function InsertAddress($array)
+    {
+        $sql = "INSERT INTO useraddress (UserId , AddressLine1   , AddressLine2 , City ,State,  PostalCode , Mobile , Email ,Type)
+        VALUES (:userid , :street ,  :houseno  , :location ,:state , :pincode , :mobilenum , :email , :type)";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        if ($result) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+    }
+
+
+
+    public function GetAddress($email)
+    {
+        $sql =  "SELECT * FROM useraddress WHERE Email = '$email'  ORDER BY AddressId DESC";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+    
+
+    public function GetUsers($id)
+    {
+        $sql = "SELECT * FROM `user` WHERE UserId = $id";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    public function Favourite($email)
+    {
+        $sql = "SELECT * FROM `favoriteandblocked` WHERE UserId = $email";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    public function GetSelectedAddress($addressid)
+    {
+        $sql =   "SELECT * FROM `useraddress` WHERE `AddressId` = $addressid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    public function AddService($array)
+    {
+        $sql = "INSERT INTO servicerequest ( `UserId`, `ServiceStartDate`, `ServiceTime`, `ZipCode`,  `ServiceHourlyRate`, `ServiceHours`, `ExtraHours`, `TotalHours`, `TotalBed`, `TotalBath`, `SubTotal`, `Discount`, `TotalCost`, `EffectiveCost`, `ExtraServices`, `Comments`, `AddressId`, `PaymentTransactionRefNo`, `PaymentDue`, `HasPets`, `Status`, `CreatedDate`,  `PaymentDone`, `RecordVersion`)
+     VALUES (:userid ,:servicedate ,:servicetime, :zipcode,:servicehourlyrate ,:servicehours, :extrahours , :totalhours, :totalbed , :totalbath, :subtotal, :discount, :totalcost , :effectivecost, :extraservices, :comments, :addressid, :paymentrefno, :paymentdue, :pets,:status ,:createddate , :paymentdone, :recordversion)
+     ";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute($array);
+        $addressid = $this->conn->lastInsertId();
+
+        return $addressid;
+    }
+
+    public function GetActiveServiceProvider()
+    {
+        $sql = 'SELECT * FROM `user` WHERE UserTypeId = 1 AND `IsActive`="Yes"';
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function GetUsersServiceprovider($id)
+    {
+        $idresult = array();
+        foreach($id as $array){
+            $sql = "SELECT Email FROM `user` WHERE UserId = {$array}";
+            $stmt =  $this->conn->prepare($sql);
+            $stmt->execute();
+            $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+            array_push($idresult,$result);
+        }
+        return $idresult;
     }
 
 
