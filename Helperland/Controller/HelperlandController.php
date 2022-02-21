@@ -151,6 +151,16 @@ public function ResetPassword()
     }
 
 
+    public function Login1()
+    {
+
+        if (isset($_POST)) {
+            $email = $_POST['loginemail'];
+            $password = $_POST['password'];
+            $count = $this->model->Login1($email, $password);
+        }
+    }
+
 
     public function ServiceProvider(){
         $baseurl = "http://localhost/Helperland/Views/Service.php";
@@ -254,6 +264,7 @@ public function ResetPassword()
 
     public function GetAddress()
     {
+        
         if (isset($_POST)) {
             $email = $_POST['username'];
 
@@ -283,6 +294,8 @@ $output =
 </div>';
 
                         echo $output;
+
+
                
                 }
             }
@@ -352,7 +365,6 @@ $output =
             $extraservice = $_POST['extraservice'];
             $comments = $_POST['comments'];
             $addressid = $_POST['addressid'];
-            $paymentrefno = $_POST['paymentrefno'];
             $paymentdue = $_POST['paymentdue'];
             $haspets = $_POST['haspets'];
             $status = 'Pending';
