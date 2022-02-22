@@ -157,7 +157,7 @@ public function Customer_SP($array)
 
 
 
-    public function PostalExists($postal)
+    public function Postal($postal)
     {
         $sql = "SELECT * FROM zipcode WHERE ZipcodeValue = $postal";
         $stmt =  $this->conn->prepare($sql);
@@ -167,13 +167,13 @@ public function Customer_SP($array)
     }
 
 
-public function CityLocation($pincode)
+public function City($pincode)
     {
 
         $sql  = " SELECT
         zipcode.ZipcodeValue,
         city.CityName, state.StateName  FROM zipcode 
-      JOIN city
+        JOIN city
         ON zipcode.CityId = city.Id  AND ZipcodeValue = $pincode
         JOIN state 
         ON state.Id = city.StateId";
@@ -190,10 +190,10 @@ public function CityLocation($pincode)
     }
 
 
-    public function InsertAddress($array)
+    public function AddressDetails($array)
     {
         $sql = "INSERT INTO useraddress (UserId , AddressLine1   , AddressLine2 , City ,State,  PostalCode , Mobile , Email ,Type)
-        VALUES (:userid , :street ,  :houseno  , :location ,:state , :pincode , :mobilenum , :email , :type)";
+        VALUES (:userid , :street ,  :houseno  , :location ,:state , :pincode , :mobile , :email , :type)";
         $stmt =  $this->conn->prepare($sql);
         $result = $stmt->execute($array);
         if ($result) {
@@ -205,7 +205,7 @@ public function CityLocation($pincode)
 
 
 
-    public function GetAddress($email)
+    public function Address($email)
     {
         $sql =  "SELECT * FROM useraddress WHERE Email = '$email'  ORDER BY AddressId DESC";
         $stmt =  $this->conn->prepare($sql);
@@ -216,27 +216,8 @@ public function CityLocation($pincode)
     }
     
 
-    public function GetUsers($id)
-    {
-        $sql = "SELECT * FROM `user` WHERE UserId = $id";
-        $stmt =  $this->conn->prepare($sql);
-        $stmt->execute();
-        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result;
-    }
 
-
-    public function Favourite($email)
-    {
-        $sql = "SELECT * FROM `favoriteandblocked` WHERE UserId = $email";
-        $stmt =  $this->conn->prepare($sql);
-        $stmt->execute();
-        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-
-    public function GetSelectedAddress($addressid)
+    public function SelectedAddress($addressid)
     {
         $sql =   "SELECT * FROM `useraddress` WHERE `AddressId` = $addressid";
         $stmt =  $this->conn->prepare($sql);
@@ -258,7 +239,7 @@ public function CityLocation($pincode)
         return $addressid;
     }
 
-    public function GetActiveServiceProvider()
+    public function ActiveServiceProvider()
     {
         $sql = 'SELECT * FROM `user` WHERE UserTypeId = 1 AND `IsActive`="Yes"';
         $stmt =  $this->conn->prepare($sql);
@@ -267,7 +248,7 @@ public function CityLocation($pincode)
         return $result;
     }
 
-    public function GetUsersServiceprovider($id)
+    public function UsersServiceprovider($id)
     {
         $idresult = array();
         foreach($id as $array){
