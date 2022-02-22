@@ -198,11 +198,11 @@ public function ResetPassword()
     }
 
 
-    public function CheckPostalCode()
+    public function PostalCode()
     {
         if (isset($_POST)) {
             $postal = $_POST['postal'];
-            $count = $this->model->PostalExists($postal);
+            $count = $this->model->Postal($postal);
             if ($count > 0) {
                 echo 1;
             } else {
@@ -212,11 +212,11 @@ public function ResetPassword()
     }
 
 
-    public function GetLocationCity()
+    public function City()
     {
         if (isset($_POST)) {
             $pincode = $_POST['postalcode'];
-            $result = $this->model->CityLocation($pincode);
+            $result = $this->model->City($pincode);
             $city = $result[0];
             $state = $result[1];
             $return = [$city, $state];
@@ -226,7 +226,7 @@ public function ResetPassword()
 
 
 
- public function InsertAddress()
+ public function AddressDetails()
     {
 
         if (isset($_POST)) {
@@ -234,13 +234,13 @@ public function ResetPassword()
             $houseno = $_POST['houseno'];
             $pincode = $_POST['pincode'];
             $location = $_POST['location'];
-            $mobilenum = $_POST['mobilenum'];
+            $mobile = $_POST['mobile'];
             $email = $_POST['username'];
 
             $result = $this->model->ResetKey($email);
             $userid = $result[3];
             $type = 0;
-            $getstate = $this->model->CityLocation($pincode);
+            $getstate = $this->model->City($pincode);
             $state = $getstate[1];
 
             $array = [
@@ -250,25 +250,25 @@ public function ResetPassword()
                 'location' => $location,
                 'state' => $state,
                 'pincode' => $pincode,
-                'mobilenum' => $mobilenum,
+                'mobile' => $mobile,
                 'email' => $email,
                 'type' => $type,
 
             ];
-            $result = $this->model->InsertAddress($array);
+            $result = $this->model->AddressDetails($array);
         }
     }
 
 
 
 
-    public function GetAddress()
+    public function Address()
     {
         
         if (isset($_POST)) {
             $email = $_POST['username'];
 
-            $result = $this->model->GetAddress($email);
+            $result = $this->model->Address($email);
             if (count($result)) {
                 foreach ($result as $row) {
                     $street = $row['AddressLine1'];
@@ -279,74 +279,25 @@ public function ResetPassword()
                     $isdefault = $row['IsDefault'];
                     $isdeleted = $row['IsDeleted'];
                     $addressid = $row['AddressId'];
-                    // if ($isdefault == 1) {
-                    //     $isdefault =  'checked';
-                    // } else {
-                    //     $isdefault = '';
-                    // }
-                
 
-$output = 
-'<div class="menubar border">
-  <input type="radio" class="radio" id="unique' . $addressid . '" name="address_radio" value="' . $addressid . '">
-  <label><b>Address:</b>' . $street . '  ' .$houseno . ' , ' .$city . '  ' .$pincode . '<br>
-<b>Telephone number:</b> 9988556644</label>
-</div>';
+           $output = 
+                   '<div class="menubar border">
+                    <input type="radio" class="radio" id="unique' . $addressid . '" name="radio" value="' . $addressid . '">
+                    <label><b>Address:</b>' . $street . '  ' .$houseno . ' , ' .$city . '  ' .$pincode . '<br>
+                    <b>Telephone number:</b> 9988556644</label>
+                   </div>';
 
-                        echo $output;
-
-
-               
+                        echo $output;              
                 }
             }
         }
     }
 
 
-/*
 
-    public function GetFavouriteServiceProvider()
-    {
-        if (isset($_POST)) {
-            $email = $_POST['username'];
-            $result = $this->model->ResetKey($email);
-            $email = $result[3];
-            // echo $userid;
-            $results = $this->model->Favourite($email);
-            // TargetUserId
-            if (count($results)) {
-                foreach ($results as $row) {                                              favourite service provider
-                    $id = $row['TargetUserId'];
-                    $favourite = $row['IsFavorite'];
-                    $blocked = $row['IsBlocked'];
-
-                    $targetresult = $this->model->GetUsers($id);
-                    $serviceproviderid = $targetresult['UserId'];
-                    $firstname = $targetresult['FirstName'];
-                    $lastname = $targetresult['LastName'];
-                    if ($favourite == 1) {
-                        $output = '
-                    <div class="col-md-3 ">
-                        <div class="service-provider-imgs">
-                            <img src="./assets/image/forma-1-copy-19.png" class="service-provider-img">
-                        </div>
-                        <h5 class="service-provider-name">' . $firstname . ' ' . $lastname . '</h5>
-                        <button type="button" class="btn selectbtn selectsp"  value="' . $serviceproviderid . '" onclick ="CheckSP()" >Select</button>
-                    </div>
-                ';
-                        echo $output;
-                    }
-                }
-            }
-        }
-    }
-
-  */  
-
-    public function AddServiceRequest()
+    public function ServiceRequest()
     {
 
-        // $value = $parameter;
         if (isset($_POST)) {
             $email  = $_POST['username'];
             $selectdate = $_POST['selectdate'];
@@ -376,7 +327,7 @@ $output =
        
 
             $result = $this->model->ResetKey($email);
-            $clientaddress = $this->model->GetSelectedAddress($addressid);
+            $clientaddress = $this->model->SelectedAddress($addressid);
             if (count($clientaddress)) {
                 foreach ($clientaddress as $address) {
                     $clientaddresses = $address['AddressLine2'] . ' ' . $address['AddressLine1'] . ' , ' . $address['City'] . ',' . $address['State'] . ' ,' . $address['PostalCode'];
@@ -416,11 +367,11 @@ $output =
             ];
 
             $result = $this->model->AddService($array);
-            $serviceprovider = $this->model->GetActiveServiceProvider();
+            $serviceprovider = $this->model->ActiveServiceProvider();
             if ($result) {
                 include('BookServiceClientConfirmationMail.php');
                 if (sizeof($id)>0) {
-                    $sp = $this->model->GetUsersServiceprovider($id);
+                    $sp = $this->model->UsersServiceprovider($id);
                     if(count($sp)){
                     
                     $addressid = $result;
