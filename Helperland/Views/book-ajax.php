@@ -3,11 +3,6 @@
 // Setup Services
 
     $(document).ready(function() {
-        <?php if (isset($_SESSION['username'])) { ?>
-            
-            var username = "<?php echo $_SESSION['username']; ?>";
-
-        <?php } ?>
 
         $(".check").on("click", function() {
  
@@ -22,7 +17,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: "http://localhost/Helperland/?controller=Helperland&function=PostalCode",
+                    url: "http://localhost/Helperland/?controller=Helperland&function=Pincode",
                     data: {
                         "check_postal": 1,
                         "postal": postal,
@@ -51,17 +46,11 @@
                                 data: {
                                     "get_postal": 1,
                                     "postalcode": postal,
-                                },
-                                dataType: 'json',
-                                success: function(data) {
-                                    optionText = data[0];
-                                    optionValue = data[0];
-
-                            $('#location').append(`<option value="${optionValue}" selected> ${optionText} </option>`);
                                 }
+
                             });
                         } else {
-                            var response = "Postal Code Not Available";
+                            var response = "Postal Code Not Exist";
                             $('#postal-message').text(response);
                             
                         }
@@ -71,7 +60,7 @@
                 });
 
             } else {
-                var postalerror = "Please Enter Valid Postal Code";
+                var postalerror = "Invalid Postal Code";
                 $('#postal-message').text(postalerror);
             }
         });
@@ -99,65 +88,38 @@ $('#discard').on('click', function(){
    $(".plan-continue").on("click", function(e) {
             e.preventDefault();
      
-        var plan_bed = $("#plan-bed option:selected").text();
-        var plan_bath = $("#plan-bath option:selected").text();
-        var plan_hour = $("#plan-hour option:selected").text();
-        var plan_date = $.trim($("#plan-date").val());
-        var plan_time = $("#plan-time option:selected").text();
-        var extrahour = 0;
+        var more_time = 0;
 
         if ($(".service1").css('display') == 'block') {
            var first_service = "0.5";
            first_service = parseFloat(first_service);
-           extrahour = extrahour + 0.5;
+           more_time = more_time + 0.5;
         }
 
         if ($(".service2").css('display') == 'block') {
             var second_service = "0.5";
             second_service = parseFloat(second_service);
-            extrahour = extrahour + 0.5;
+            more_time = more_time + 0.5;
         }
 
         if ($(".service3").css('display') == 'block') {
             var third_service = "0.5";
             third_service = parseFloat(third_service);
-            extrahour = extrahour + 0.5;
+            more_time = more_time + 0.5;
         }
 
         if ($(".service4").css('display') == 'block') {
             var fourth_service = "0.5";
             fourth_service = parseFloat(fourth_service);
-            extrahour = extrahour + 0.5;
+            more_time = more_time + 0.5;
         }
 
         if ($(".service5").css('display') == 'block') {
             var fifth_service = "0.5";
             fifth_service = parseFloat(fifth_service);
-            extrahour = extrahour + 0.5;
+            more_time = more_time + 0.5;
         }
 
-            var servicehours = $('.basics span').text();
-            servicehours = parseFloat(servicehours);
-
-            var SubTotal = $('.subtotal span').text();
-            SubTotal = SubTotal.slice(1);
-            SubTotal = parseFloat(SubTotal);
-            var Discount = $('.discount span').text();
-
-            Discounts = Discount.slice(4);
-            Discount = parseFloat(Discounts);
-
-            var TotalCost = $('.total span').text();
-            TotalCost = TotalCost.slice(1);
-            TotalCost = parseFloat(TotalCost);
-
-            var comments = $.trim($("#comments").val());
-
-            if ($('#pets').is(":checked")) {
-                var pets = "yes";
-            } else {
-                var pets = "no";
-            }
 
             $(".tab1  .nav-link").removeClass('active');
             $(".text-one").removeClass('active');
@@ -211,7 +173,7 @@ $('#discard').on('click', function(){
                         Address();
 
                     } else {
-                        alert("please Enter valid Address");
+                        alert("Please Enter Valid Address");
                     }
                 }
             });
@@ -237,7 +199,7 @@ $('#discard').on('click', function(){
                 
                 success: function(data) {
                 
-                    $("#alladdress").html(data);
+                    $("#your_address").html(data);
                 
                 }
            });
@@ -385,73 +347,72 @@ $('#discard').on('click', function(){
         
         if ($(".invalid-input").length == 0 && $(".condition").is(':checked')) {
                  pincode = $("#postalcode").val();
-                 servicehourate = "$18";
+                 service_rate = "$18";
                  plan_bed = $("#plan-bed option:selected").text();
                  plan_bath = $("#plan-bath option:selected").text();
                  plan_hour = $("#plan-hour option:selected").text();
                  plan_date = $.trim($("#plan-date").val());
                  plan_time = $("#plan-time option:selected").text();
-                 extrahour = 0;
-                 elements = '';
+                 more_time = 0;
+                 name_item = '';
    
         if ($(".service1").css('display') == 'block') {
                  var first_service = "0.5";
                  first_service = parseFloat(first_service);
-                 extrahour = extrahour + 0.5;
-                 elements = elements + [' Inside cabinets ,'];
+                 more_time = more_time + 0.5;
+                 name_item = name_item + [' Inside cabinets ,'];
             }
 
         if ($(".service2").css('display') == 'block') {
                  var second_service = "0.5";
                  second_service = parseFloat(second_service);
-                 extrahour = extrahour + 0.5;
-                 elements = elements + [' Inside fridge ,'];
+                 more_time = more_time + 0.5;
+                 name_item = name_item + [' Inside fridge ,'];
             }
 
             if ($(".service3").css('display') == 'block') {
                  var third_service = "0.5";
                  third_service = parseFloat(third_service);
-                 extrahour = extrahour + 0.5;
-                 elements = elements + [' Inside oven ,'];
+                 more_time = more_time + 0.5;
+                 name_item = name_item + [' Inside oven ,'];
             }
 
             if ($(".service4").css('display') == 'block') {
                  var fourth_service = "0.5";
                  fourth_service = parseFloat(fourth_service);
-                 extrahour = extrahour + 0.5;
-                 elements = elements + [' Laundry wash & dry ,'];
+                 more_time = more_time + 0.5;
+                 name_item = name_item + [' Laundry wash & dry ,'];
             }
 
             if ($(".service5").css('display') == 'block') {
                  var fifth_service = "0.5";
                  fifth_service = parseFloat(fifth_service);
-                 extrahour = extrahour + 0.5;
-                 elements = elements + [' Interior windows'];
+                 more_time = more_time + 0.5;
+                 name_item = name_item + [' Interior windows'];
             }
-                 Extraservice = elements;
-                 extrahours = extrahour;
+                 Extra_item = name_item;
+                 more_times = more_time;
 
-                 selectedsp = "";
-                 if ($('.selectbtn').hasClass('selectedsp')) {
-                     selectedsp = $('.selectedsp').val();
-                 }
-                 var servicehour = $('.basics span').text();
-                 servicehours = parseFloat(servicehour);
+                
+                 var basic = $('.basic span').text();
+                 basics = parseFloat(basic);
 
-                 var SubTotals = $('.subtotal span').text();
-                 SubTotals = SubTotals.slice(1);
-                 SubTotal = parseFloat(SubTotals);
-                 var Discounts = $('.discount span').text();
-                 
-                 Discounts = Discounts.slice(4);
-                 Discount = parseFloat(Discounts);
-                 var TotalCosts = $('.total span').text();
-                 TotalCosts = TotalCosts.slice(1);
-                 TotalCost = parseFloat(TotalCosts);
-                 var EffectiveCosts = $('.effective-price span').text();
-                 EffectiveCosts = EffectiveCosts.slice(1);
-                 EffectiveCost = parseFloat(EffectiveCosts);
+                 var Cars_Amount = $('.card_amount span').text();
+                 Cars_Amount = Cars_Amount.slice(1);
+                 Card_Amounts = parseFloat(Cars_Amount);
+
+                 var Total_Payment = $('.total-payment span').text();
+                 Total_Payment = Total_Payment.slice(1);
+                 Total_Payments = parseFloat(Total_Payment);
+               
+                 var Effective_Price = $('.effective-price span').text();
+                 Effective_Price = Effective_Price.slice(1);
+                 Effective_Prices = parseFloat(Effective_Price);
+               
                  paymentdue = 0;
+               
+                 Discount = 0;
+               
                  comments = $.trim($("#comments").val());
                  if ($('#pets').is(":checked")) {
                      pets = "yes";                                                               
@@ -459,7 +420,6 @@ $('#discard').on('click', function(){
                      pets = "no";
                  }
                  Address = $('input[name="radio"]:checked').val();
-
                  ServieRequest();
             }
 
@@ -468,41 +428,41 @@ $('#discard').on('click', function(){
 
 
  function ServieRequest() {
-             <?php if (isset($_SESSION['username'])) { ?>
-                 username = "<?php echo $_SESSION['username']; ?>";
 
-             <?php } ?>
+    <?php if (isset($_SESSION['username'])) { ?>
+        username = "<?php echo $_SESSION['username']; ?>";
+    <?php } ?>
              
              FinalSubmits = ({
-                 "addservicerequest": 11,
+                 
                  "username": username,
                  "plan_date": plan_date,
                  "plan_time": plan_time,
-                 "zipcode": pincode,
-                 "servicehourate": servicehourate,
-                 "servicehours": servicehours,
-                 "extrahour": extrahours,
-                 "totalhour": plan_hour,
-                 "totalbed": plan_bed,
-                 "totalbath": plan_bath,
-                 "subtotal": SubTotal,
+                 "pincode": pincode,
+                 "service_rate": service_rate,
+                 "basics": basics,
+                 "more_time": more_time,
+                 "plan_hour": plan_hour,
+                 "plan_bed": plan_bed,
+                 "plan_bath": plan_bath,
+                 "card_amounts": Card_Amounts,
                  "discount": Discount,
-                 "totalcost": TotalCost,
-                 "effectivecost": EffectiveCost,
-                 "extraservice": Extraservice,
+                 "total_payments": Total_Payments,
+                 "effective_prices": Effective_Prices,
+                 "extra_item": Extra_item,
                  "comments": comments,
-                 "addressid": Address,
+                 "address": Address,
                  "paymentdue": paymentdue,                                      
-                 "haspets": pets,
-                 "selectedsp": selectedsp,
+                 "pets": pets,
+              
              });
-             $("#iframeloading").show();
-
+              
+ 
              $.ajax({
                  type: 'POST',
                  url: "http://localhost/Helperland/?controller=Helperland&function=ServiceRequest",
                  data: FinalSubmits,
-                
+              
                  success: function(data) {
                      
                      if (data == 0) {
@@ -521,7 +481,7 @@ $('#discard').on('click', function(){
                              confirmButtonText: 'Ok'
                          }).then(function() {
                              location.href = "Customer-Servicehistory.php";
-
+  
                          });
                    }
                  }
