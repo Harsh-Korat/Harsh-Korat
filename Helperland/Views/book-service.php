@@ -171,7 +171,7 @@
 
 <div class="title">Select number of rooms and bath</div>
   <div class="select_menu">
-    <select id='plan-bed' class="plan_bed" name="bed">
+    <select id='plan-bed' name="bed">
         <option value='1'>1 bed</option>
         <option value='2'>2 bed</option>
         <option value='3'>3 bed</option>
@@ -181,7 +181,7 @@
         <option value='7'>7 bed</option>
    </select>
    
-   <select id='plan-bath' class="plan_bath" name="bath">
+   <select id='plan-bath' name="bath">
         <option value='1'>1 bath</option>
         <option value='2'>2 bath</option>
         <option value='3'>3 bath</option>
@@ -198,13 +198,13 @@
   <div>
     <div class="title_second">When do you need the cleaner?</div>
       <div class="select_menu book-flex" id="date">
-        <div class="date1 plan_date book-flex">
+        <div class="date1 book-flex">
           
           <input type="text" id="plan-date" name="calander" placeholder="DD/MM/YYYY" maxlength="8">            
           <img src="../assets/image/admin-calendar-blue.png">                                  
         </div>
 
-        <select id='plan-time' class="plan_time" name="time" style="width: 108px;">                         
+        <select id='plan-time' name="time" style="width: 108px;">                         
             <option value='8'>8:00 </option>
             <option value='8.5'>8:30 </option>
             <option value='9'>9:00 </option>
@@ -228,13 +228,13 @@
             <option value='18'>18:00</option>
         </select>
       </div>
-      <span class="timingerr text-danger"></span>
+      
     </div>
 
    <div class="book-hr">
      <div class="title_second">How long do you need your cleaner to stay?</div>
        <div class="select_menu" id="date">
-        <select id='plan-hour' class="plan_hour" name="selecthour">
+        <select id='plan-hour' name="selecthour">
             <option value='3'>3.0 Hrs</option>
             <option value='3.5'>3.5 Hrs</option>
             <option value='4'>4.0 Hrs</option>
@@ -320,10 +320,10 @@
  
 <form>
 
-  <div id="alladdress">
+  <div id="your_address">
 
   </div>
-  <p class="text-danger error" style="font-size:18px; margin-bottom: 0px !important;"></p>
+  <p class="text-danger error mt-2" style="font-size:18px; margin-bottom: 0px !important;"></p>
 </form>
 
 <button type="button" class="add new-address">+ Add new address</button>
@@ -476,7 +476,7 @@
      
      <p class="card-text"><span class="date-time card-left">01/01/2018</span> @ <span class="time-date card-left" id="time-payment">4:00 pm </span><br><span class="number_bed card-left"> 1 bed</span> ,  <span class="number_bath card-left" id="bath-payment">1 bath</span></p>
      <p class="duration">Duration</p>
-     <p class="card-text basics">Basic <span class="basicshr">3 Hrs</span></p>
+     <p class="card-text basic">Basic <span class="basic_hour">3 Hrs</span></p>
      <div class="card-text basics selected_item">
        <p class="extra_item" style="color:black;display: none;">Extras</p>
        <p class="service1" id="service1" style="display: none;">Inside cabinets <span> 30 Min.</span></p>
@@ -489,10 +489,10 @@
      <hr>
      <p class="duration" id="duration">Total Service Time <span class="total-time-include">3 Hrs</span></p>
      <hr id="hrr">
-     <p class="card-text subtotal">Per cleaning <span class="amount">$54</span></p>   
+     <p class="card-text card_amount">Per cleaning <span class="amount">$54</span></p>   
      <p class="card-text">Discount <span> - $0</span></p> 
      <hr id="hrr"> 
-     <p class="card-text total" id="payment">Total Payment <span class="amounts">$54</span></p> 
+     <p class="card-text total-payment" id="payment">Total Payment <span class="amounts">$54</span></p> 
      <p class="card-text effective-price" id="price">Effective Price <span class="effective">$43.2</span></p> 
      <p class="card-text"><strong style="color: #FF0000;">*</strong>You will save 20% according to §35a EStG.</p>
     </div>
@@ -778,8 +778,8 @@
  <div>
      <p class="card-text"><span class="date-time card-left">01/01/2018</span> @ <span class="time-date_modal card-left" id="time-payment">4:00 pm</span> <br><span class="number_bed_modal card-left">1 bed</span> , <span class="number_bath_modal card-left" id="bath-payment">1 bath</span></p>
      <p class="duration">Duration</p>
-     <p class="card-text basics">Basic <span class="basicshr_modal">3 Hrs</span></p>
-     <div class="card-text basics selected_item">
+     <p class="card-text basic">Basic <span class="basic_hour_modal">3 Hrs</span></p>
+     <div class="card-text basic selected_item">
         <p class="extra_item" style="color:black;display: none;">Extras</p>
         <p class="service1" id="service1" style="display: none;">Inside cabinets <span> 30 Min.</span></p>
         <p class="service2" style="display: none;">Inside fridge<span>30 Min.</span></p>
@@ -790,11 +790,11 @@
      <hr>
      <p class="duration" id="duration">Total Service Time <span class="total-time-mobile">3 Hrs</span></p>
      <hr id="hrr">
-     <p class="card-text subtotal">Per cleaning <span class="amount_model">$54</span></p>   
-     <p class="card-text discount">Discount <span> - $0</span></p> 
+     <p class="card-text card_amount">Per cleaning <span class="amount_model">$54</span></p>   
+     <p class="card-text">Discount <span> - $0</span></p> 
      <hr id="hrr"> 
-     <p class="card-text total" id="payment">Total Payment <span class="amounts_model">$54</span></p> 
-     <p class="card-text" id="price">Effective Price <span class="effective effective_model">$43.2</span></p> 
+     <p class="card-text total-payment" id="payment">Total Payment <span class="amounts_model">$54</span></p> 
+     <p class="card-text effective-price" id="price">Effective Price <span class="effective effective_model">$43.2</span></p> 
      <p class="card-text"><strong style="color: #FF0000;">*</strong>You will save 20% according to §35a EStG.</p>
     </div>
 
