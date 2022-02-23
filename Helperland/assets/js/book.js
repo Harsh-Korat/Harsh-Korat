@@ -12,7 +12,7 @@ $(document).ready(function () {
      }
  
      else if (!validName.test(lastName)) {
-         $('.street-message').addClass('invalid-msg').text('White Space Are not Allowed');
+         $('.street-message').addClass('invalid-msg').text('White Space Are Not Allowed');
          $(this).addClass('invalid-input').removeClass('valid-input');
      }
  
@@ -96,78 +96,64 @@ $(document).ready(function () {
   document.querySelector('.date-time').innerHTML = tomorrow;
   $("#plan-date").attr("value", tomorrow);
 
-    /* $("#plan-date").on("change", function () {
-        var selected = $(this).val();
-        //alert(selected);
-
-        document.querySelector('.date-time').innerHTML = selected;
-       
-    });*/
-
 
   $("#plan-bed").on("change", function () {
-      Bed();
+      plan_bed();
   });
 
   $("#plan-time").on("change", function () {
-      Times();
+      plan_time();
   });
 
   $("#plan-bath").on("change", function () {
-      Bath();
+      plan_bath();
   });
 
   $("#plan-hour").on("change", function () {
-      time();
+      plan_hour();
   });
 
   $(".first-img1").click(function () {
-      img1();
+      plan_img1();
   });
 
   $(".second-img").click(function () {
-      img2();
+      plan_img2();
   });
 
   $(".third-img").click(function () {
-      img3();
+     plan_img3();
   });
 
   $(".fourth-img").click(function () {
-      img4();
+      plan_img4();
   });
 
   $(".fifth-img").click(function () {
-      img5();
+      plan_img5();
   });
 
-  function selecttimes() {
+  function Time_collect() {
 
-    var selectedtimes = parseFloat($('#plan-time').val());
-    var selectedhours = parseFloat($("#plan-hour").val());
+    var times = parseFloat($('#plan-time').val());
+    var hours = parseFloat($("#plan-hour").val());
 
-    totaltimesh = selectedtimes + selectedhours
-
-    /* if (totaltimesh >= 21) {
-            $('.timingerr').text("Please Select less than 21 hour time");
-        } else {
-            $('.timingerr').text("");
-          
-        }
-        */
+    times_hours = times + hours 
  } 
 
   var toggle = true;
 
-  function img1() {
 
-    var datas = $(".total-time-mobile").text();
-    var datas = parseFloat(datas);
-    var times = datas; 
-    var data = $(".total-time-include").text();
-    var data = parseFloat(data);
-    var time = data;
-     selecttimes();
+
+  function plan_img1() {
+
+    var mobile_time = $(".total-time-mobile").text();
+    var mobile_time = parseFloat(mobile_time);
+    var mobile_required_time = mobile_time; 
+    var card_time = $(".total-time-include").text();
+    var card_time = parseFloat(card_time);
+    var card_required_time = card_time;
+     Time_collect();
 
       if (toggle == true) {
         $(".first-img1").css({
@@ -178,14 +164,14 @@ $(document).ready(function () {
         $(".selected_item .extra_item").css("display", "block");
         $(".selected_item .service1").css("display", "block");
             
-        var selecthr = document.querySelector('#plan-hour').selectedIndex + 1;
-        document.querySelector('#plan-hour').options.selectedIndex = selecthr;
+        var hr = document.querySelector('#plan-hour').selectedIndex + 1;
+        document.querySelector('#plan-hour').options.selectedIndex = hr;
 
-        time = time + 0.5;
-        times = times + 0.5;
+        card_required_time = card_required_time + 0.5;
+        mobile_required_time = mobile_required_time + 0.5;
 
-        document.querySelector('.total-time-include').innerHTML = time + ' Hrs';
-        document.querySelector('.total-time-mobile').innerHTML = times + ' Hrs';
+        document.querySelector('.total-time-include').innerHTML = card_required_time + ' Hrs';
+        document.querySelector('.total-time-mobile').innerHTML = mobile_required_time + ' Hrs';
 
         } else {
 
@@ -195,41 +181,40 @@ $(document).ready(function () {
         });
             
         $(".selected_item .service1").css("display", "none");
-        var selecthr = document.querySelector('#plan-hour').selectedIndex - 1;
-        document.querySelector('#plan-hour').options.selectedIndex = selecthr;
+        var hr = document.querySelector('#plan-hour').selectedIndex - 1;
+        document.querySelector('#plan-hour').options.selectedIndex = hr;
     
-        var totaltime = $('.total-time-include').text();
-        var totaltime = parseFloat(totaltime);
-        totaltime = totaltime - 0.5;
+        var alredy_card_time = $('.total-time-include').text();
+        var alredy_card_time = parseFloat(alredy_card_time);
+        alredy_card_time = alredy_card_time - 0.5;
 
-        var totaltimes = $('.total-time-mobile').text();
-        var totaltimes = parseFloat(totaltimes);
-        totaltimes = totaltimes - 0.5;
+        var alredy_time = $('.total-time-mobile').text();
+        var alredy_time = parseFloat(alredy_time);
+        alredy_time = alredy_time - 0.5;
 
-        document.querySelector('.total-time-include').innerHTML = totaltime + ' Hrs';
-        document.querySelector('.total-time-mobile').innerHTML = totaltimes + ' Hrs';
+        document.querySelector('.total-time-include').innerHTML = alredy_card_time + ' Hrs';
+        document.querySelector('.total-time-mobile').innerHTML = alredy_time + ' Hrs';
 
     }
 
     toggle = !toggle;
  }
   
-    var toggles = true;
+    var toggle1 = true;
 
   
+    function plan_img2() {
 
-    function img2() {
+       Time_collect();
+       var mobile_time = $(".total-time-mobile").text();
+       var card_time = $(".total-time-include").text();
+       var card_time = parseFloat(card_time);
+       var card_required_time = card_time;
+       var mobile_time = $(".total-time-mobile").text();
+       var mobile_time = parseFloat(mobile_time);
+       var mobile_required_time = mobile_time;
 
-       selecttimes();
-       var datas = $(".total-time-mobile").text();
-       var data = $(".total-time-include").text();
-       var data = parseFloat(data);
-       var time = data;
-       var datas = $(".total-time-mobile").text();
-       var datas = parseFloat(datas);
-       var times = datas;
-
-       if (toggles == true) {
+       if (toggle1 == true) {
           $(".second-img").css({
               "border": "3px solid #1D7A8C"
          });
@@ -239,13 +224,13 @@ $(document).ready(function () {
             $(".selected_item .extra_item").css("display", "block");
             $(".selected_item .service2").css("display", "block");
 
-            var selecthr = document.querySelector('#plan-hour').selectedIndex + 1;
-            document.querySelector('#plan-hour').options.selectedIndex = selecthr;
-            time = time + 0.5;
-            times = times + 0.5;
+            var hr = document.querySelector('#plan-hour').selectedIndex + 1;
+            document.querySelector('#plan-hour').options.selectedIndex = hr;
+            card_required_time = card_required_time + 0.5;
+            mobile_required_time = mobile_required_time + 0.5;
     
-            document.querySelector('.total-time-include').innerHTML = time + ' Hrs';
-            document.querySelector('.total-time-mobile').innerHTML = times + ' Hrs';
+            document.querySelector('.total-time-include').innerHTML = card_required_time + ' Hrs';
+            document.querySelector('.total-time-mobile').innerHTML = mobile_required_time + ' Hrs';
 
         } else {
             document.getElementById('img_2').src = '../assets/Image/5.png';
@@ -254,38 +239,38 @@ $(document).ready(function () {
             });
             $(".selected_item .service2").css("display", "none");
 
-            var selecthr = document.querySelector('#plan-hour').selectedIndex - 1;
-            document.querySelector('#plan-hour').options.selectedIndex = selecthr;
+            var hr = document.querySelector('#plan-hour').selectedIndex - 1;
+            document.querySelector('#plan-hour').options.selectedIndex = hr;
      
-            var totaltime = $('.total-time-include').text();
-            var totaltime = parseFloat(totaltime);
-            totaltime = totaltime - 0.5;
+            var alredy_card_time = $('.total-time-include').text();
+            var alredy_card_time = parseFloat(alredy_card_time);
+            alredy_card_time = alredy_card_time - 0.5;
      
-            var totaltimes = $('.total-time-mobile').text();
-            var totaltimes = parseFloat(totaltimes);
-            totaltimes = totaltimes - 0.5;
+            var alredy_time = $('.total-time-mobile').text();
+            var alredy_time = parseFloat(alredy_time);
+            alredy_time = alredy_time - 0.5;
      
-            document.querySelector('.total-time-include').innerHTML = totaltime + ' Hrs';
-            document.querySelector('.total-time-mobile').innerHTML = totaltimes + ' Hrs';
+            document.querySelector('.total-time-include').innerHTML = alredy_card_time + ' Hrs';
+            document.querySelector('.total-time-mobile').innerHTML = alredy_time + ' Hrs';
 
       }
-      toggles = !toggles;
+      toggle1 = !toggle1;
 }
-    var toggle3 = true;
+    var toggle2 = true;
 
   
 
-    function img3() {
-        selecttimes();
+    function plan_img3() {
+        Time_collect();
            
-           var data = $(".total-time-include").text();
-           var data = parseFloat(data);
-           var time = data;
-           var datas = $(".total-time-mobile").text();
-           var datas = parseFloat(datas);
-           var times = datas;
+           var card_time = $(".total-time-include").text();
+           var card_time = parseFloat(card_time);
+           var card_required_time = card_time;
+           var mobile_time = $(".total-time-mobile").text();
+           var mobile_time = parseFloat(mobile_time);
+           var mobile_required_time = mobile_time;
   
-        if (toggle3 == true) {
+        if (toggle2 == true) {
           $(".third-img").css({
            "border": "3px solid #1D7A8C"
         });
@@ -294,12 +279,12 @@ $(document).ready(function () {
             $(".selected_item .extra_item").css("display", "block");
             $(".selected_item .service3").css("display", "block");
 
-            var selecthr = document.querySelector('#plan-hour').selectedIndex + 1;
-            document.querySelector('#plan-hour').options.selectedIndex = selecthr;
-            time = time + 0.5;
-            times = times + 0.5;
-            document.querySelector('.total-time-include').innerHTML = time + ' Hrs';
-            document.querySelector('.total-time-mobile').innerHTML = times + ' Hrs';
+            var hr = document.querySelector('#plan-hour').selectedIndex + 1;
+            document.querySelector('#plan-hour').options.selectedIndex = hr;
+            card_required_time = card_required_time + 0.5;
+            mobile_required_time = mobile_required_time + 0.5;
+            document.querySelector('.total-time-include').innerHTML = card_required_time + ' Hrs';
+            document.querySelector('.total-time-mobile').innerHTML = mobile_required_time + ' Hrs';
 
         } else {
             document.getElementById('img_3').src = '../assets/image/4.png';
@@ -308,35 +293,35 @@ $(document).ready(function () {
             });
             
             $(".selected_item .service3").css("display", "none");
-            var selecthr = document.querySelector('#plan-hour').selectedIndex - 1;
-            document.querySelector('#plan-hour').options.selectedIndex = selecthr;
+            var hr = document.querySelector('#plan-hour').selectedIndex - 1;
+            document.querySelector('#plan-hour').options.selectedIndex = hr;
         
-            var totaltime = $('.total-time-include').text();
-            var totaltime = parseFloat(totaltime);
-            totaltime = totaltime - 0.5;
-            var totaltimes = $('.total-time-mobile').text();
-            var totaltimes = parseFloat(totaltimes);
-            totaltimes = totaltimes - 0.5;
-            document.querySelector('.total-time-include').innerHTML = totaltime + ' Hrs';
-            document.querySelector('.total-time-mobile').innerHTML = totaltimes + ' Hrs';
+            var alredy_card_time = $('.total-time-include').text();
+            var alredy_card_time = parseFloat(alredy_card_time);
+            alredy_card_time = alredy_card_time - 0.5;
+            var alredy_time = $('.total-time-mobile').text();
+            var alredy_time = parseFloat(alredy_time);
+            alredy_time = alredy_time - 0.5;
+            document.querySelector('.total-time-include').innerHTML = alredy_card_time + ' Hrs';
+            document.querySelector('.total-time-mobile').innerHTML = alredy_time + ' Hrs';
     }
 
-    toggle3 = !toggle3;
+    toggle2 = !toggle2;
 }
-    var toggle4 = true;
+    var toggle3 = true;
 
 
 
-    function img4() {
-           selecttimes();
-           var data = $(".total-time-include").text();
-           var data = parseFloat(data);
-           var time = data;
-           var datas = $(".total-time-mobile").text();
-           var datas = parseFloat(datas);
-           var times = datas;
+    function plan_img4() {
+           Time_collect();
+           var card_time = $(".total-time-include").text();
+           var card_time = parseFloat(card_time);
+           var card_required_time = card_time;
+           var mobile_time = $(".total-time-mobile").text();
+           var mobile_time = parseFloat(mobile_time);
+           var mobile_required_time = mobile_time;
            
-           if (toggle4 == true) {
+           if (toggle3 == true) {
             $(".fourth-img").css({
                 "border": "3px solid #1D7A8C"
             });
@@ -345,13 +330,13 @@ $(document).ready(function () {
             $(".selected_item .extra_item").css("display", "block");
             $(".selected_item .service4").css("display", "block");
 
-            var selecthr = document.querySelector('#plan-hour').selectedIndex + 1;
-            document.querySelector('#plan-hour').options.selectedIndex = selecthr;
-            time = time + 0.5;
-            times = times + 0.5;
+            var hr = document.querySelector('#plan-hour').selectedIndex + 1;
+            document.querySelector('#plan-hour').options.selectedIndex = hr;
+            card_required_time = card_required_time + 0.5;
+            mobile_required_time = mobile_required_time + 0.5;
 
-            document.querySelector('.total-time-include').innerHTML = time + ' Hrs';
-            document.querySelector('.total-time-mobile').innerHTML = times + ' Hrs';
+            document.querySelector('.total-time-include').innerHTML = card_required_time + ' Hrs';
+            document.querySelector('.total-time-mobile').innerHTML = mobile_required_time + ' Hrs';
 
 
         } else {
@@ -361,37 +346,37 @@ $(document).ready(function () {
             });
            
             $(".selected_item .service4").css("display", "none");
-            var selecthr = document.querySelector('#plan-hour').selectedIndex - 1;
-            document.querySelector('#plan-hour').options.selectedIndex = selecthr;
+            var hr = document.querySelector('#plan-hour').selectedIndex - 1;
+            document.querySelector('#plan-hour').options.selectedIndex = hr;
         
-            var totaltime = $('.total-time-include').text();
-            var totaltime = parseFloat(totaltime);
-            totaltime = totaltime - 0.5;
+            var alredy_card_time = $('.total-time-include').text();
+            var alredy_card_time = parseFloat(alredy_card_time);
+            alredy_card_time = alredy_card_time - 0.5;
            
-            var totaltimes = $('.total-time-mobile').text();
-            var totaltimes = parseFloat(totaltimes);
-            totaltimes = totaltimes - 0.5;
+            var alredy_time = $('.total-time-mobile').text();
+            var alredy_time = parseFloat(alredy_time);
+            alredy_time = alredy_time - 0.5;
            
-            document.querySelector('.total-time-include').innerHTML = totaltime + ' Hrs';
-            document.querySelector('.total-time-mobile').innerHTML = totaltimes + ' Hrs';
+            document.querySelector('.total-time-include').innerHTML = alredy_card_time + ' Hrs';
+            document.querySelector('.total-time-mobile').innerHTML = alredy_time + ' Hrs';
 
     }
-     toggle4 = !toggle4;
+     toggle3 = !toggle3;
 }
-    var toggle5 = true;
+    var toggle4 = true;
 
 
 
-    function img5() {
-           selecttimes();
-           var data = $(".total-time-include").text();
-           var data = parseFloat(data);
-           var time = data;
-           var datas = $(".total-time-mobile").text();
-           var datas = parseFloat(datas);
-           var times = datas;
+    function plan_img5() {
+           Time_collect();
+           var card_time = $(".total-time-include").text();
+           var card_time = parseFloat(card_time);
+           var card_required_time = card_time;
+           var mobile_time = $(".total-time-mobile").text();
+           var mobile_time = parseFloat(mobile_time);
+           var mobile_required_time = mobile_time;
            
-        if (toggle5 == true) {
+        if (toggle4 == true) {
             $(".fifth-img").css({
                 "border": "3px solid #1D7A8C"
             });
@@ -399,14 +384,14 @@ $(document).ready(function () {
             document.getElementById('img_5').src = '../assets/image/1-green.png';
             $(".selected_item .extra_item").css("display", "block");
             $(".selected_item .service5").css("display", "block");
-            var selecthr = document.querySelector('#plan-hour').selectedIndex + 1;
+            var hr = document.querySelector('#plan-hour').selectedIndex + 1;
         
-            document.querySelector('#plan-hour').options.selectedIndex = selecthr;
-            time = time + 0.5;
-            times = times + 0.5;
+            document.querySelector('#plan-hour').options.selectedIndex = hr;
+            card_required_time = card_required_time + 0.5;
+            mobile_required_time = mobile_required_time + 0.5;
 
-            document.querySelector('.total-time-include').innerHTML = time + ' Hrs';
-            document.querySelector('.total-time-mobile').innerHTML = times + ' Hrs';
+            document.querySelector('.total-time-include').innerHTML = card_required_time + ' Hrs';
+            document.querySelector('.total-time-mobile').innerHTML = mobile_required_time + ' Hrs';
 
         } else {
             document.getElementById('img_5').src = '../assets/image/1.png';
@@ -415,69 +400,69 @@ $(document).ready(function () {
             });
         
             $(".selected_item .service5").css("display", "none");
-            var selecthr = document.querySelector('#plan-hour').selectedIndex - 1;
-            document.querySelector('#plan-hour').options.selectedIndex = selecthr;
+            var hr = document.querySelector('#plan-hour').selectedIndex - 1;
+            document.querySelector('#plan-hour').options.selectedIndex = hr;
         
-            var totaltime = $('.total-time-include').text();
-            var totaltime = parseFloat(totaltime);
-            totaltime = totaltime - 0.5;
+            var alredy_card_time = $('.total-time-include').text();
+            var alredy_card_time = parseFloat(alredy_card_time);
+            alredy_card_time = alredy_card_time - 0.5;
         
-            var totaltimes = $('.total-time-mobile').text();
-            var totaltimes = parseFloat(totaltimes);
-            totaltimes = totaltimes - 0.5;
+            var alredy_time = $('.total-time-mobile').text();
+            var alredy_time = parseFloat(alredy_time);
+            alredy_time = alredy_time - 0.5;
         
-            document.querySelector('.total-time-include').innerHTML = totaltime + ' Hrs';
-            document.querySelector('.total-time-mobile').innerHTML = totaltimes + ' Hrs';
+            document.querySelector('.total-time-include').innerHTML = alredy_card_time + ' Hrs';
+            document.querySelector('.total-time-mobile').innerHTML = alredy_time + ' Hrs';
 
     }
-    toggle5 = !toggle5;
+    toggle4 = !toggle4;
 }
 
 
 
-    function Bath() {
-        var data = $("#plan-bath option:selected").text();
-        document.querySelector('.number_bath').innerHTML = data;
-        document.querySelector('.number_bath_modal').innerHTML = data;
+    function plan_bath() {
+        var card_time = $("#plan-bath option:selected").text();
+        document.querySelector('.number_bath').innerHTML = card_time;
+        document.querySelector('.number_bath_modal').innerHTML = card_time;
 }
 
 
-    function Bed() {
-        var data = $("#plan-bed option:selected").text();
-        document.querySelector('.number_bed').innerHTML = data;
-        document.querySelector('.number_bed_modal').innerHTML = data;
+    function plan_bed() {
+        var card_time = $("#plan-bed option:selected").text();
+        document.querySelector('.number_bed').innerHTML = card_time;
+        document.querySelector('.number_bed_modal').innerHTML = card_time;
     }
 
 
-   function Times() {
-        selecttimes();
-        var data = $("#plan-time option:selected").text();
-        document.querySelector('.time-date').innerHTML = data;
-        document.querySelector('.time-date_modal').innerHTML = data;
+   function plan_time() {
+        Time_collect();
+        var card_time = $("#plan-time option:selected").text();
+        document.querySelector('.time-date').innerHTML = card_time;
+        document.querySelector('.time-date_modal').innerHTML = card_time;
     }
 
 
 
- function time(time) {
-        selecttimes();
+ function plan_hour(time) {
+        Time_collect();
 
         var totalhrs = document.querySelector('.total-time-include').innerHTML;
         var totalhr = parseFloat(totalhrs);
-        var datas = document.querySelector('#plan-hour').selectedIndex;
-        var selecthours = document.querySelector("#plan-hour").options[datas].innerHTML;
-        var data = parseFloat(document.querySelector("#plan-hour").options[datas].innerHTML);
+        var mobile_time = document.querySelector('#plan-hour').selectedIndex;
+        var selecthours = document.querySelector("#plan-hour").options[mobile_time].innerHTML;
+        var card_time = parseFloat(document.querySelector("#plan-hour").options[mobile_time].innerHTML);
 
         var totalhrsq = document.querySelector('.total-time-mobile').innerHTML;
         var totalhrq = parseFloat(totalhrsq);
-        var datasq = document.querySelector('#plan-hour').selectedIndex;
-        var selecthoursq = document.querySelector("#plan-hour").options[datas].innerHTML;
-        var dataq = parseFloat(document.querySelector("#plan-hour").options[datas].innerHTML);
+        var mobile_timeq = document.querySelector('#plan-hour').selectedIndex;
+        var selecthoursq = document.querySelector("#plan-hour").options[mobile_time].innerHTML;
+        var card_timeq = parseFloat(document.querySelector("#plan-hour").options[mobile_time].innerHTML);
 
-         if ((data < totalhr) && ($('.service1').css("display") == "block" || $('.service2').css("display") == "block" || $('.service3').css("display") == "block" || $('.service4').css("display") == "block" || $('.service5').css("display") == "block")) {
+         if ((card_time < totalhr) && ($('.service1').css("display") == "block" || $('.service2').css("display") == "block" || $('.service3').css("display") == "block" || $('.service4').css("display") == "block" || $('.service5').css("display") == "block")) {
             document.querySelector('#plan-hour').value = totalhr;
              alert('Please Select Correct Time.');
          
-        } else if ((datasq < totalhrsq) && ($('.service1').css("display") == "block" || $('.service2').css("display") == "block" || $('.service3').css("display") == "block" || $('.service4').css("display") == "block" || $('.service5').css("display") == "block")) {
+        } else if ((mobile_timeq < totalhrsq) && ($('.service1').css("display") == "block" || $('.service2').css("display") == "block" || $('.service3').css("display") == "block" || $('.service4').css("display") == "block" || $('.service5').css("display") == "block")) {
             document.querySelector('#plan-hour').value = totalhrq;
               alert('Please Select Correct Time.');
         }
@@ -485,81 +470,88 @@ $(document).ready(function () {
 
         else {
 
-        var data = $("#plan-hour option:selected").text();
-        document.querySelector('.total-time-include').innerHTML = data;
-        document.querySelector('.basicshr').innerHTML = data;
+        var card_time = $("#plan-hour option:selected").text();
+        document.querySelector('.total-time-include').innerHTML = card_time;
+        document.querySelector('.basic_hour').innerHTML = card_time;
 
-        document.querySelector('.total-time-mobile').innerHTML = data;
-        document.querySelector('.basicshr_modal').innerHTML = data;
+        document.querySelector('.total-time-mobile').innerHTML = card_time;
+        document.querySelector('.basic_hour_modal').innerHTML = card_time;
      
         if ($('.service1').css('display') == 'block') {
-            var data = parseFloat(data);
-            var data = data - 0.5;
-            document.querySelector('.basicshr').innerHTML = data + " Hrs";
-            document.querySelector('.basicshr_modal').innerHTML = data + " Hrs";
+            var card_time = parseFloat(card_time);
+            var card_time = card_time - 0.5;
+            document.querySelector('.basic_hour').innerHTML = card_time + " Hrs";
+            document.querySelector('.basic_hour_modal').innerHTML = card_time + " Hrs";
         }
 
         if ($('.service2').css('display') == 'block') {
-            var data = parseFloat(data);
-            var data = data - 0.5;
-            document.querySelector('.basicshr').innerHTML = data + " Hrs";
-            document.querySelector('.basicshr_modal').innerHTML = data + " Hrs";
+            var card_time = parseFloat(card_time);
+            var card_time = card_time - 0.5;
+            document.querySelector('.basic_hour').innerHTML = card_time + " Hrs";
+            document.querySelector('.basic_hour_modal').innerHTML = card_time + " Hrs";
         }
 
         if ($('.service3').css('display') == 'block') {
-            var data = parseFloat(data);
-            var data = data - 0.5;
-            document.querySelector('.basicshr').innerHTML = data + " Hrs";
-            document.querySelector('.basicshr_modal').innerHTML = data + " Hrs";
+            var card_time = parseFloat(card_time);
+            var card_time = card_time - 0.5;
+            document.querySelector('.basic_hour').innerHTML = card_time + " Hrs";
+            document.querySelector('.basic_hour_modal').innerHTML = card_time + " Hrs";
         }
 
         if ($('.service4').css('display') == 'block') {
-            var data = parseFloat(data);
-            var data = data - 0.5;
-            document.querySelector('.basicshr').innerHTML = data + " Hrs";
-            document.querySelector('.basicshr_modal').innerHTML = data + " Hrs";
+            var card_time = parseFloat(card_time);
+            var card_time = card_time - 0.5;
+            document.querySelector('.basic_hour').innerHTML = card_time + " Hrs";
+            document.querySelector('.basic_hour_modal').innerHTML = card_time + " Hrs";
         }
 
         if ($('.service5').css('display') == 'block') {
-            var data = parseFloat(data);
-            var data = data - 0.5;
-            document.querySelector('.basicshr').innerHTML = data + " Hrs";
-            document.querySelector('.basicshr_modal').innerHTML = data + " Hrs";
+            var card_time = parseFloat(card_time);
+            var card_time = card_time - 0.5;
+            document.querySelector('.basic_hour').innerHTML = card_time + " Hrs";
+            document.querySelector('.basic_hour_modal').innerHTML = card_time + " Hrs";
         }
      }
   }
- 
- 
- 
+
+
+
     $('.total-time-include').on('DOMSubtreeModified', function () {
-        selecttimes();
+        Time_collect();
       
-        var datas = $(".total-time-include").text();
-        var datas = parseFloat(datas);
-        var price = datas * 18;
-        document.querySelector('.amount').innerHTML = '$' + price;
-        document.querySelector('.amounts').innerHTML = '$' + price;
-        var prices = (20 * price) / 100;
-        var pricepart = price - prices;
-        document.querySelector('.effective').innerHTML = '$' + pricepart;
+        var mobile_time = $(".total-time-include").text();
+        var mobile_time = parseFloat(mobile_time);
+        var mobile_price = mobile_time * 18;
+        document.querySelector('.amount').innerHTML = '$' + mobile_price;
+        document.querySelector('.amounts').innerHTML = '$' + mobile_price;
+        var mobile_prices = (20 * mobile_price) / 100;
+        var mobile_price_main = mobile_price - mobile_prices;
+        document.querySelector('.effective').innerHTML = '$' + mobile_price_main;
 
     })
 
 
     $('.total-time-mobile').on('DOMSubtreeModified', function () {
 
-        selecttimes();
-        var datas = $(".total-time-mobile").text();
-        var datas = parseFloat(datas);
-        var price = datas * 18;
-        document.querySelector('.amount_model').innerHTML = '$' + price;
-        document.querySelector('.amounts_model').innerHTML = '$' + price;
+        Time_collect();
+        var mobile_time = $(".total-time-mobile").text();
+        var mobile_time = parseFloat(mobile_time);
+        var mobile_price = mobile_time * 18;
+        document.querySelector('.amount_model').innerHTML = '$' + mobile_price;
+        document.querySelector('.amounts_model').innerHTML = '$' + mobile_price;
 
-        document.querySelector('.amount-btn').innerHTML = '$' + price;
+        document.querySelector('.amount-btn').innerHTML = '$' + mobile_price;
 
-        var prices = (20 * price) / 100;
-        var pricepart = price - prices;
-        document.querySelector('.effective_model').innerHTML = '$' + pricepart;
+        var mobile_prices = (20 * mobile_price) / 100;
+        var mobile_price_main = mobile_price - mobile_prices;
+        document.querySelector('.effective_model').innerHTML = '$' + mobile_price_main;
 
     })
+
+
+
 });
+
+
+
+
