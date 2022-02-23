@@ -489,11 +489,11 @@
      <hr>
      <p class="duration" id="duration">Total Service Time <span class="total-time-include">3 Hrs</span></p>
      <hr id="hrr">
-     <p class="card-text subtotal">Per cleaning <span>$87</span></p>   
+     <p class="card-text subtotal">Per cleaning <span class="amount">$54</span></p>   
      <p class="card-text">Discount <span> - $0</span></p> 
      <hr id="hrr"> 
-     <p class="card-text total" id="payment">Total Payment <span>$63</span></p> 
-     <p class="card-text effective-price" id="price">Effective Price <span class="effective">$50.4</span></p> 
+     <p class="card-text total" id="payment">Total Payment <span class="amounts">$54</span></p> 
+     <p class="card-text effective-price" id="price">Effective Price <span class="effective">$43.2</span></p> 
      <p class="card-text"><strong style="color: #FF0000;">*</strong>You will save 20% according to §35a EStG.</p>
     </div>
 
@@ -760,7 +760,7 @@
 <!-- Mobile-Payment summery modals -->
 
 <button class="btn checking-pay fixed-bottom" data-toggle="modal" data-target="#payment5">Payment Overview
-  <span>$0.00</span></button>
+  <span class="amount-btn">$0</span></button>
 
  <div class="modal fade" id="payment5" tabindex="-1" role="dialog" aria-labelledby="PaymentDetails" aria-hidden="true" style="margin-left:0px;">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -790,11 +790,11 @@
      <hr>
      <p class="duration" id="duration">Total Service Time <span class="total-time-mobile">3 Hrs</span></p>
      <hr id="hrr">
-     <p class="card-text subtotal">Per cleaning <span>$87</span></p>   
+     <p class="card-text subtotal">Per cleaning <span class="amount_model">$54</span></p>   
      <p class="card-text discount">Discount <span> - $0</span></p> 
      <hr id="hrr"> 
-     <p class="card-text total" id="payment">Total Payment <span>$63</span></p> 
-     <p class="card-text" id="price">Effective Price <span class="effective">$50.4</span></p> 
+     <p class="card-text total" id="payment">Total Payment <span class="amounts_model">$54</span></p> 
+     <p class="card-text" id="price">Effective Price <span class="effective effective_model">$43.2</span></p> 
      <p class="card-text"><strong style="color: #FF0000;">*</strong>You will save 20% according to §35a EStG.</p>
     </div>
 
