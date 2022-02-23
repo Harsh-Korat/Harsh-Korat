@@ -528,4 +528,38 @@ $(document).ready(function () {
         }
      }
   }
+ 
+ 
+ 
+    $('.total-time-include').on('DOMSubtreeModified', function () {
+        selecttimes();
+      
+        var datas = $(".total-time-include").text();
+        var datas = parseFloat(datas);
+        var price = datas * 18;
+        document.querySelector('.amount').innerHTML = '$' + price;
+        document.querySelector('.amounts').innerHTML = '$' + price;
+        var prices = (20 * price) / 100;
+        var pricepart = price - prices;
+        document.querySelector('.effective').innerHTML = '$' + pricepart;
+
+    })
+
+
+    $('.total-time-mobile').on('DOMSubtreeModified', function () {
+
+        selecttimes();
+        var datas = $(".total-time-mobile").text();
+        var datas = parseFloat(datas);
+        var price = datas * 18;
+        document.querySelector('.amount_model').innerHTML = '$' + price;
+        document.querySelector('.amounts_model').innerHTML = '$' + price;
+
+        document.querySelector('.amount-btn').innerHTML = '$' + price;
+
+        var prices = (20 * price) / 100;
+        var pricepart = price - prices;
+        document.querySelector('.effective_model').innerHTML = '$' + pricepart;
+
+    })
 });
