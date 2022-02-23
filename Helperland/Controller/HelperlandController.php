@@ -198,11 +198,11 @@ public function ResetPassword()
     }
 
 
-    public function PostalCode()
+    public function Pincode()
     {
         if (isset($_POST)) {
             $postal = $_POST['postal'];
-            $count = $this->model->Postal($postal);
+            $count = $this->model->Pincode($postal);
             if ($count > 0) {
                 echo 1;
             } else {
@@ -280,14 +280,14 @@ public function ResetPassword()
                     $isdeleted = $row['IsDeleted'];
                     $addressid = $row['AddressId'];
 
-           $output = 
+           $Address = 
                    '<div class="menubar border">
                     <input type="radio" class="radio" id="unique' . $addressid . '" name="radio" value="' . $addressid . '">
                     <label><b>Address:</b>' . $street . '  ' .$houseno . ' , ' .$city . '  ' .$pincode . '<br>
                     <b>Telephone number:</b> 9988556644</label>
                    </div>';
 
-                        echo $output;              
+                        echo $Address;              
                 }
             }
         }
@@ -300,31 +300,29 @@ public function ResetPassword()
 
         if (isset($_POST)) {
             $email  = $_POST['username'];
-            $selectdate = $_POST['selectdate'];
-            $servicetime = $_POST['servicetime'];
-            $zipcode = $_POST['zipcode'];
-            $servicehourate = $_POST['servicehourate'];
-            $servicehours = $_POST['servicehours'];
-            $extrahour = $_POST['extrahour'];
-            $totalhour = $_POST['totalhour'];
-            $totalbed = $_POST['totalbed'];
-            $totalbath = $_POST['totalbath'];
-            $subtotal = $_POST['subtotal'];
+            $selectdate = $_POST['plan_date'];
+            $servicetime = $_POST['plan_time'];
+            $zipcode = $_POST['pincode'];
+            $servicehourate = $_POST['service_rate'];
+            $servicehours = $_POST['basics'];
+            $extrahour = $_POST['more_time'];
+            $totalhour = $_POST['plan_hour'];
+            $totalbed = $_POST['plan_bed'];
+            $totalbath = $_POST['plan_bath'];
+            $subtotal = $_POST['card_amounts'];
             $discount = $_POST['discount'];
-            $totalcost = $_POST['totalcost'];
-            $effectivecost = $_POST['effectivecost'];
-            $extraservice = $_POST['extraservice'];
+            $totalcost = $_POST['total_payments'];
+            $effectivecost = $_POST['effective_prices'];
+            $extraservice = $_POST['extra_item'];
             $comments = $_POST['comments'];
-            $addressid = $_POST['addressid'];
+            $addressid = $_POST['address'];
             $paymentdue = $_POST['paymentdue'];
-            $haspets = $_POST['haspets'];
+            $haspets = $_POST['pets'];
             $status = 'Pending';
             $date = date('Y-m-d H:i:s');
             $paymentdone = 1;
             $recordversion = 1;
-            $ids = $_POST['selectedsp'];
-            $id = array_slice($ids,1);
-       
+               
 
             $result = $this->model->ResetKey($email);
             $clientaddress = $this->model->SelectedAddress($addressid);
@@ -357,7 +355,6 @@ public function ResetPassword()
                 'extraservices' => $extraservice,
                 'comments' => $comments,
                 'addressid' => $addressid,
-                'paymentrefno' => $paymentrefno,
                 'paymentdue' => $paymentdue,
                 'pets' => $haspets,
                 'status' => $status,
@@ -366,11 +363,12 @@ public function ResetPassword()
                 'recordversion' => $recordversion,
             ];
 
+
             $result = $this->model->AddService($array);
             $serviceprovider = $this->model->ActiveServiceProvider();
             if ($result) {
                 include('BookServiceClientConfirmationMail.php');
-                if (sizeof($id)>0) {
+               /* if (sizeof($id)>0) {
                     $sp = $this->model->UsersServiceprovider($id);
                     if(count($sp)){
                     
@@ -380,12 +378,11 @@ public function ResetPassword()
                         $email = $emails['Email'];
                         include('BookingMail.php');
                     }
-                }
+                } 
                     echo $addressid;
                     
                 }
-                 else {
-                    if (count($serviceprovider)) {
+               */    if (count($serviceprovider)) {
                         foreach ($serviceprovider as $row) {
                             $addressid = $result;
                             $email = $row['Email'];
@@ -399,7 +396,6 @@ public function ResetPassword()
                 echo 0;
             }
         }
-    }
 
 
 
