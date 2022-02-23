@@ -157,7 +157,7 @@ public function Customer_SP($array)
 
 
 
-    public function Postal($postal)
+    public function Pincode($postal)
     {
         $sql = "SELECT * FROM zipcode WHERE ZipcodeValue = $postal";
         $stmt =  $this->conn->prepare($sql);
