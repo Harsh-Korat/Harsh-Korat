@@ -68,6 +68,7 @@ public function ResetPassword()
         include('./Views/ResetPassword.php');
 }
 
+  
     public function ResetKeyPassword()
     {
     $baseurl = "http://localhost/Helperland/?controller=Helperland&function=ResetPassword&parameter=$resetkey";
@@ -295,25 +296,26 @@ public function ResetPassword()
 
 
 
-    public function ServiceRequest()
+public function Request()
     {
 
+ $baseurl = "http://localhost/Helperland/Views/Service.php";
         if (isset($_POST)) {
-            $email  = $_POST['username'];
+            $email  = $_POST['username'];   
             $selectdate = $_POST['plan_date'];
             $servicetime = $_POST['plan_time'];
             $zipcode = $_POST['pincode'];
             $servicehourate = $_POST['service_rate'];
             $servicehours = $_POST['basics'];
             $extrahour = $_POST['more_time'];
-            $totalhour = $_POST['plan_hour'];
-            $totalbed = $_POST['plan_bed'];
-            $totalbath = $_POST['plan_bath'];
+            $plan_hour = $_POST['plan_hour'];
+            $plan_bed = $_POST['plan_bed'];
+            $plan_bath = $_POST['plan_bath'];
             $subtotal = $_POST['card_amounts'];
             $discount = $_POST['discount'];
-            $totalcost = $_POST['total_payments'];
-            $effectivecost = $_POST['effective_prices'];
-            $extraservice = $_POST['extra_item'];
+            $plan_cost = $_POST['total_payments'];
+            $effective_prices = $_POST['effective_prices'];
+            $extra_item = $_POST['extra_item'];
             $comments = $_POST['comments'];
             $addressid = $_POST['address'];
             $paymentdue = $_POST['paymentdue'];
@@ -322,39 +324,29 @@ public function ResetPassword()
             $date = date('Y-m-d H:i:s');
             $paymentdone = 1;
             $recordversion = 1;
-               
-
             $result = $this->model->ResetKey($email);
-            $clientaddress = $this->model->SelectedAddress($addressid);
-            if (count($clientaddress)) {
-                foreach ($clientaddress as $address) {
-                    $clientaddresses = $address['AddressLine2'] . ' ' . $address['AddressLine1'] . ' , ' . $address['City'] . ',' . $address['State'] . ' ,' . $address['PostalCode'];
-                    $clientmobile = $address['Mobile'];
-                }
-            }
-            $clientemail = $email;
-            $clientname = $result[0];
-            $useid = $result[3];
 
+            $customeraddress = $this->model->SelectedUserid($addressid);
+            
+            $userid = $result[3];
 
             $array = [
-                'userid' => $useid,
+                'userid' => $userid,
                 'servicedate' => $selectdate,
-                'servicetime' => $servicetime,
+                'servicefrequency' => $servicetime,
                 'zipcode'   => $zipcode,
                 'servicehourlyrate' => $servicehourate,
                 'servicehours' => $servicehours,
                 'extrahours' => $extrahour,
-                'totalhours' => $totalhour,
-                'totalbed' => $totalbed,
-                'totalbath' => $totalbath,
+                'totalhours' => $plan_hour,
+                'totalbed' => $plan_bed,
+                'totalbath' => $plan_bath,
                 'subtotal' => $subtotal,
                 'discount' => $discount,
-                'totalcost' => $totalcost,
-                'effectivecost' => $effectivecost,
-                'extraservices' => $extraservice,
+                'totalcost' => $plan_cost,
+                'effectivecost' => $effective_prices,
+                'extraservices' => $extra_item,
                 'comments' => $comments,
-                'addressid' => $addressid,
                 'paymentdue' => $paymentdue,
                 'pets' => $haspets,
                 'status' => $status,
@@ -363,40 +355,14 @@ public function ResetPassword()
                 'recordversion' => $recordversion,
             ];
 
+            $result = $this->model->ServiceRequest($array);
 
-            $result = $this->model->AddService($array);
-            $serviceprovider = $this->model->ActiveServiceProvider();
-            if ($result) {
-                include('BookServiceClientConfirmationMail.php');
-               /* if (sizeof($id)>0) {
-                    $sp = $this->model->UsersServiceprovider($id);
-                    if(count($sp)){
-                    
-                    $addressid = $result;
-                    
-                    foreach($sp as $emails){
-                        $email = $emails['Email'];
-                        include('BookingMail.php');
-                    }
-                } 
-                    echo $addressid;
-                    
-                }
-               */    if (count($serviceprovider)) {
-                        foreach ($serviceprovider as $row) {
-                            $addressid = $result;
-                            $email = $row['Email'];
-                            include('BookingMail.php');
-                        }
-                    }
-                    $addressid = $result;
-                    echo $addressid;
-                }
-            } else {
-                echo 0;
-            }
+        if ($result) {           
+            echo $result;
         }
-
-
-
+        else {
+             echo 0;
+        }
+     }
+  }
 }
