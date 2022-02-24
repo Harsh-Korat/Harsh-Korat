@@ -1,7 +1,8 @@
 <?php include('./header.php'); ?>
 
       <title>Book Service</title>
-      <link rel="stylesheet" href="../assets/css/book-services.css">
+      <link rel="stylesheet" href="../assets/css/book-service.css">
+
 
 </head>
 
@@ -105,6 +106,30 @@
         </div>
       </div>
    </div>
+
+
+<!-- Time alert modal -->
+
+<div class="modal fade" id="timeModal">
+   <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="warning"><b>Confirm the service time</b></h4>
+        </div>
+        
+        <div class="modal-body">
+           <div class="booking-warning">
+             Booking time is less than recommended, we may not be able to finish the job. Please confirm if you wish to proceed with your booking?
+           </div>
+         
+           <div class="form-group mt-4">
+              <button type="submit" class="btn btn-login form-control warning-modal" data-bs-dismiss="modal">OK</button>
+           </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 <section id="book_service">
 
@@ -228,7 +253,7 @@
             <option value='18'>18:00</option>
         </select>
       </div>
-      
+      <span class="times_hours text-danger"></span>
     </div>
 
    <div class="book-hr">
@@ -474,7 +499,7 @@
    <div class="payment">Payment Summary</div>
     <div class="card-body">
      
-     <p class="card-text"><span class="date-time card-left">01/01/2018</span> @ <span class="time-date card-left" id="time-payment">4:00 pm </span><br><span class="number_bed card-left"> 1 bed</span> ,  <span class="number_bath card-left" id="bath-payment">1 bath</span></p>
+     <p class="card-text"><span class="date-time card-left">01/01/2018</span> @ <span class="time-date card-left" id="time-payment">8:00 pm </span><br><span class="number_bed card-left"> 1 bed</span> ,  <span class="number_bath card-left" id="bath-payment">1 bath</span></p>
      <p class="duration">Duration</p>
      <p class="card-text basic">Basic <span class="basic_hour">3 Hrs</span></p>
      <div class="card-text basics selected_item">
@@ -776,7 +801,7 @@
   <div>
    
  <div>
-     <p class="card-text"><span class="date-time card-left">01/01/2018</span> @ <span class="time-date_modal card-left" id="time-payment">4:00 pm</span> <br><span class="number_bed_modal card-left">1 bed</span> , <span class="number_bath_modal card-left" id="bath-payment">1 bath</span></p>
+     <p class="card-text"><span class="date-time card-left">01/01/2018</span> @ <span class="time-date_modal card-left" id="time-payment">8:00 pm</span> <br><span class="number_bed_modal card-left">1 bed</span> , <span class="number_bath_modal card-left" id="bath-payment">1 bath</span></p>
      <p class="duration">Duration</p>
      <p class="card-text basic">Basic <span class="basic_hour_modal">3 Hrs</span></p>
      <div class="card-text basic selected_item">
@@ -926,6 +951,7 @@ if(isset($_SESSION['username'])){?>
 
 <script>
 $('#myModal').modal('hide');
+
 </script>
 
 <?php } ?>
