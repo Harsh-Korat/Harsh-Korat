@@ -87,7 +87,8 @@ $('#discard').on('click', function(){
 
    $(".plan-continue").on("click", function(e) {
             e.preventDefault();
-     
+               
+
         var more_time = 0;
 
         if ($(".service1").css('display') == 'block') {
@@ -420,20 +421,20 @@ $('#discard').on('click', function(){
                      pets = "no";
                  }
                  Address = $('input[name="radio"]:checked').val();
-                 ServieRequest();
+                 Request();
             }
 
         });
 
 
 
- function ServieRequest() {
+   function Request() {
 
     <?php if (isset($_SESSION['username'])) { ?>
         username = "<?php echo $_SESSION['username']; ?>";
     <?php } ?>
              
-             FinalSubmits = ({
+             Booking = ({
                  
                  "username": username,
                  "plan_date": plan_date,
@@ -456,29 +457,29 @@ $('#discard').on('click', function(){
                  "pets": pets,
               
              });
-              
+        
  
              $.ajax({
                  type: 'POST',
-                 url: "http://localhost/Helperland/?controller=Helperland&function=ServiceRequest",
-                 data: FinalSubmits,
+                 url: "http://localhost/Helperland/?controller=Helperland&function=Request",
+                 data: Booking,
               
                  success: function(data) {
                      
                      if (data == 0) {
                 
                          Swal.fire({
-                             title: 'Data not Inserted ', 
+                             title: 'Your booking has not been completed. Please try again.', 
                              text: 'Your id is ',
                              icon: 'error',
-                             confirmButtonText: 'Done'
+                             confirmButtonText: 'Ok'
                          })
                      } else {
                          Swal.fire({
-                             title: 'Booking has been successfully submitted',
+                             title: 'Booking has been Completed.',
                              text: 'Service Request Id: ' + data,
                              icon: 'success',
-                             confirmButtonText: 'Ok'
+                             confirmButtonText: 'Done'
                          }).then(function() {
                              location.href = "Customer-Servicehistory.php";
   
