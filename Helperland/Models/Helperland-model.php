@@ -122,9 +122,6 @@ public function __construct() {
 
 
 
-
-
-
 public function Contact($array)
    {
     $sql = "INSERT INTO contactus (Name , Email , Subject , PhoneNumber , Message , CreatedOn , Status , Priority )
@@ -217,7 +214,7 @@ public function City($pincode)
     
 
 
-    public function SelectedAddress($addressid)
+    public function SelectedUserid($addressid)
     {
         $sql =   "SELECT * FROM `useraddress` WHERE `AddressId` = $addressid";
         $stmt =  $this->conn->prepare($sql);
@@ -227,38 +224,15 @@ public function City($pincode)
     }
 
 
-    public function AddService($array)
+    public function ServiceRequest($array)
     {
-        $sql = "INSERT INTO servicerequest ( `UserId`, `ServiceStartDate`, `ServiceTime`, `ZipCode`,  `ServiceHourlyRate`, `ServiceHours`, `ExtraHours`, `TotalHours`, `TotalBed`, `TotalBath`, `SubTotal`, `Discount`, `TotalCost`, `EffectiveCost`, `ExtraServices`, `Comments`, `AddressId`, `PaymentTransactionRefNo`, `PaymentDue`, `HasPets`, `Status`, `CreatedDate`,  `PaymentDone`, `RecordVersion`)
-     VALUES (:userid ,:servicedate ,:servicetime, :zipcode,:servicehourlyrate ,:servicehours, :extrahours , :totalhours, :totalbed , :totalbath, :subtotal, :discount, :totalcost , :effectivecost, :extraservices, :comments, :addressid, :paymentrefno, :paymentdue, :pets,:status ,:createddate , :paymentdone, :recordversion)
-     ";
+        $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices,  PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion) 
+            VALUES (:userid,:servicedate , :zipcode,:servicefrequency,:servicehourlyrate ,:servicehours, :extrahours ,:subtotal, :discount ,:totalcost, :comments, :totalhours, :totalbed, :totalbath, :effectivecost, :extraservices, :paymentdue, :pets,:status ,:createddate , :paymentdone, :recordversion)";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute($array);
-        $addressid = $this->conn->lastInsertId();
+       $addressid = $this->conn->lastInsertId();
 
         return $addressid;
-    }
-
-    public function ActiveServiceProvider()
-    {
-        $sql = 'SELECT * FROM `user` WHERE UserTypeId = 1 AND `IsActive`="Yes"';
-        $stmt =  $this->conn->prepare($sql);
-        $stmt->execute();
-        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-    public function UsersServiceprovider($id)
-    {
-        $idresult = array();
-        foreach($id as $array){
-            $sql = "SELECT Email FROM `user` WHERE UserId = {$array}";
-            $stmt =  $this->conn->prepare($sql);
-            $stmt->execute();
-            $result  = $stmt->fetch(PDO::FETCH_ASSOC);
-            array_push($idresult,$result);
-        }
-        return $idresult;
     }
 
 
