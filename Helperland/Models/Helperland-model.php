@@ -110,7 +110,7 @@ public function __construct() {
             } else {
                 $_SESSION['msg'] = "Password Invalid.  Please Enter Valid Password.";
 
-                header('Location:' . $base_url);
+                header('Location:' . $customer);
             }
         } else {
             $_SESSION['msg'] = "User does not exists.  Please Enter Valid User Name.";
@@ -214,16 +214,6 @@ public function City($pincode)
     
 
 
-    public function SelectedUserid($addressid)
-    {
-        $sql =   "SELECT * FROM `useraddress` WHERE `AddressId` = $addressid";
-        $stmt =  $this->conn->prepare($sql);
-        $stmt->execute();
-        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
-    }
-
-
     public function ServiceRequest($array)
     {
         $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices,  PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion) 
@@ -233,6 +223,25 @@ public function City($pincode)
        $addressid = $this->conn->lastInsertId();
 
         return $addressid;
+    }
+
+    public function GoingtoServiceProvider()
+    {
+        $sql = "SELECT * FROM `user` WHERE UserTypeId = 1";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    public function GoingCustomerMail($email)
+    {
+        $sql = "SELECT * FROM `user` WHERE Email = '$email'";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 
 
