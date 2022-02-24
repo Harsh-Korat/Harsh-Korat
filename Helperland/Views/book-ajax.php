@@ -37,7 +37,7 @@
                             $(".tab2  .nav-link").addClass('active');
                             $(".tab-content .text-two").addClass('active');
                             $(".tab-content .text-two").addClass('show');
-                
+              
                             var pincode = $("#pincode").val(postal);
 
                             $.ajax({
