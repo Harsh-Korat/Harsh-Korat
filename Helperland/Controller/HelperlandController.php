@@ -299,7 +299,6 @@ public function ResetPassword()
 public function Request()
     {
 
- $baseurl = "http://localhost/Helperland/Views/Service.php";
         if (isset($_POST)) {
             $email  = $_POST['username'];   
             $selectdate = $_POST['plan_date'];
@@ -325,9 +324,7 @@ public function Request()
             $paymentdone = 1;
             $recordversion = 1;
             $result = $this->model->ResetKey($email);
-
-            $customeraddress = $this->model->SelectedUserid($addressid);
-            
+                       
             $userid = $result[3];
 
             $array = [
@@ -356,8 +353,25 @@ public function Request()
             ];
 
             $result = $this->model->ServiceRequest($array);
+            $GoingtoServiceProvider = $this->model->GoingtoServiceProvider();
+            $customer_mail = $this->model->GoingCustomerMail($email);
+            
 
-        if ($result) {           
+    if ($result) {     
+      if (count($GoingtoServiceProvider)) {
+          foreach ($GoingtoServiceProvider as $row) {
+            $id = $result;
+            $email = $row['Email'];
+           include('Accept-Booking-Mail.php');
+           }
+          }      
+
+      if (count($customer_mail)) {
+          foreach ($customer_mail as $row) {
+           $email = $row['Email'];
+           include('Customer-mail.php');
+           }
+          } 
             echo $result;
         }
         else {
