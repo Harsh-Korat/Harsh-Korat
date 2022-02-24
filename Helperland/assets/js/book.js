@@ -139,7 +139,13 @@ $(document).ready(function () {
     var hours = parseFloat($("#plan-hour").val());
 
     times_hours = times + hours 
- } 
+
+   if (times_hours < 21) {
+      $('.times_hours').text("");
+   } else {
+      $('.times_hours').text("Helper must be able to finish cleaning by 9pm.");
+   }
+}
 
   var toggle = true;
 
@@ -460,11 +466,11 @@ $(document).ready(function () {
 
          if ((card_time < totalhr) && ($('.service1').css("display") == "block" || $('.service2').css("display") == "block" || $('.service3').css("display") == "block" || $('.service4').css("display") == "block" || $('.service5').css("display") == "block")) {
             document.querySelector('#plan-hour').value = totalhr;
-             alert('Please Select Correct Time.');
+            $('#timeModal').modal('show');
          
         } else if ((mobile_timeq < totalhrsq) && ($('.service1').css("display") == "block" || $('.service2').css("display") == "block" || $('.service3').css("display") == "block" || $('.service4').css("display") == "block" || $('.service5').css("display") == "block")) {
             document.querySelector('#plan-hour').value = totalhrq;
-              alert('Please Select Correct Time.');
+              $('#timeModal').modal('show');
         }
         
 
@@ -547,8 +553,6 @@ $(document).ready(function () {
         document.querySelector('.effective_model').innerHTML = '$' + mobile_price_main;
 
     })
-
-
 
 });
 
