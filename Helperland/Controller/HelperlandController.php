@@ -341,9 +341,9 @@ public function ResetPassword()
     {
         
         if (isset($_POST)) {
-            $email = $_POST['username'];
+            $addressid1 = $_POST['addressid1'];
 
-            $result = $this->model->AddressCustomer($email);
+            $result = $this->model->AddressCustomer1($addressid1);
             if (count($result)) {
                 foreach ($result as $row) {
                     $street = $row['AddressLine1'];
@@ -363,13 +363,13 @@ public function ResetPassword()
                          <div class="row">
                           <div class="form-group col-md-6 mt-1">
                             <label class="street">Street name</label>
-                            <input type="text" class="form-control" id="street" value=' . $street . ' placeholder="Street name" required>
+                            <input type="text" class="form-control" id="streets" value=' . $street . ' placeholder="Street name" required>
                             <span class="street-message text-danger mt-1"></span>
                           </div>
                      
                           <div class="form-group col-md-6 mt-1">
                             <label class="street">House number</label>
-                            <input type="number" class="form-control" id="houseno" value=' . $houseno . ' placeholder="House number" required>
+                            <input type="number" class="form-control" id="housenos" value=' . $houseno . ' placeholder="House number" required>
                             <span class="house-message text-danger mt-1"></span>
                           </div>
                         </div>
@@ -377,12 +377,12 @@ public function ResetPassword()
                         <div class="row">
                           <div class="form-group col-md-6 mt-1">
                             <label class="street">Pincode</label>
-                            <input type="number" class="form-control street" id="pincode" value=' . $pincode . ' placeholder="Pincode" maxlength="5" maxlength="6" value="101010">
+                            <input type="number" class="form-control street" id="pincodes" value=' . $pincode . ' placeholder="Pincode" maxlength="5" maxlength="6" value="101010">
                           </div>
                        
                         <div class="form-group col-md-6 mt-1">
                           <label class="street">City</label>
-                          <select class="form-control street" id="location" required>
+                          <select class="form-control street" id="locations" required>
                             <option>Bonn</option>
                           </select>
                          </div>
@@ -395,15 +395,11 @@ public function ResetPassword()
                                 <div class="input-group-prepend">
                                   <div class="input-group-text street">+49</div>
                                 </div>
-                                <input type="tel" class="form-control" id="mobile" value=' . $mobile . ' placeholder="Mobile number" maxlength="10" size="10" required>
+                                <input type="tel" class="form-control" id="mobiles" value=' . $mobile . ' placeholder="Mobile number" maxlength="10" size="10" required>
                               </div>
                             </div>
                             <span class="mobile-message text-danger"></span>
                            </div>
-                         </div>
-
-                           <div class="form-group mt-3">
-                           <button type="submit" id=' . $addressid . ' class="btn btn-login form-control edit-address1">Edit</button>
                          </div>';
 
 
