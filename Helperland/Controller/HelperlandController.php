@@ -19,7 +19,6 @@ public function HomePage()
 public function Contact()
 {
  if (isset($_POST)) {
-   $base_url = "http://localhost/Helperland/Views/Contact.php";
 
    $array = [
       'name' => $_POST['firstname'] . " " . $_POST['lastname'],
@@ -30,18 +29,21 @@ public function Contact()
       'creationdt' => date('Y-m-d H:i:s'),
       'status' => 'success',
       'priority' => 4,
-            ];
+     ];
+
    $result = $this->model->Contact($array);
-   $_SESSION['err'] = "Your Feedback has been Sended Successfully.";
-   header('Location:' . $base_url);
+  
+   echo $result; 
+  
       }
     }
+
 
  public function ForgotMail()
     {
         // forgot Password mail sent
         if (isset($_POST)) {
-            $base_url = "http://localhost/Helperland/#LoginModal";
+    
             $email = $_POST['forgot_email'];
             $result = $this->model->ResetKey($email);
             $username = $result[0];
@@ -49,14 +51,9 @@ public function Contact()
             $count = $result[2];
             if ($count == 1) {
                 include('ForgotPassword.php');
-                $_SESSION['message'] = "Reset Password Link has been sent successfully!";
-
-               header('Location:' . $base_url);
-            } else {
-                $_SESSION['message'] = "Please Enter Valid Email";
-
-                header('Location:' . $base_url);
-            }
+                echo 1;
+               
+            } 
         }
     }
 
@@ -71,7 +68,7 @@ public function ResetPassword()
   
     public function ResetKeyPassword()
     {
-    $baseurl = "http://localhost/Helperland/?controller=Helperland&function=ResetPassword&parameter=$resetkey";
+
         if (isset($_POST)) {
             $base_url = "http://localhost/Helperland/#LoginModal";
             $resetkey = $_POST['reset'];
@@ -90,17 +87,14 @@ public function ResetPassword()
                 $result = $this->model->ResetPass($array);
        
         if ($result) {
-            $_SESSION['message'] = "Password Updated Successfully";
-            header('Location:' . $base_url);
+           echo 1;
        
         } else {
-            $_SESSION['message'] = "Password Not Updated. Please Try Again.";
-            header('Location:' . $baseurl);
+           echo 0;
         }
 
 } else {
-        $_SESSION['message'] = "Password Not Match. Please Try Again";
-         header('Location:' . $baseurl);
+         echo 2;
             }
         }
     }
@@ -108,8 +102,7 @@ public function ResetPassword()
 
  public function User()
     {
-        $baseurl = "http://localhost/Helperland/Views/customer-signup.php";
-        $base_url = 'http://localhost/Helperland/#LoginModal';
+
         if (isset($_POST)) {
             $resetkey = bin2hex(random_bytes(15));
             $email = $_POST['email'];
@@ -131,11 +124,9 @@ public function ResetPassword()
                     'isregistered' => 'yes',
                 ];
                 $result = $this->model->Customer_SP($array);
-                $_SESSION['message'] = "Your Registration has been Completed Successfully.";
-                header("Location:" . $base_url);
+                echo 1;
             } else {
-                $_SESSION['message'] = "Email Already Exists.  Try Another Email.";
-                header("Location:" . $baseurl);
+               echo 0;
             }
         }
     }
@@ -148,6 +139,7 @@ public function ResetPassword()
             $email = $_POST['loginemail'];
             $password = $_POST['password'];
             $count = $this->model->Login($email, $password);
+                      
         }
     }
 
@@ -159,13 +151,14 @@ public function ResetPassword()
             $email = $_POST['loginemail'];
             $password = $_POST['password'];
             $count = $this->model->Login1($email, $password);
+
+
         }
     }
 
 
     public function ServiceProvider(){
-        $baseurl = "http://localhost/Helperland/Views/Service.php";
-        $base_url = 'http://localhost/Helperland/#LoginModal';
+
         if (isset($_POST)) {
             $resetkey = bin2hex(random_bytes(15));
             $email = $_POST['email'];
@@ -187,16 +180,15 @@ public function ResetPassword()
                     'isregistered' => 'yes',
                 ];
                 $result = $this->model->Customer_SP($array);
-              $_SESSION['message'] = "Your Registration has been Completed Successfully.";
-              header('Location:' . $base_url);
+
+                echo 1;
 
             } else {
-                $_SESSION['err'] = "Email Already Exists.  Try Another Email.";
-                header("Location:" . $baseurl);
-            }
+            
+                echo 0;
         }
-
     }
+}
 
 
     public function Pincode()
@@ -257,6 +249,8 @@ public function ResetPassword()
 
             ];
             $result = $this->model->AddressDetails($array);
+
+
         }
     }
 
@@ -296,6 +290,307 @@ public function ResetPassword()
 
 
 
+
+    public function AddressCustomer()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+
+            $result = $this->model->AddressCustomer($email);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $street = $row['AddressLine1'];
+                    $houseno = $row['AddressLine2'];
+                    $city = $row['City'];
+                    $pincode = $row['PostalCode'];
+                    $mobile = $row['Mobile'];
+                    $isdefault = $row['IsDefault'];
+                    $isdeleted = $row['IsDeleted'];
+                    $addressid = $row['AddressId'];
+
+
+           $Address = 
+                       ' <tr>
+                            <th scope="row" class="radio">
+                                <input type="radio" name="radio">
+                            </th>
+                            <td scope="row">
+                                <div class="form-row address-row"><b class="right">Address:</b>'. $street . '  ' .$houseno . ' , ' .$city . '  ' .$pincode . '</div>
+                                <div class="form-row address-row1"><b class="right">Phone number:</b>' . $mobile . '</div>
+                            </td>
+                            <td class="action">
+                                <a href="#" class="edit edit-address" id=' . $addressid . ' data-toggle="modal" data-target="#address1-modal">
+                                    <img src="../assets/image/edit-icon.png">
+                                </a>
+                                <a href="#" id=' . $addressid  .' data-toggle="modal" data-target="#delete-modal" class="edit cancel-lap">
+                                    <img src="../assets/image/delete-icon.png">
+                                </a>
+                            </td>
+                        </tr>';
+
+                        echo $Address;              
+                }
+            }
+        }
+    }
+
+
+
+    public function AddressCustomer1()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+
+            $result = $this->model->AddressCustomer($email);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $street = $row['AddressLine1'];
+                    $houseno = $row['AddressLine2'];
+                    $city = $row['City'];
+                    $pincode = $row['PostalCode'];
+                    $mobile = $row['Mobile'];
+                    $isdefault = $row['IsDefault'];
+                    $isdeleted = $row['IsDeleted'];
+                    $addressid = $row['AddressId'];
+     
+                    $Address=
+
+                    '
+                     <div id="bottom-address">
+                      
+                         <div class="row">
+                          <div class="form-group col-md-6 mt-1">
+                            <label class="street">Street name</label>
+                            <input type="text" class="form-control" id="street" value=' . $street . ' placeholder="Street name" required>
+                            <span class="street-message text-danger mt-1"></span>
+                          </div>
+                     
+                          <div class="form-group col-md-6 mt-1">
+                            <label class="street">House number</label>
+                            <input type="number" class="form-control" id="houseno" value=' . $houseno . ' placeholder="House number" required>
+                            <span class="house-message text-danger mt-1"></span>
+                          </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="form-group col-md-6 mt-1">
+                            <label class="street">Pincode</label>
+                            <input type="number" class="form-control street" id="pincode" value=' . $pincode . ' placeholder="Pincode" maxlength="5" maxlength="6" value="101010">
+                          </div>
+                       
+                        <div class="form-group col-md-6 mt-1">
+                          <label class="street">City</label>
+                          <select class="form-control street" id="location" required>
+                            <option>Bonn</option>
+                          </select>
+                         </div>
+                        </div>
+
+                        <div class="row">
+                          <div class="form-group col-md-6 mt-1">
+                            <label class="street">Phone Number</label>
+                              <div class="input-group">
+                                <div class="input-group-prepend">
+                                  <div class="input-group-text street">+49</div>
+                                </div>
+                                <input type="tel" class="form-control" id="mobile" value=' . $mobile . ' placeholder="Mobile number" maxlength="10" size="10" required>
+                              </div>
+                            </div>
+                            <span class="mobile-message text-danger"></span>
+                           </div>
+                         </div>
+
+                           <div class="form-group mt-3">
+                           <button type="submit" id=' . $addressid . ' class="btn btn-login form-control edit-address1">Edit</button>
+                         </div>';
+
+
+
+                                            echo $Address;              
+                                    }
+                                }
+                            }
+                        }
+
+
+
+
+   public function Dasboard()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+
+            $result = $this->model->Dasboard($email);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim'];
+                    $Provider_name = $row['Provider_name'];
+
+
+                     $Address = 
+
+                       '<tr>
+                            <td>' . $ServiceRequestId .'</td>
+
+                            <td>
+                            <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
+                            <img src="../assets/image/layer-712.png" class="clock">' . $Tim .'
+                            </td>
+
+                            <td>
+
+                                <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Provider_name .'<br>
+                                    <span class="time">         
+                                        <i class="fa fa-star star1"></i>
+                                        <i class="fa fa-star star1"></i>
+                                        <i class="fa fa-star star1"></i>
+                                        <i class="fa fa-star star1"></i>
+                                        <i class="fa fa-star star2"></i> 4</span>
+
+                            </td>
+                            
+                            
+
+                            <td class="pay">
+                            <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
+                            </td>
+                            
+                            <td class="text-center">
+                            <button type="button" 
+                            id=' .$ServiceRequestId. ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
+
+                            <button id=' .$ServiceRequestId. ' class="btn cancel-lap" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
+                            </td>
+                        </tr>';
+
+
+
+                        echo $Address;              
+                }
+            }
+        }
+    }
+
+
+
+ public function DashUpdate()
+    {
+
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+
+    
+            $ServiceRequestId = $_POST['ServiceRequestId'];
+            $Date = $_POST['dash_date'];
+            $Tim = $_POST['dash_time'];
+
+            $array = [
+                'ServiceStartDate' => $Date,
+                'Tim' => $Tim,
+                'ServiceRequestId' => $ServiceRequestId,
+
+            ];
+            $result = $this->model->DashUpdate($array);
+            
+        if ($result) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
+        }
+    }
+
+
+
+ public function EditCustomerDetails()
+    {
+
+        if (isset($_POST)) {
+
+            $addressid = $_POST['addressid'];
+            $street = $_POST['street'];
+            $houseno = $_POST['houseno'];
+            $pincode = $_POST['pincode'];
+            $location = $_POST['location'];
+            $mobile = $_POST['mobile'];
+
+            $array = [
+ 
+                'street' => $street,
+                'houseno' => $houseno,
+                'location' => $location,
+                'pincode' => $pincode,
+                'mobile' => $mobile,
+                'addressid' => $addressid,
+
+            ];
+            $result = $this->model->EditCustomerDetails($array);
+            
+        if ($result) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
+        }
+    }
+
+
+ public function DashDelete()
+    {
+
+        if (isset($_POST)) {
+        
+            $ServiceRequestId = $_POST['ServiceRequestId'];
+
+            $array = [
+                'ServiceRequestId' => $ServiceRequestId,
+
+            ];
+            $result = $this->model->DashDelete($array);
+            
+        if ($result) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
+        }
+    }
+
+
+
+ public function DeleteAddress()
+    {
+
+        if (isset($_POST)) {
+        
+            $addressid = $_POST['addressid'];
+
+            $array = [
+                'addressid' => $addressid,
+            ];
+
+            $result = $this->model->DeleteAddress($array);
+            
+        if ($result) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
+        }
+    }
+
+
+
 public function Request()
     {
 
@@ -320,7 +615,8 @@ public function Request()
             $paymentdue = $_POST['paymentdue'];
             $haspets = $_POST['pets'];
             $status = 'Pending';
-            $date = date('Y-m-d H:i:s');
+            $date = date('Y-m-d');
+            $time = date('H:i:s');
             $paymentdone = 1;
             $recordversion = 1;
             $result = $this->model->ResetKey($email);
@@ -350,6 +646,7 @@ public function Request()
                 'createddate' => $date,
                 'paymentdone' => $paymentdone,
                 'recordversion' => $recordversion,
+                'tim' => $time,
             ];
 
             $result = $this->model->ServiceRequest($array);
@@ -379,4 +676,110 @@ public function Request()
         }
      }
   }
+
+
+
+  public function CustomerDetails()
+    {
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+            $result = $this->model->CustomerDetails($email);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $email = $row['Email'];
+                    $mobile = $row['Mobile'];
+                    $birth = $row['Birth'];
+                    $month = $row['Month'];
+                    $year = $row['Year'];
+                    $language = $row['LanguageId'];
+
+                    $_SESSION['name'] = $firstname;
+
+                    if (!empty($date)) {
+
+                        list($year, $month, $birth) = explode("-", $date);
+                    } 
+
+                    $result = [$firstname, $lastname, $email, $mobile, $birth, $month, $year, $language];
+
+                    echo json_encode($result);
+                }
+            }
+        }
+    }
+
+
+
+  public function CustomerUpdateDetails()
+     {
+
+         if (isset($_POST)) {
+    
+             $email = $_POST['email'];
+        
+                 $array = [
+                     'firstname' => $_POST['firstname'],
+                     'lastname' => $_POST['lastname'],
+                     'email' => $email,
+                     'mobile' => $_POST['mobile'],
+                     'birth' => $_POST['birth'],
+                     'month' => $_POST['month'],
+                     'year' => $_POST['year'],
+                     'language' => $_POST['language'],
+                 ];
+
+                 $result = $this->model->CustomerUpdateDetails($array);
+                 echo 1;
+             } else {
+                echo 0;
+           }
+         }
+    
+
+
+
+
+    public function CustomerUpdatePassword()
+    {
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+            $currentpassword = $_POST['currentpassword'];
+            $newpassword = $_POST['password'];
+            $confirmpassword = $_POST['cpassword'];
+            $modifiedby = $_POST['modifiedby'];
+            $password = $this->model->CustomerDetails($email);
+            if (count($password)) {
+                foreach ($password as $pass) {
+                    $databasepassword = $pass['Password'];
+                    $resetkey = $pass['ResetKey'];
+                    if (password_verify($currentpassword, $databasepassword)) {
+                        if ($newpassword == $confirmpassword) {
+                            $update_date = date('Y-m-d H:i:s');
+                            $newpass = password_hash($newpassword, PASSWORD_BCRYPT);
+                            $cpass = password_hash($confirmpassword, PASSWORD_BCRYPT);
+                            $array = [
+                                'password' => $newpass,
+                                'updatedate' => $update_date,
+                                'modifiedby' => $modifiedby,
+                                'resetkey' => $resetkey,
+                            ];
+                            $result = $this->model->ResetPass($array);
+
+                            $count = $result;
+                            if ($count == 1) {
+                                echo 1;
+                            } else {
+                                echo 2;
+                            }
+                        }
+                    } else {
+                        echo 0;
+                    }
+                }
+            }
+        }
+    }
+
 }
