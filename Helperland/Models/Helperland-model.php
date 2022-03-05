@@ -217,6 +217,16 @@ public function City($pincode)
 
         return $result;
     }
+
+    public function AddressCustomer1($addressid1)
+    {
+        $sql =  "SELECT * FROM useraddress WHERE AddressId = $addressid1";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
     
 
     public function Dasboard($email)
@@ -316,7 +326,7 @@ public function CustomerUpdateDetails($array)
 
  public function EditCustomerDetails($array)
     {
-        $sql = "UPDATE user SET AddressLine1 = :street , AddressLine2 = :houseno, City :location, PostalCode :pincode, Mobile :mobile  WHERE AddressId = :addressid";
+        $sql = "UPDATE useraddress SET AddressLine1 = :street , AddressLine2 = :houseno, City = :location, PostalCode =:pincode, Mobile = :mobile  WHERE AddressId = :addressid";
         $stmt =  $this->conn->prepare($sql);
         $result = $stmt->execute($array);
         return ($result);
