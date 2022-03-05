@@ -50,9 +50,6 @@ public function __construct() {
 
     public function Login($email, $password)
     {
-        $base_url = "http://localhost/Helperland/#LoginModal";
-        $customer = "http://localhost/Helperland/Views/Customer-Servicehistory";
-        $sp = "http://localhost/Helperland/Views/ServiceProviderUpcomingService";
 
         $sql = "select * from user where Email = '$email'";
         $stmt =  $this->conn->prepare($sql);
@@ -61,34 +58,33 @@ public function __construct() {
         $count = $stmt->rowCount();
         $usertypeid = $row['UserTypeId'];
         $Password = $row['Password'];
+        $Name = $row['FirstName'];
         if ($count == 1) {
             if (password_verify($password, $Password)) {
                 if ($usertypeid == 0) {
                     $_SESSION['username'] = $email;
-                    header('Location:' . $customer);
-                    
+                    $_SESSION['name'] = $Name;
+
+                    echo 2;
                 } else if ($usertypeid == 1) {
                     $_SESSION['username'] = $email;
-                    header('Location:' . $sp);
+                    $_SESSION['name'] = $Name;
+                    echo 3;
                 }
-            } else {
-                $_SESSION['msg'] = "Password Invalid.  Please Enter Valid Password.";
 
-                header('Location:' . $base_url);
             }
-        } else {
-            $_SESSION['msg'] = "User does not exists.  Please Enter Valid User Name.";
+             else {
+               echo 1;
+            }
 
-            header('Location:' . $base_url);
+        } else {
+             echo 0; 
         }
     }
 
 
     public function Login1($email, $password)
     {
-        $base_url = "http://localhost/Helperland/#LoginModal";
-        $customer = "http://localhost/Helperland/Views/book-service.php";
-        $sp = "http://localhost/Helperland/Views/book-service.php";
 
         $sql = "select * from user where Email = '$email'";
         $stmt =  $this->conn->prepare($sql);
@@ -97,25 +93,24 @@ public function __construct() {
         $count = $stmt->rowCount();
         $usertypeid = $row['UserTypeId'];
         $Password = $row['Password'];
+        $Name = $row['FirstName'];
         if ($count == 1) {
             if (password_verify($password, $Password)) {
                 if ($usertypeid == 0) {
                     $_SESSION['username'] = $email;
-                    header('Location:' . $customer);
+                    $_SESSION['name'] = $Name;
+                    echo 2;
                     
                 } else if ($usertypeid == 1) {
                     $_SESSION['username'] = $email;
-                    header('Location:' . $sp);
+                    $_SESSION['name'] = $Name;
+                    echo 3;
                 }
             } else {
-                $_SESSION['msg'] = "Password Invalid.  Please Enter Valid Password.";
-
-                header('Location:' . $customer);
+               echo 1;
             }
         } else {
-            $_SESSION['msg'] = "User does not exists.  Please Enter Valid User Name.";
-
-            header('Location:' . $base_url);
+           echo 0;
         }
     }
 
@@ -213,11 +208,58 @@ public function City($pincode)
     }
     
 
+    public function AddressCustomer($email)
+    {
+        $sql =  "SELECT * FROM useraddress WHERE Email = '$email'  ORDER BY AddressId DESC";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+    
+
+    public function Dasboard($email)
+    {
+
+        $sql  = " SELECT
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,servicerequest.Provider_name,user.UserId
+          FROM servicerequest 
+        JOIN user
+        ON servicerequest.UserId = user.UserId  where user.Email = '$email'";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
+ public function DashUpdate($array)
+    {
+        $sql = "UPDATE servicerequest SET ServiceStartDate = :ServiceStartDate , Tim = :Tim WHERE ServiceRequestId = :ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+
+    }
+
+ public function DashDelete($array)
+    {
+        $sql = "DELETE from servicerequest WHERE ServiceRequestId = :ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+
+    }
+
+
 
     public function ServiceRequest($array)
     {
-        $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices,  PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion) 
-            VALUES (:userid,:servicedate , :zipcode,:servicefrequency,:servicehourlyrate ,:servicehours, :extrahours ,:subtotal, :discount ,:totalcost, :comments, :totalhours, :totalbed, :totalbath, :effectivecost, :extraservices, :paymentdue, :pets,:status ,:createddate , :paymentdone, :recordversion)";
+        $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices,  PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion, Tim) 
+            VALUES (:userid,:createddate , :zipcode,:servicefrequency,:servicehourlyrate ,:servicehours, :extrahours ,:subtotal, :discount ,:totalcost, :comments, :totalhours, :totalbed, :totalbath, :effectivecost, :extraservices, :paymentdue, :pets,:status ,:servicedate , :paymentdone,:recordversion,:tim)";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute($array);
        $addressid = $this->conn->lastInsertId();
@@ -245,4 +287,42 @@ public function City($pincode)
     }
 
 
+    public function CustomerDetails($email)
+    {
+        $sql = "select * from user where Email = '$email'";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+public function CustomerUpdateDetails($array)
+    {
+       $sql = "UPDATE user SET FirstName = :firstname , LastName = :lastname, Mobile = :mobile, Birth = :birth, Month = :month, Year = :year, LanguageId = :language WHERE Email = :email";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+ 
+    }
+
+ public function DeleteAddress($array)
+    {
+        $sql = "DELETE from useraddress WHERE AddressId = :addressid";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+
+    }
+
+ public function EditCustomerDetails($array)
+    {
+        $sql = "UPDATE user SET AddressLine1 = :street , AddressLine2 = :houseno, City :location, PostalCode :pincode, Mobile :mobile  WHERE AddressId = :addressid";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+
+    }
+
+
 }   
+
