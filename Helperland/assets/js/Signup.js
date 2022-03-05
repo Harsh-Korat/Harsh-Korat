@@ -151,6 +151,7 @@ $(document).ready(function () {
     });
 
     $("#inlineFormCheck").on('input', function () {
+
         if ($('input[type=checkbox]:checked').length != 1) {
             $('.checbox-msg').addClass('invalid-msg').text("You Must agree with Privacy");
         }
@@ -173,5 +174,17 @@ $(document).ready(function () {
         }
 
     });
+
+    $('#currentpassword').on('input', function () {
+        var password = $(this).val();
+        if (password.length == 0) {
+            $('.current-password-msg').addClass('invalid-msg').text('Password is required');
+            $(this).addClass('invalid-input').removeClass('valid-input');
+        }
+         else {
+            $('.current-password-msg').empty();
+            $(this).addClass('valid-input').removeClass('invalid-input');
+        }
+      });
 
 });
