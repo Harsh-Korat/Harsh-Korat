@@ -89,6 +89,9 @@ if (!isset($_SESSION['username'])) { ?>
 
 <?php if (isset($_SESSION['username'])) { ?>
 
+
+<!-- Header Navbar -->
+
 <section class="header-nav">
  <nav class="navbar sticky-top navbar-expand-lg">
    <div class="container">
@@ -140,7 +143,7 @@ if (!isset($_SESSION['username'])) { ?>
            <img src="../assets/image/admin-user.png">
           </button>
         <div class="dropdown-menu" id="menu" style="margin-top: 15px;">
-          <a class="dropdown-item" href="#">User Profile</a>
+          <a class="dropdown-item" href="./customer-dashboard.php">My Dashboard</a>
           <a class="dropdown-item" href="./customer-setting.php">Setting</a>
           <a class="dropdown-item" href="#">Logout</a>
         </div>
@@ -174,17 +177,32 @@ if (!isset($_SESSION['username'])) { ?>
          </div>
         </div>
 
- <div class="offcanvas offcanvas-end" id="demo" style="width:262px;">
+ <div class="offcanvas offcanvas-end" id="demo" style="width:270px;">
 
-   <div class="offcanvas-body">
+  <div class="offcanvas-header">
+      <h1 class="offcanvas-title">Welcome,<br><b><?php echo $_SESSION['name']; ?></b></h1>
+  </div>
+
+ <div class="hrr"><hr></div>
+
+   <div class="offcanvas-body" style="margin-top: -20px !important;">
    <div class="dash">
    
+   <a href="./customer-dashboard.php">Dashboard</a>
+    <a href="#">Service History</a>
+    <a href="#">Service Schedule</a>
+    <a href="#">Favourite Pros</a>
+    <a href="#">Invoices</a>
+    <a href="#">My Settings</a>
+    <a href="#">Logout</a>
+
+    <div class="hrr"><hr></div>
+
     <a href="./book-service.php">Book Now</a>
     <a href="./Prices.php">Prices & services</a>
     <a href="#">Warrant</a>
     <a href="#">Blog</a>
     <a href="./Contact.php">Contact</a>
-    <a href=".#myModal">Login</a>
     <a href="./Service.php">Become a Helper</a>
     <div class="hrr"><hr></div>
     <div class="face">
