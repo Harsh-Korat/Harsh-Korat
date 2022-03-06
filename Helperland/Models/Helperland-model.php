@@ -246,6 +246,32 @@ public function City($pincode)
     }
 
 
+    public function Dasboard1($addressid1)
+    {
+
+        $sql  = " SELECT * FROM servicerequest  where ServiceRequestId = $addressid1";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
+    public function Dasboard2($addressid1)
+    {
+
+        $sql  = " SELECT * FROM servicerequest JOIN useraddress ON servicerequest.UserId = useraddress.UserId  where ServiceRequestId = $addressid1";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
  public function DashUpdate($array)
     {
         $sql = "UPDATE servicerequest SET ServiceStartDate = :ServiceStartDate , Tim = :Tim WHERE ServiceRequestId = :ServiceRequestId";
