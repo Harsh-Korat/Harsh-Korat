@@ -432,22 +432,15 @@ public function ResetPassword()
                      $Address = 
 
                        '<tr>
-                            <td>' . $ServiceRequestId .'</td>
+                            <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
 
-                            <td>
+                            <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
                             <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
                             <img src="../assets/image/layer-712.png" class="clock">' . $Tim .'
                             </td>
 
                             <td>
 
-                                <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Provider_name .'<br>
-                                    <span class="time">         
-                                        <i class="fa fa-star star1"></i>
-                                        <i class="fa fa-star star1"></i>
-                                        <i class="fa fa-star star1"></i>
-                                        <i class="fa fa-star star1"></i>
-                                        <i class="fa fa-star star2"></i> 4</span>
 
                             </td>
                             
@@ -472,6 +465,138 @@ public function ResetPassword()
             }
         }
     }
+
+
+
+   public function ModalDasboard()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+
+            $result = $this->model->Dasboard($email);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim'];
+                    $Provider_name = $row['Provider_name'];
+
+
+                     $Address = 
+                                    
+                                    '<h4 class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId . '</h4>
+                                <hr>
+
+                                   <p class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">    
+                                     <img src="../assets/image/calendar2.png" class="calendars"><b>' . $ServiceStartDate . '</b>
+                                     <img src="../assets/image/layer-712.png" class="clocks">' . $Tim . '
+                                   </p>
+
+                                   <p class="card-text">
+
+                                   </p>
+
+                                 <hr>
+                                    <p class="card-text text-left pays"><b>€' . $SubTotal . '</b></p>
+                                 <hr>
+                                    <p class="text-center card-buttn">
+                                       <button type="button" id=' . $ServiceRequestId . ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
+                                       <button class="btn cancel-lap" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#cancel-modal">Cancel</button>
+                                    </p>';
+
+
+
+                        echo $Address;              
+                }
+            }
+        }
+    }
+
+
+
+
+
+
+
+   public function Dasboard1()
+    {
+        
+        if (isset($_POST)) {
+            $addressid1 = $_POST['addressid1'];
+
+            $result = $this->model->Dasboard1($addressid1);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim'];
+
+
+
+                 $result = [$ServiceStartDate, $ServiceRequestId, $Tim];    
+
+                 echo json_encode($result);         
+                }
+            }
+        }
+    }
+
+
+  public function Dasboard2()
+    {
+        
+        if (isset($_POST)) {
+            $addressid1 = $_POST['addressid1'];
+
+            $result = $this->model->Dasboard2($addressid1);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $TotalHours = $row['TotalHours'];
+                    $ExtraServices = $row['ExtraServices'];
+                    $ServiceRequestId = $row['ServiceRequestId'];//
+                    $SubTotal = $row['SubTotal'];
+                    $AddressLine1 = $row['AddressLine1'];
+                    $AddressLine2 = $row['AddressLine2'];
+                    $City = $row['City'];
+                    $PostalCode = $row['PostalCode'];
+                    $Mobile = $row['Mobile'];
+                    $Email = $row['Email'];
+                    $HasPets = $row['HasPets'];
+
+                    $Tim = $row['Tim'];
+
+
+
+          $Address = 
+
+            '<div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
+              <div class="service-duration">Duration: <span class="duration">' . $TotalHours . '</span></div>
+
+              <hr>
+              <div class="service-duration">Service Id: <span class="duration">' . $ServiceRequestId . '</span></div>
+              <div class="service-duration">Extras: <span class="duration">' . $ExtraServices . '</span></div>
+              <div class="service-duration">Net Amount: <span class="amount">' . $SubTotal . ' €</span></div>
+
+              <hr> 
+
+              <div class="service-duration">Service Address: <span class="duration">' . $AddressLine1 . ' ' . $AddressLine2 . ', ' . $City . ' ' .  $PostalCode .'</span></div>
+              <div class="service-duration">Billing Address: <span class="duration">Same as clieaning Address</span></div>
+              <div class="service-duration">Phone: <span class="duration">' . $Mobile . '</span></div>
+              <div class="service-duration">Email: <span class="duration">' . $Email . '</span></div>';     
+
+              echo $Address;              
+
+
+                }
+            }
+        }
+    }
+
+
+
 
 
 
