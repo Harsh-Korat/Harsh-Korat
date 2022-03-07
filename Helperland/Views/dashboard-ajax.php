@@ -81,7 +81,7 @@ $('.update').on("click", function(e) {
                     if (data == 1) {
 
                         Swal.fire({
-                            title: 'Address has been Added Successfully',
+                            title: 'update Successfully.',
                             text: '',
                             icon: 'success',
                             confirmButtonText: 'Done'
@@ -91,12 +91,7 @@ $('.update').on("click", function(e) {
 
                         // GetAddress();
                     } else {
-                        $("#iframeloading").hide();
-                        $('.addnewerror').show();
-                        $('.addnewerror').text("Please Enter All Fields");
-                        setTimeout(function() {
-                            $(".addnewerror").hide();
-                        }, 5000);
+
                         Swal.fire({
                             title: 'Address has been not Added',
                             text: 'Please Try Again',
@@ -202,12 +197,12 @@ $('.update').on("click", function(e) {
                     if (data == 1) {
 
                         Swal.fire({
-                            title: 'Address has been Added Successfully',
+                            title: 'Update Successfully',
                             text: '',
                             icon: 'success',
                             confirmButtonText: 'Done'
                         }).then(function() {
-                             location.href = "http://localhost/Helperland/Views/upcoming.php";
+                             location.href = "http://localhost/Helperland/Views/customer-dashboard.php";
   
                          });
 
@@ -216,7 +211,7 @@ $('.update').on("click", function(e) {
                         // GetAddress();
                     } else {
                         Swal.fire({
-                            title: 'Address has been not Added',
+                            title: 'Update Not Successfully',
                             text: 'Please Try Again',
                             icon: 'error',
                             confirmButtonText: 'Done'
@@ -259,12 +254,12 @@ $('.cancel_two').on("click", function(e) {
                     if (data == 1) {
 
                         Swal.fire({
-                            title: 'Address has been Added Successfully',
+                            title: 'Delete Successfully',
                             text: '',
                             icon: 'success',
                             confirmButtonText: 'Done'
                         }).then(function() {
-                             location.href = "http://localhost/Helperland/Views/upcoming.php";
+                             location.href = "http://localhost/Helperland/Views/customer-dashboard.php";
   
                          });
 
@@ -273,7 +268,7 @@ $('.cancel_two').on("click", function(e) {
                         // GetAddress();
                     } else {
                         Swal.fire({
-                            title: 'Address has been not Added',
+                            title: 'Delete Not Successfully',
                             text: 'Please Try Again',
                             icon: 'error',
                             confirmButtonText: 'Done'
