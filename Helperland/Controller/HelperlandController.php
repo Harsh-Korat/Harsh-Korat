@@ -426,7 +426,7 @@ public function ResetPassword()
                     $SubTotal = $row['SubTotal'];
                     $ServiceRequestId = $row['ServiceRequestId'];
                     $Tim = $row['Tim'];
-                    $Provider_name = $row['Provider_name'];
+                 //   $Provider_name = $row['Provider_name'];
 
 
                      $Address = 
@@ -444,8 +444,6 @@ public function ResetPassword()
 
                             </td>
                             
-                            
-
                             <td class="pay">
                             <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
                             </td>
@@ -467,6 +465,58 @@ public function ResetPassword()
     }
 
 
+   public function ServiceHistory()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+
+            $result = $this->model->Dasboard($email);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim'];
+                 //   $Provider_name = $row['Provider_name'];
+
+
+                     $Address = 
+
+                            '<tr>
+                              
+                                <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
+                                <img src="../assets/image/calendar.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
+                                <span class="times">' . $Tim . '</span>
+                               </td>
+                                       
+                                <td>
+
+                                </td>
+                             
+                                <td class="pay">
+                                <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
+                                </td>
+
+                                <td class="center">
+                                <button type="button" class="btn completed1">Cancelled</button>    
+                                </td>    
+                                   
+                                <td class="center">
+                                <button type="button" class="btn rate-sp" data-toggle="modal" data-target="#rate-modal">Rate SP</button>  
+                                </td>
+                            </tr>';
+
+
+
+                        echo $Address;              
+                }
+            }
+        }
+    }
+
+
+
 
    public function ModalDasboard()
     {
@@ -481,7 +531,7 @@ public function ResetPassword()
                     $SubTotal = $row['SubTotal'];
                     $ServiceRequestId = $row['ServiceRequestId'];
                     $Tim = $row['Tim'];
-                    $Provider_name = $row['Provider_name'];
+                   // $Provider_name = $row['Provider_name'];
 
 
                      $Address = 
@@ -514,6 +564,60 @@ public function ResetPassword()
         }
     }
 
+
+
+   public function ModalHistory()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+
+            $result = $this->model->Dasboard($email);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim'];
+                   // $Provider_name = $row['Provider_name'];
+
+                   $Address = 
+
+                              '<p class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">    
+                                 <img src="../assets/image/calendar2.png" class="calendars"><b>' . $ServiceStartDate . '</b>
+                                 <img src="../assets/image/layer-712.png" class="clocks">' . $Tim . '
+                                </P>
+                               
+                                <P>
+
+                                </p>
+
+                             <hr>
+                                 
+                                 <p class="card-text">    
+                                  <div class="pays">
+                                  <span class="pay4"><b>€</b></span><span class="pay3"><b>' . $SubTotal . '</b></span>
+                                  </div>
+                                 </p>
+
+                            <hr>
+
+                                <p class="text-center">
+                                <button type="button" class="btn completed1">Cancelled</button>
+                                </p>
+                              
+                            <hr>
+
+                                <p class="text-center">
+                                <button type="button" class="btn rate-sp1" data-toggle="modal" data-target="#rate-modal">Rate SP</button>
+                                </p>
+                              </p>';
+
+                    echo $Address;     
+               }
+            }
+        }
+    }
 
 
 
