@@ -189,7 +189,7 @@ if (!isset($_SESSION['username'])) { ?>
    <div class="dash">
    
    <a href="./customer-dashboard.php">Dashboard</a>
-    <a href="#">Service History</a>
+    <a href="./service-history.php">Service History</a>
     <a href="#">Service Schedule</a>
     <a href="#">Favourite Pros</a>
     <a href="#">Invoices</a>
