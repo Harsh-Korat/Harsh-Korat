@@ -233,7 +233,7 @@ public function City($pincode)
     {
 
         $sql  = " SELECT
-        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,servicerequest.Provider_name,user.UserId
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId
           FROM servicerequest 
         JOIN user
         ON servicerequest.UserId = user.UserId  where user.Email = '$email'";
@@ -294,7 +294,7 @@ public function City($pincode)
 
     public function ServiceRequest($array)
     {
-        $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices,  PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion, Tim) 
+        $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices, PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion, Tim) 
             VALUES (:userid,:createddate , :zipcode,:servicefrequency,:servicehourlyrate ,:servicehours, :extrahours ,:subtotal, :discount ,:totalcost, :comments, :totalhours, :totalbed, :totalbath, :effectivecost, :extraservices, :paymentdue, :pets,:status ,:servicedate , :paymentdone,:recordversion,:tim)";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute($array);
