@@ -54,8 +54,6 @@
 <!-- Footer Section -->
 
 <?php include('./Footer.php'); ?>
-<!-- <?php include('./new-service-ajax.php'); ?>
- -->
 
 <script>
   
