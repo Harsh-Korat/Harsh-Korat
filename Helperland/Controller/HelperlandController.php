@@ -277,7 +277,7 @@ public function ResetPassword()
 
            $Address = 
                    '<div class="menubar border">
-                    <input type="radio" class="radio" id="unique' . $addressid . '" name="radio" value="' . $addressid . '">
+                    <input type="radio" class="radio" id="' . $addressid . '" name="radio" value="' . $addressid . '">
                     <label><b>Address:</b>' . $street . '  ' .$houseno . ' , ' .$city . '  ' .$pincode . '<br>
                     <b>Telephone number:</b> 9988556644</label>
                    </div>';
@@ -425,7 +425,49 @@ public function ResetPassword()
                     $ServiceStartDate = $row['ServiceStartDate'];
                     $SubTotal = $row['SubTotal'];
                     $ServiceRequestId = $row['ServiceRequestId'];
-                    $Tim = $row['Tim'];
+                    $Tim = $row['Tim']; // 06:02:41  
+                    $totaltime  = $row['TotalHours'];
+                
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+
+
                  //   $Provider_name = $row['Provider_name'];
 
 
@@ -465,6 +507,221 @@ public function ResetPassword()
     }
 
 
+
+  public function NewServiceRequest()
+    {
+        
+        if (isset($_POST)) {
+          //  $email = $_POST['username'];
+
+            $result = $this->model->NewServiceRequest();
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim']; 
+                    $totaltime  = $row['TotalHours'];
+                    $street = $row['AddressLine1'];
+                    $houseno = $row['AddressLine2'];
+                    $city = $row['City'];
+                    $pincode = $row['PostalCode'];
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+
+                
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+
+
+                 //   $Provider_name = $row['Provider_name'];
+
+
+                     $Address = 
+
+                      
+                          '<tr  id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <td>' . $ServiceRequestId . '</td>
+
+                            <td>
+                            <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
+                            <img src="../assets/image/layer-712.png" class="clock">' . $Tim . '
+                            </td>
+
+                            <td>
+                            '. $firstname .' ' . $lastname .'<br>
+                            <div class="mydiv">
+                              <img src="../assets/image/layer-719.png" class="home">
+                                <div class="desc">'. $street .' '. $houseno .', '. $city .' - '. $pincode .'<div>  
+                                </div>
+                            </td>
+                            
+                              <td class="text-center pay">
+                              <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
+                              </td>
+
+                              <td>
+                              </td>
+                            
+                            <td>
+                            <button class="btn"  id=' . $ServiceRequestId . ' class="dashboard accept2" data-toggle="modal" data-target="#schedule-modal">Accept</button>
+                            </td>
+                          </tr>';
+
+
+
+                        echo $Address;              
+                }
+            }
+        }
+    }
+
+
+ public function NewServiceRequest1()
+    {
+        
+        if (isset($_POST)) {
+          //  $email = $_POST['username'];
+
+            $result = $this->model->NewServiceRequest();
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim']; 
+                    $totaltime  = $row['TotalHours'];
+                    $street = $row['AddressLine1'];
+                    $houseno = $row['AddressLine2'];
+                    $city = $row['City'];
+                    $pincode = $row['PostalCode'];
+                    $mobile = $row['Mobile'];
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+
+
+                 //   $Provider_name = $row['Provider_name'];
+
+
+                     $Address = 
+
+                
+               '<div id=' . $ServiceRequestId . ' class="cards dashboard" data-toggle="modal" data-target="#schedule-modal">
+                 <div class="card dashboard" data-toggle="modal" data-target="#schedule-modal">
+                    <div class="card-body">
+  
+                         <h4 class="card-text">' . $ServiceRequestId . '</h4>
+                    <hr>
+
+                       <p class="card-text">    
+                         <img src="../assets/image/calendar2.png" class="calendars"><b>' . $ServiceStartDate . '</b>
+                       <img src="../assets/image/layer-712.png" class="clocks" id='. $ServiceRequestId .'>' . $Tim . '
+                       </p>
+
+                       <p class="card-text">'. $firstname .' '. $lastname .'
+                       <div class="mydivs" style="margin-bottom: 10px;">
+                        <img src="../assets/image/layer-719.png" class="homes">'. $street .' '. $houseno .', '. $city .' - '. $pincode .'
+                      </div>
+                       </p>
+
+                     <hr>
+                        <p class="card-text text-center pay cardbold"><span class="pay2"><b>€</b></span><span class="pay2"><b>'.$SubTotal.'</b></span></p>
+                     <hr>
+                        <p class="text-center">
+                          <button id=' . $ServiceRequestId . ' class="btn dashboard accept2" data-toggle="modal" data-target="#schedule-modal">Accept</button>
+                        </p>
+
+                       </div>
+                      </div>
+                     </div>';
+
+
+
+                        echo $Address;              
+                }
+            }
+        }
+    }
+
+
+
+
+
    public function ServiceHistory()
     {
         
@@ -478,7 +735,46 @@ public function ResetPassword()
                     $SubTotal = $row['SubTotal'];
                     $ServiceRequestId = $row['ServiceRequestId'];
                     $Tim = $row['Tim'];
-                 //   $Provider_name = $row['Provider_name'];
+                    $totaltime  = $row['TotalHours'];
+                   $Provider_name = $row['Provider_name'];
+
+                   
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
 
 
                      $Address = 
@@ -490,8 +786,10 @@ public function ResetPassword()
                                 <span class="times">' . $Tim . '</span>
                                </td>
                                        
-                                <td>
-
+                                <td id="provider_name">
+                                <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Provider_name . '<br>
+  
+                                        
                                 </td>
                              
                                 <td class="pay">
@@ -503,7 +801,7 @@ public function ResetPassword()
                                 </td>    
                                    
                                 <td class="center">
-                                <button type="button" class="btn rate-sp" data-toggle="modal" data-target="#rate-modal">Rate SP</button>  
+                                <button type="button" id=' . $ServiceRequestId . ' class="btn rate-sp" data-toggle="modal" data-target="#rate-modal">Rate SP</button>  
                                 </td>
                             </tr>';
 
@@ -514,6 +812,8 @@ public function ResetPassword()
             }
         }
     }
+
+
 
 
 
@@ -609,7 +909,7 @@ public function ResetPassword()
                             <hr>
 
                                 <p class="text-center">
-                                <button type="button" class="btn rate-sp1" data-toggle="modal" data-target="#rate-modal">Rate SP</button>
+                                <button type="button" class="btn rate-sp1" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#rate-modal">Rate SP</button>
                                 </p>
                               </p>';
 
@@ -618,10 +918,6 @@ public function ResetPassword()
             }
         }
     }
-
-
-
-
 
 
    public function Dasboard1()
@@ -636,9 +932,13 @@ public function ResetPassword()
                     $ServiceStartDate = $row['ServiceStartDate'];
                     $ServiceRequestId = $row['ServiceRequestId'];
                     $Tim = $row['Tim'];
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $Tim = intval($startime);
 
 
 
+                  
                  $result = [$ServiceStartDate, $ServiceRequestId, $Tim];    
 
                  echo json_encode($result);         
@@ -700,6 +1000,98 @@ public function ResetPassword()
     }
 
 
+  public function ServiceRequestModal()
+    {
+        
+        if (isset($_POST)) {
+            $addressid1 = $_POST['addressid1'];
+
+            $result = $this->model->ServiceRequestModal($addressid1);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $totaltime = $row['TotalHours'];
+                    $ExtraServices = $row['ExtraServices'];
+                    $ServiceRequestId = $row['ServiceRequestId'];//
+                    $SubTotal = $row['SubTotal'];
+                    $AddressLine1 = $row['AddressLine1'];
+                    $AddressLine2 = $row['AddressLine2'];
+                    $City = $row['City'];
+                    $PostalCode = $row['PostalCode'];
+                    $Mobile = $row['Mobile'];
+                    $Email = $row['Email'];
+                    $HasPets = $row['HasPets'];
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $Tim = $row['Tim'];
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+
+                    
+
+
+
+          $Address = 
+
+            '<div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
+              <div class="service-duration">Duration: <span class="duration">' . $totaltime . '</span></div>
+
+              <hr>
+              <div class="service-duration">Service Id: <span class="duration">' . $ServiceRequestId . '</span></div>
+              <div class="service-duration">Extras: <span class="duration">' . $ExtraServices . '</span></div>
+              <div class="service-duration">Total Payment: <span class="amount">' . $SubTotal . ' €</span></div>
+
+              <hr> 
+
+              <div class="service-duration">Customer Name: <span class="duration">' . $firstname . ' ' . $lastname . '</span></div>
+              <div class="service-duration">Service Address: <span class="duration">' . $AddressLine1 . ' ' . $AddressLine2 . ', ' . $City . ' ' .  $PostalCode .'</span></div>
+              <div class="service-duration">Phone: <span class="duration">' . $Mobile . '</span></div>
+              <div class="service-duration">Email: <span class="duration">' . $Email . '</span></div>';     
+
+              echo $Address;              
+
+
+                }
+            }
+        }
+    }
+
 
 
 
@@ -713,8 +1105,10 @@ public function ResetPassword()
     
             $ServiceRequestId = $_POST['ServiceRequestId'];
             $Date = $_POST['dash_date'];
-            $Tim = $_POST['dash_time'];
+            $Tim = $_POST['dash_time']; 
 
+            $Tim = $Tim . ':00:00';
+      
             $array = [
                 'ServiceStartDate' => $Date,
                 'Tim' => $Tim,
@@ -722,6 +1116,50 @@ public function ResetPassword()
 
             ];
             $result = $this->model->DashUpdate($array);
+            
+        if ($result) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
+        }
+    }
+
+
+ public function CustomerRating()
+    {
+
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+            $gender = $_POST['gender'];
+            $rates = $_POST['rates'];
+            $rate1 = $_POST['rate1']; 
+            $feedback = $_POST['feedback'];
+            $addressid1 = $_POST['addressid1'];
+            $avg = $_POST['avg'];
+            $completed1 = '0'; 
+           // $provider_name = '0';
+
+           $result = $this->model->ResetKey($email);
+
+           $username = $result[3];
+           $provider_name = $result[3];
+
+            $array = [
+                'username' => $username,
+                'gender' => $gender,
+                'rates' => $rates,
+                'rate1' => $rate1,
+                'feedback' => $feedback,
+                'ServiceRequestId' => $addressid1,
+                'avg' => $avg,
+                'completed' => $completed1,
+                'date1' => date('Y-m-d H:i:s'),
+                'provider_name' => $provider_name,
+
+            ];
+            $result = $this->model->CustomerRating($array);
             
         if ($result) {
             echo 1;
@@ -780,6 +1218,7 @@ public function ResetPassword()
 
             ];
             $result = $this->model->DashDelete($array);
+           
             
         if ($result) {
             echo 1;
@@ -789,6 +1228,254 @@ public function ResetPassword()
 
         }
     }
+
+
+ public function NewServiceRequestAccept()
+    {
+
+        if (isset($_POST)) {
+
+      $ServiceRequestId = $_POST['ServiceRequestId'];
+
+      $results = $this->model->NewServiceRequestConflict($ServiceRequestId); 
+      
+      $Tim = $results[0];
+      $ServiceStartDate1 = $results[1];
+      $totaltime = $results[2];
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+                        $approvestarttime = $starttime; //13 
+                        $approveendtime = $totaltimes;//18
+
+
+
+            $email = $_POST['username'];
+
+            $result1 = $this->model->ResetKey($email);
+            $Provider_name = $result1[3];
+
+        
+        $result1 = $this->model->UpcomingTableConflict($Provider_name);  
+
+
+
+      if (count($result1)) {
+        foreach ($result1 as $row) {
+
+
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $totaltime = $row['TotalHours'];
+                    $Tim = $row['Tim']; 
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+                        $completestarttime = $starttime; //
+                        $completeendtime = $totaltimes;
+
+                       // echo $completestarttime;
+}
+
+            //18              //19                                                                //10
+    if(($completeendtime <= $approvestarttime) &&  ($ServiceStartDate1 == $ServiceStartDate) || ($approveendtime <= $completestarttime) && ($ServiceStartDate1 == $ServiceStartDate)) {
+           //12 19
+             $email = $_POST['username'];
+
+             $result2 = $this->model->ResetKey($email);
+             $Provider_name = $result2[3];
+             $ServiceRequestId = $_POST['ServiceRequestId'];
+             $status = 1;
+             $array = [
+                 'ServiceRequestId' => $ServiceRequestId,
+                 'status' => $status,
+                 'Provider_name' => $Provider_name,
+
+             ];
+             $result = $this->model->NewServiceRequestAccept($array);
+           
+            
+      
+             echo 1;
+
+            // break;
+
+
+          }
+
+
+         elseif(($completestarttime <= $approveendtime && $completeendtime >= $approveendtime) && ($ServiceStartDate1 == $ServiceStartDate)){
+         echo 22;
+
+       //  break;
+           
+
+         }elseif(($completestarttime <= $approvestarttime && $completeendtime >= $approvestarttime) && ($ServiceStartDate1 == $ServiceStartDate)){
+         echo 5;
+           
+// break;
+         }
+
+         elseif(($completestarttime <= $approveendtime && $completeendtime >= $approveendtime) && ($ServiceStartDate1 == $ServiceStartDate)){
+
+
+             echo 2;
+     //  break;    
+
+         }
+
+        elseif(($completestarttime >= $approvestarttime && $completeendtime >= $approvestarttime) && ($ServiceStartDate1 == $ServiceStartDate)){
+
+
+             echo 5;
+    //   break;    
+
+         }
+
+  else{
+
+                 echo 2;
+          //      break;
+
+
+            
+         }
+
+
+ 
+
+}
+        else{
+             $email = $_POST['username'];
+
+             $result2 = $this->model->ResetKey($email);
+             $Provider_name = $result2[3];
+             $ServiceRequestId = $_POST['ServiceRequestId'];
+             $status = 1;
+
+             $array = [
+                 'ServiceRequestId' => $ServiceRequestId,
+                 'status' => $status,
+                 'Provider_name' => $Provider_name,
+
+             ];
+             $result = $this->model->NewServiceRequestAccept($array);
+           
+            
+      
+             echo 1;
+         
+
+
+      }
+
+       }
+
+ }
+
+
+
+
+
+
+
+
+                 //   $Provider_name = $row['Provider_name'];
+
+
+                     // $Address = 
+
+            
+
+
+
+                     //    echo $Address;              
+        
+  
+            
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
 
 
 
@@ -872,6 +1559,7 @@ public function Request()
                 'paymentdone' => $paymentdone,
                 'recordversion' => $recordversion,
                 'tim' => $time,
+                 'addressid' => $addressid,
             ];
 
             $result = $this->model->ServiceRequest($array);
@@ -963,7 +1651,289 @@ public function Request()
          }
     
 
+  public function ServiceProviderHistory()
+    {
+        
+        if (isset($_POST)) {
+          $email = $_POST['username'];
+            $number = $_POST['number'];
+            $result1 = $this->model->ResetKey($email);
+            $Provider_name = $result1[3];
+            $result = $this->model->ServiceProviderHistory($Provider_name);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim']; 
+                    $totaltime  = $row['TotalHours'];
+                    $street = $row['AddressLine1'];
+                    $houseno = $row['AddressLine2'];
+                    $city = $row['City'];
+                    $pincode = $row['PostalCode'];
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $mobile = $row['Mobile'];
 
+
+                
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+
+
+                 //   $Provider_name = $row['Provider_name'];
+                  if($number == 1){
+
+                     $Address = 
+
+                      
+                          '<tr id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <td>' . $ServiceRequestId .'</td>
+
+                            <td>
+                            <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate .'</b><br>
+                            <img src="../assets/image/layer-712.png" class="clock">' . $Tim .'
+                            </td>
+
+                            <td>
+                            <span style="margin-left:30px;">'. $firstname .' '. $lastname .'</span><br>
+                            <div class="mydiv">
+                              <img src="../assets/image/layer-719.png" class="home">
+                                <div class="desc">'. $street .' '. $houseno .', '. $city .' - ' .$pincode .'<div>
+                                <div class= "desc">'. $mobile .'</div>  
+                                </div>
+                            </td>
+                            
+                          </tr>';
+
+
+
+                        echo $Address;              
+                }
+
+                  if($number == 0){
+
+                    $Address = 
+
+                          '<div id=' . $ServiceRequestId . ' class="cards dashboard" data-toggle="modal" data-target="#schedule-modal">
+                           <div class="card">
+                             <div class="card-body">
+                               <h4 class="card-text">'. $ServiceRequestId .'</h4>
+                          <hr>
+
+                             <p class="card-text">    
+                               <img src="../assets/image/calendar2.png" class="calendars"><b>'. $ServiceStartDate .'</b>
+                             <img src="../assets/image/layer-712.png" class="clocks">'. $Tim .'
+                             </p>
+
+                          <hr>
+
+                             <p class="card-text">'. $firstname .' '. $lastname .'
+                             <div class="mydivs" style="margin-bottom: 10px;">
+                              <img src="../assets/image/layer-719.png" class="homes">'. $street .' '. $houseno .', '. $city .' - ' .$pincode .'
+                            </div>
+                             </p>
+                           
+                           <hr>
+
+                             <p class= "card-text">'. $mobile .'</p> 
+
+                             </div>
+                            </div>
+                          </div>';
+                      
+                       echo $Address;   
+
+
+
+              }   
+            }
+        }
+    }
+}
+
+
+
+ public function UpcomingTable()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+            $number = $_POST['number'];
+
+            $result1 = $this->model->ResetKey($email);
+            $Provideer_name = $result1[3];
+
+            $result = $this->model->UpcomingTable($Provideer_name);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim']; 
+                    $totaltime  = $row['TotalHours'];
+                    $street = $row['AddressLine1'];
+                    $houseno = $row['AddressLine2'];
+                    $city = $row['City'];
+                    $pincode = $row['PostalCode'];
+                    $mobile = $row['Mobile'];
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+
+                 //   $Provider_name = $row['Provider_name'];
+                   
+                   if($number == 1){
+
+                     $Address = 
+
+                
+                            '<tr id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                              <td>'. $ServiceRequestId .'</td>
+
+                              <td>
+                              <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate .'</b><br>
+                              <img src="../assets/image/layer-712.png" class="clock">'. $Tim .'
+                              </td>
+
+                              <td>
+                              '. $firstname .' '. $lastname .'<br>
+                              <div class="mydiv">
+                                <img src="../assets/image/layer-719.png" class="home">
+                                  <div class="desc">'. $street .' '. $houseno .', '. $city .' - ' .$pincode .'<div>  
+                                  </div>
+                              </td>
+                              
+                                <td class="text-left pay">
+                                <span class="pay1"><b>€</b></span><span class="pay2"><b>'. $SubTotal .'</b></span>
+                                </td>
+
+                                <td class="km">0 KM</td>
+                              
+                              <td>
+                              <button id=' . $ServiceRequestId . ' class="btn dashboard" data-toggle="modal" data-target="#schedule-modal">Cancel</button>
+                              </td>
+                            </tr>';
+
+
+
+                        echo $Address; 
+
+                      }
+
+
+                   if($number == 0){
+
+                     $Address = 
+
+                          '<div id=' . $ServiceRequestId . ' class="cards dashboard" data-toggle="modal" data-target="#schedule-modal">
+                           <div class="card">
+                             <div class="card-body">
+                               <h4 class="card-text">'. $ServiceRequestId .'</h4>
+                          <hr>
+
+                             <p class="card-text">    
+                               <img src="../assets/image/calendar2.png" class="calendars"><b>' . $ServiceStartDate .'</b>
+                             <img src="../assets/image/layer-712.png" class="clocks">'. $Tim .'
+                             </p>
+
+                             <p class="card-text">'. $firstname .' '. $lastname .'
+                             <div class="mydivs" style="margin-bottom: 10px;">
+                              <img src="../assets/image/layer-719.png" class="homes">'. $street .' '. $houseno .', '. $city .' - ' .$pincode .'
+                            </div>
+                             </p>
+
+                           <hr>
+                              <p class="card-text text-center pay cardbold"><span class="pay2"><b>€</b></span><span class="pay2"><b>'. $SubTotal .'</b></span></p>
+                           <hr>
+                              <p id=' . $ServiceRequestId . ' class="text-center dashboard" data-toggle="modal" data-target="#schedule-modal">
+                                <button class="btn">Cancel</button>
+                              </p>
+                             </div>
+                            </div>
+                          </div>';
+                    
+                     echo $Address; 
+
+                }
+            }
+        }
+    }
+}
 
 
     public function CustomerUpdatePassword()
@@ -1004,6 +1974,278 @@ public function Request()
                     }
                 }
             }
+        }
+    }
+
+
+
+public function ServiceProviderDetails()
+    {
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+            $result = $this->model->ProviderSettingDetails($email);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $email = $row['Email'];
+                    $mobile = $row['Mobile'];
+                    $date = $row['DateOfBirth'];
+                    $languageid = $row['LanguageId'];
+                   // $statusactive = $row['Status'];
+                    $avtarimg = $row['UserProfilePicture'];
+                    $natinallity = $row['NationalityId'];
+                    $gender = $row['Gender'];
+                    $ZipCode = $row['ZipCode'];
+                    $isactives = $row['IsActive'];
+                    $address = $this->model->ProviderAddress($email);
+                    if (count($address)) {
+                        foreach ($address as $addr) {
+                            $street = $addr['AddressLine1'];
+                            $houseno = $addr['AddressLine2'];
+                            $postalcode = $addr['PostalCode'];
+                            $city = $addr['City'];
+                        }
+                    }
+                    if ($isactives == "Yes") {
+                        $isactive = 1;
+                    } else {
+                        $isactive = 0;
+                    }
+                    if (!empty($date)) {
+
+                        list($year, $month, $day) = explode("-", $date);
+                    } else {
+                        $year = "Year";
+                        $month = "Month";
+                        $day = "Day";
+                    }
+
+                    $result = [$firstname, $lastname, $email, $mobile, $day, $month, $year, $languageid, $isactive, $avtarimg, $natinallity, $gender, $street, $houseno, $postalcode, $city, $ZipCode];
+
+                    echo json_encode($result);
+                }
+            }
+        }
+    }
+
+
+
+ public function UpcomingRequestComplete()
+    {
+
+        if (isset($_POST)) {
+
+            $ServiceRequestId = $_POST['ServiceRequestId'];
+            $status = 2;
+
+            $array = [
+                'ServiceRequestId' => $ServiceRequestId,
+                'status' => $status,
+
+            ];
+            $result = $this->model->UpcomingRequestComplete($array);
+           
+            
+        if ($result) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
+        }
+    }
+
+
+ public function UpcomingRequestCancel()
+    {
+
+        if (isset($_POST)) {
+        
+            $ServiceRequestId = $_POST['ServiceRequestId'];
+            $status = 3;
+
+            $array = [
+                'ServiceRequestId' => $ServiceRequestId,
+                'status' => $status,
+
+            ];
+            $result = $this->model->UpcomingRequestCancel($array);
+           
+            
+        if ($result) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
+        }
+    }
+
+
+ public function ServiceProviderDetails1()
+    {
+        if (isset($_POST)) {
+            $firstname =   $_POST['firstname'];
+            $lastname =   $_POST['lastname'];
+            $email =   $_POST['email'];
+            $mobile =   $_POST['mobile'];
+            $birthdate =   $_POST['birthdate'];
+            $avtarimg = $_POST['avtarimg'];
+            $gender = $_POST['gender'];
+            $pincode = $_POST['pincode'];
+            $street = $_POST['street'];
+            $houseno = $_POST['houseno'];
+            $location = $_POST['location'];
+            $mobilenum = $_POST['mobilenum'];
+            $nationallity = $_POST['nationallity'];
+            $modifiedby = $firstname . " " . $lastname;
+            $modifieddate = date('Y-m-d H:i:s');
+            $useraddress = $this->model->ProviderAddress($email);
+
+            $result = $this->model->ResetKey($email);
+            $userid = $result[3];
+            $type = 1;
+            $getstate = $this->model->City($pincode);
+            $state = $getstate[1];
+
+
+            $array = [
+                'fistname' => $firstname,
+                'lastname' => $lastname,
+                'mobile' => $mobile,
+                'avtarimg' => $avtarimg,
+                'gender' => $gender,
+                'pincode' => $pincode,
+                'nationallity' => $nationallity,
+                'birthdate' => $birthdate,
+                'modifieddate' => $modifieddate,
+                'modifiedby' => $email,
+                "email" => $email,
+            ];
+
+            $addressarray = [
+                'userid' => $userid,
+                'street' => $street,
+                'houseno' => $houseno,
+                'location' => $location,
+                'state' => $state,
+                'pincode' => $pincode,
+                'mobilenum' => $mobilenum,
+                'email' => $email,
+                'type' => $type,
+
+            ];
+
+            $updateaddressarray = [
+
+                'street' => $street,
+                'houseno' => $houseno,
+                'location' => $location,
+                'state' => $state,
+                'pincode' => $pincode,
+                'mobilenum' => $mobilenum,
+                'email' => $email,
+
+            ];
+            if (!count($useraddress)) {
+                $results = $this->model->UpdateServiceProviderAddress($addressarray);
+                $counts = $results[0];
+            }
+            if (count($useraddress)) {
+                $results = $this->model->UpdateServiceProviderAddress1($updateaddressarray);
+                $countsupdate = $results[0];
+            }
+            $result = $this->model->UpdateSP($array);
+
+            $count = $result[0];
+            if ($count == 1 || $counts == 1) {
+                $_SESSION['firstname'] = $modifiedby;
+                echo 1;
+            } else {
+                echo 0;
+            }
+        }
+    }
+
+
+ public function BlockCustomer()
+    {
+
+        if (isset($_POST)) {
+
+            $email = $_POST['username'];
+
+            $result = $this->model->ResetKey($email);
+            $Provider_name = $result[3];
+
+
+            $result = $this->model->BlockCustomer($Provider_name);
+           
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $userid = $row['UserId'];
+                    $block = $row['IsBlocked'];
+
+                    if($block == 1){
+                      $block1 = "Block";
+                    }
+                   else{
+                    $block1 = "Unblock";
+                   }
+                           
+
+           $Address = 
+
+                  '<section class="block">
+                    <div class="round text-center" >
+                      <img src="../assets/image/forma-1-copy-19.png">
+                    </div>
+                      <p class="service-provider text-center">' . $firstname . ' ' . $lastname . '</p>
+                      <button type="button" class="favourite-bttn" id=' . $userid . '>'. $block1 . '</button>
+                      
+                  </section>';
+          
+           echo $Address;
+
+
+        }
+      }
+    }
+    }
+
+
+ public function BlockCustomerRequest()
+    {
+
+        if (isset($_POST)) {
+        
+            $email = $_POST['username'];
+            $userid = $_POST['userid'];
+            
+            $IsBlocked = 1;
+
+            $result = $this->model->ResetKey($email);
+            $Provider_name = $result[3];
+
+            $array = [
+                'Provider_name' => $Provider_name,
+                'userid' => $userid,
+                'IsBlocked' => $IsBlocked,
+                
+
+            ];
+            $result = $this->model->BlockCustomerRequest($array);
+           
+            
+        if ($result) {
+            echo 1;
+        } else {
+            echo 0;
+        }
+
         }
     }
 
