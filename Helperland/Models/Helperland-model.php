@@ -36,6 +36,7 @@ public function __construct() {
     }
 
 
+
  public function ResetPass($array)
     {
         $sql = "UPDATE user SET Password = :password , ModifiedDate = :updatedate , ModifiedBy = :modifiedby WHERE ResetKey = :resetkey";
@@ -59,16 +60,19 @@ public function __construct() {
         $usertypeid = $row['UserTypeId'];
         $Password = $row['Password'];
         $Name = $row['FirstName'];
+        $_SESSION['usertypeid'] = $usertypeid;
         if ($count == 1) {
             if (password_verify($password, $Password)) {
                 if ($usertypeid == 0) {
                     $_SESSION['username'] = $email;
                     $_SESSION['name'] = $Name;
+                    
 
                     echo 2;
                 } else if ($usertypeid == 1) {
                     $_SESSION['username'] = $email;
                     $_SESSION['name'] = $Name;
+                   
                     echo 3;
                 }
 
@@ -94,6 +98,8 @@ public function __construct() {
         $usertypeid = $row['UserTypeId'];
         $Password = $row['Password'];
         $Name = $row['FirstName'];
+        $_SESSION['usertypeid'] = $usertypeid;
+
         if ($count == 1) {
             if (password_verify($password, $Password)) {
                 if ($usertypeid == 0) {
@@ -233,7 +239,7 @@ public function City($pincode)
     {
 
         $sql  = " SELECT
-        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Total_Time,servicerequest.Provider_name
           FROM servicerequest 
         JOIN user
         ON servicerequest.UserId = user.UserId  where user.Email = '$email'";
@@ -243,6 +249,41 @@ public function City($pincode)
         $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
+    }
+
+
+    public function NewServiceRequest()
+    {
+
+        $sql  = " SELECT * FROM servicerequest 
+        JOIN useraddress
+        ON servicerequest.AddressId = useraddress.AddressId
+        JOIN user
+        ON servicerequest.UserId = user.UserId
+        where servicerequest.Status = 0";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
+    public function NewServiceRequestConflict($ServiceRequestId)
+    {
+
+        $sql  = " SELECT * FROM servicerequest 
+        where ServiceRequestId = $ServiceRequestId";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+      $Tim = $result['Tim'];
+      $ServiceStartDate1 = $result['ServiceStartDate'];
+      $totaltime = $result['TotalHours'];
+
+        return array($Tim, $ServiceStartDate1,$totaltime);
     }
 
 
@@ -262,7 +303,7 @@ public function City($pincode)
     public function Dasboard2($addressid1)
     {
 
-        $sql  = " SELECT * FROM servicerequest JOIN useraddress ON servicerequest.UserId = useraddress.UserId  where ServiceRequestId = $addressid1";
+        $sql  = " SELECT * FROM servicerequest JOIN useraddress ON servicerequest.AddressId = useraddress.AddressId  where ServiceRequestId = $addressid1";
 
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
@@ -270,6 +311,21 @@ public function City($pincode)
 
         return $result;
     }
+
+    public function ServiceRequestModal($addressid1)
+    {
+
+        $sql  = " SELECT * FROM servicerequest JOIN useraddress ON servicerequest.AddressId = useraddress.AddressId 
+        JOIN user ON servicerequest.UserId = user.UserId
+        where ServiceRequestId = $addressid1";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
 
 
  public function DashUpdate($array)
@@ -294,8 +350,8 @@ public function City($pincode)
 
     public function ServiceRequest($array)
     {
-        $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices, PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion, Tim) 
-            VALUES (:userid,:createddate , :zipcode,:servicefrequency,:servicehourlyrate ,:servicehours, :extrahours ,:subtotal, :discount ,:totalcost, :comments, :totalhours, :totalbed, :totalbath, :effectivecost, :extraservices, :paymentdue, :pets,:status ,:servicedate , :paymentdone,:recordversion,:tim)";
+        $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices, PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion, Tim, Total_Time, AddressId) 
+            VALUES (:userid,:createddate , :zipcode,:servicefrequency,:servicehourlyrate ,:servicehours, :extrahours ,:subtotal, :discount ,:totalcost, :comments, :totalhours, :totalbed, :totalbath, :effectivecost, :extraservices, :paymentdue, :pets,:status ,:servicedate , :paymentdone,:recordversion,:tim,:totalhours,:addressid)";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute($array);
        $addressid = $this->conn->lastInsertId();
@@ -359,6 +415,181 @@ public function CustomerUpdateDetails($array)
 
     }
 
+    public function ProviderSettingDetails($email)
+    {
+        $sql = "select * from user where Email = '$email'";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function ProviderAddress($email)
+    {
+        $sql =  "SELECT * FROM useraddress WHERE Email = '$email'  ORDER BY AddressId DESC";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
+    public function UpdateServiceProviderAddress($array)
+    {
+        $sql = "INSERT INTO useraddress (UserId , AddressLine1   , AddressLine2 , City ,State,  PostalCode , Mobile , Email ,Type)
+        VALUES (:userid , :street ,  :houseno  , :location ,:state , :pincode , :mobilenum , :email , :type)";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute($array);
+        $count = $stmt->rowCount();
+        return array($count);
+    }
+
+    public function UpdateServiceProviderAddress1($array)
+    {
+        $sql = "UPDATE `useraddress` SET `AddressLine1`= :street ,`AddressLine2`= :houseno,`City`=:location,`State`= :state ,`PostalCode`= :pincode ,`Mobile`=:mobilenum WHERE `Email` = :email ";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute($array);
+        $count = $stmt->rowCount();
+        return array($count);
+    }
+
+    public function UpdateSP($array)
+    {
+        $sql = "UPDATE `user` SET `FirstName`= :fistname,`LastName`=:lastname,`Mobile`=:mobile,`UserProfilePicture`= :avtarimg,`Gender`= :gender,`ZipCode`= :pincode,`NationalityId` = :nationallity,`DateOfBirth`= :birthdate,`ModifiedDate`=:modifieddate,`ModifiedBy`=:modifiedby WHERE `Email`=:email";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute($array);
+        $count = $stmt->rowCount();
+        return array($count);
+    }
+
+    public function CustomerRating($array)
+    {
+        $sql = "INSERT INTO rating (ServiceRequestId , RatingFrom   , RatingTo , Ratings ,Comments,  RatingDate , IsApproved , OnTimeArrival ,Friendly, QualityOfService)
+        VALUES (:ServiceRequestId , :username ,  :provider_name  , :avg ,:feedback , :date1 , :completed , :gender , :rates, :rate1)";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute($array);
+        $count = $stmt->rowCount();
+        return array($count);
+    }
+
+
+ public function NewServiceRequestAccept($array)
+    {
+        $sql = "UPDATE servicerequest SET Status = :status, Provider_Name = :Provider_name WHERE ServiceRequestId = :ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+
+    }
+
+
+    public function ServiceProviderHistory($Provider_name)
+    {
+
+        $sql  = " SELECT * FROM servicerequest 
+        JOIN useraddress
+        ON servicerequest.AddressId = useraddress.AddressId
+        JOIN user
+        ON servicerequest.UserId = user.UserId
+        where servicerequest.Status = 2 AND servicerequest.Provider_Name = $Provider_name";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
+    public function BlockCustomer($Provider_name)
+    {
+
+        $sql  = " SELECT * FROM servicerequest 
+        JOIN useraddress
+        ON servicerequest.AddressId = useraddress.AddressId
+        JOIN user
+        ON servicerequest.UserId = user.UserId
+        JOIN favoriteandblocked ON favoriteandblocked.TargetUserId = servicerequest.UserId
+        where servicerequest.Status = 2 AND servicerequest.Provider_Name = $Provider_name GROUP BY user.UserId";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
+    public function UpcomingTable($Provideer_name)
+    {
+
+        $sql  = " SELECT * FROM servicerequest 
+        JOIN useraddress
+        ON servicerequest.AddressId = useraddress.AddressId
+        JOIN user
+        ON servicerequest.UserId = user.UserId
+        where servicerequest.Status = 1 AND servicerequest.Provider_Name = $Provideer_name";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function UpcomingTableConflict($Provider_name)
+    {
+
+        $sql  = " SELECT servicerequest.ServiceStartDate, servicerequest.Tim, servicerequest.TotalHours FROM servicerequest 
+        where servicerequest.Status = 1 AND servicerequest.Provider_Name = $Provider_name";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+ public function UpcomingRequestComplete($array)
+    {
+        $sql = "UPDATE servicerequest SET Status = :status WHERE ServiceRequestId = :ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+
+    }
+
+ public function UpcomingRequestCancel($array)
+    {
+        $sql = "UPDATE servicerequest SET Status = :status WHERE ServiceRequestId = :ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+
+    }
+
+
+    public function BlockCustomerRequest($array)
+    {
+        $sql = "INSERT INTO favoriteandblocked (UserId , TargetUserId , IsBlocked)
+        VALUES (:Provider_name , :userid , :IsBlocked)";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        $count = $stmt->rowCount();
+        return ($result);
+    }
+
+    public function CheckBlock($userid)
+    {
+        $sql = "SELECT * from favoriteandblocked where TargetUserId = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $row  = $stmt->fetch(PDO::FETCH_ASSOC);
+        $block = $row['IsBlocked'];
+
+        return array($block);
+    }
 
 }   
 
