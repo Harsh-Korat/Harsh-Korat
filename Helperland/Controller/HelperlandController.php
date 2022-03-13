@@ -2036,7 +2036,30 @@ public function ServiceProviderDetails()
 
         if (isset($_POST)) {
 
+            $email = $_POST['username'];
+
+            $result1 = $this->model->ResetKey($email);
+            $Provideer_name = $result1[3];
+
             $ServiceRequestId = $_POST['ServiceRequestId'];
+          
+            $result2 = $this->model->ServiceRequestId($ServiceRequestId);
+
+
+            $customer_name = $result2[0];
+            $isblock = 0;
+            $isfavorite = 0;
+            $array1 = [
+                'Provideer_name' => $Provideer_name,
+                'customer_name' => $customer_name,
+                'isblock' => $isblock,
+                 'isfavorite' => $isfavorite,
+
+            ];  
+
+           $result3 = $this->model->favoriteandblocked($array1);        
+
+
             $status = 2;
 
             $array = [
@@ -2187,14 +2210,16 @@ public function ServiceProviderDetails()
                     $firstname = $row['FirstName'];
                     $lastname = $row['LastName'];
                     $userid = $row['UserId'];
-                    $block = $row['IsBlocked'];
 
-                    if($block == 1){
-                      $block1 = "Block";
-                    }
-                   else{
-                    $block1 = "Unblock";
-                   }
+                    $result1 = $this->model->FindBlockCustomer($userid);
+                    $block = $result1[0];
+
+                      if($block == 1){
+                        $block1 = "Block";
+                      }
+                     if($block == 0){
+                      $block1 = "Unblock";
+                     }
                            
 
            $Address = 
@@ -2204,7 +2229,7 @@ public function ServiceProviderDetails()
                       <img src="../assets/image/forma-1-copy-19.png">
                     </div>
                       <p class="service-provider text-center">' . $firstname . ' ' . $lastname . '</p>
-                      <button type="button" class="favourite-bttn" id=' . $userid . '>'. $block1 . '</button>
+                      <button type="button" class="favourite-bttn" id=' . $userid . '>' . $block1 .'</button>
                       
                   </section>';
           
@@ -2225,7 +2250,15 @@ public function ServiceProviderDetails()
             $email = $_POST['username'];
             $userid = $_POST['userid'];
             
-            $IsBlocked = 1;
+            $result1 = $this->model->FindBlockCustomer($userid);
+            $block = $result1[0];
+            
+            if($block == 0){
+              $IsBlocked = 1;
+            }
+            if($block == 1){
+              $IsBlocked = 0;
+            }
 
             $result = $this->model->ResetKey($email);
             $Provider_name = $result[3];
@@ -2238,11 +2271,13 @@ public function ServiceProviderDetails()
 
             ];
             $result = $this->model->BlockCustomerRequest($array);
-           
+
+            $result2 = $this->model->FindBlockCustomer($userid);
+            $block = $result1[0];
             
-        if ($result) {
+        if ($block == 1) {
             echo 1;
-        } else {
+        } if($block == 0) {
             echo 0;
         }
 
