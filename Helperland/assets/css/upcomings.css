@@ -1,0 +1,446 @@
+ 
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+
+/* Middle Navbar */
+
+.pay {
+height: 17px;
+font-family: Roboto;
+line-height: 1;
+color: #1D7A8C !important;
+}
+.cardbold{
+margin-bottom: 30px;
+margin-left: 0px !important;
+}
+.pay1 {
+font-size: 24px;
+margin-left: 14px;
+}
+
+.pay2 {
+font-size: 24px;
+}
+
+.welcome{
+height: 118px;
+margin-top: 64px;
+padding-top: 38px;
+text-align: center;
+font-size: 30px;
+font-family: Roboto;
+letter-spacing: 0px;
+color: #4F4F4F;
+background: #F9F9F9 0% 0% no-repeat padding-box;
+}
+
+.hr{
+height: 1px;
+background-color: #e1e1e1;
+}
+
+.middle-table{
+margin-left: auto;
+margin-right: auto;
+margin-top: 31px;
+}
+
+.vertical-nav{
+width: 300px;
+height: auto;
+margin:0px 31px 0px 15px;
+background-color: #1d7a8c;
+}
+
+.vertical-nav .list-group-item{
+border:2px solid #2f8f9f;
+background-color: #1d7a8c;
+border-color: #2f8f9f;
+font-family: Roboto;
+font-size: 18px;
+font-weight: normal;
+line-height: 2;
+font-stretch: normal;
+font-style: normal;
+letter-spacing: normal;
+text-align: left;
+color: #ffffff;
+}
+
+.vertical-nav .active{
+background-color: #146371 !important;
+}
+
+.vertical-nav ul a:hover{
+cursor: pointer;
+background-color: #146371 !important;
+}
+  
+
+/*Middle Table */
+
+.middle{
+display:flex;  
+justify-content: center;
+flex-wrap: nowrap;
+}
+
+#middle-table{
+width: 79%;
+margin-right: 15px;
+height: auto;
+padding: 1px 0 0;
+margin-top: 0px;
+background-color: #ffffff;
+}
+
+#middle-table thead{
+height: 49px;
+margin: 0 1px;
+padding: 16px 34px 19px 14px;
+background-color: #f9f9f9;
+}
+
+#middle-table th{
+height: 12px;
+border-top: none;
+margin: 1px 0;
+font-family: Roboto;
+font-size: 16px;
+font-weight: bold;
+font-stretch: normal;
+font-style: normal;
+line-height: 1.63;
+letter-spacing: normal;
+text-align: left;
+color: #646464;
+}
+
+#middle-table th img{
+margin-left: 10px;
+width: 14px;
+height: 14px;
+}
+
+.calendar{
+margin: 9px 7px 8px 0px;
+width: 16px;
+height: 19px;
+object-fit: contain;
+}
+
+.clock{
+width: 17px;
+height: 17px;
+margin-right: 7px;
+}
+
+.home{
+width: 22px;
+height: 22px;
+margin: 4px 7px 0px 0px;
+}
+
+#middle-table tr td{
+height:66px;
+padding-top:0px !important;
+padding-bottom: 0px !important;
+font-family: Roboto;
+font-size: 16px;
+font-stretch: normal;
+font-style: normal;
+line-height: 1.63;
+letter-spacing: normal;
+text-align: left;
+color: #646464;
+vertical-align: middle;
+}
+
+.mydiv{
+display: flex;
+margin-bottom: -5px;
+}
+
+.mydiv .desc{
+margin-top: 5px;
+width: 219px;
+}
+
+#middle-table button{
+border-radius: 17px;
+background-color: #ff6b6b;
+color: #fff;
+width: 80px;
+height: 34px;
+padding: 2px;
+}
+
+/* Card Section */
+
+.cards{
+display: none;
+margin:45px 12px 0px 12px;
+}
+.card-text{
+padding:5px 10px 5px 10px !important;
+font-family: Roboto;
+font-size: 16px;
+color: #646464;
+vertical-align: middle;
+}
+.calendars{
+margin-right: 7px;
+}
+
+.clocks{
+margin-left: 12px;
+margin-right: 6px;
+}
+
+.homes{
+margin: 0px 10px 0px 7px;
+}
+
+.mydivs{
+display: flex;
+color: #646464;
+}
+
+.card button{
+border-radius: 17px;
+margin-bottom: -10px;
+background-color: #ff6b6b;
+color: #ffffff !important;
+width: 80px;
+height: 34px;
+padding: 2px;
+}
+
+.km{
+font-family: Roboto;
+color: #646464;
+font-size: 16px;
+}
+
+
+/* schedule modal */
+
+#service_details{
+color: #646464;
+font-family: Roboto;
+margin-left: 12px;
+color: #646464;
+font-size: 24px;
+}
+
+#cancel-border{
+border-bottom: none;
+}
+
+#schedule-modal .close{
+font-size: 40px;
+}
+
+#cancel{
+padding-top: 5px;
+}
+
+.service-warning{
+font-size: 25px;
+font-family: Roboto;
+color: #646464;
+font-weight: bold;
+}
+
+.service-duration{
+margin-top: 5px;
+font-size: 19px;
+font-family: Roboto;
+color: #646464;
+font-weight: bold;
+}
+
+.duration{
+font-weight: normal;
+margin-left: 5px;
+}
+
+.amount{
+margin-left: 30px;
+font-size: 25px;
+color: #1D7A8C;
+}
+
+#duration{
+margin-left: 10px;
+margin-top: 5px;
+font-size: 18px;
+font-family: Roboto;
+color: #646464;
+}
+
+.duration i{
+font-size: 25px;
+color: red;
+}
+
+.book-flex i{
+font-size: 20px;
+margin-right: 10px;
+margin-left: -10px;
+}
+
+
+td:hover, .card p:hover, .card h4:hover{
+cursor:pointer; 
+}
+.pay {
+height: 17px;
+font-family: Roboto;
+line-height: 1;
+color: #1D7A8C !important;
+}
+.cardbold{
+margin-bottom: 30px;
+margin-left: 0px !important;
+}
+.pay1 {
+font-size: 24px;
+}
+
+.pay2 {
+font-size: 24px;
+}
+
+.btn-login1 ,.btn-login1:focus{
+height: 50px;
+width: 40% !important;
+font-size: 20px !important;
+font-weight: medium;
+background-color: #006072 !important;
+opacity: 0.6;
+border-radius: 30px !important;
+color: #ffffff !important;
+border: solid 1px rgba(255, 255, 255, 0.5);
+}
+
+.btn-login1:hover{
+opacity: 1;
+}
+
+.btn-login2 ,.btn-login2:focus{
+height: 50px;
+width: 40% !important;
+font-size: 20px !important;
+font-weight: medium;
+background-color: red !important;
+opacity: 0.6;
+border-radius: 30px !important;
+color: #ffffff !important;
+border: solid 1px rgba(255, 255, 255, 0.5);
+}
+
+.btn-login2:hover{
+opacity: 1;
+}
+
+#login-1{
+background-color: red !important;
+width: 30% !important;
+margin-left: 10px;
+}
+
+
+/* Media Queries for all */
+
+@media screen and (max-width: 1200px) {
+.vertical-nav{
+width: 262px;
+margin-left: 5px;
+margin-right: 15px;
+}
+}
+
+@media screen and (max-width: 1070px) {
+.vertical-nav{
+width: 223px;
+margin-right: 15px;
+}
+#middle-table{
+width: 780px;
+}
+}
+
+@media screen and (max-width: 1015px) {
+.vertical-nav{
+width: 222px;
+margin-right: 10px;
+}
+#middle-table{
+width: 760px;
+}
+}
+
+@media screen and (max-width: 1007px) {
+.vertical-nav{
+width: 215px;
+margin-right: 0px;
+}
+.navbar .navbar-brand .header-logo {
+margin-top: -5px;
+}
+}
+
+@media screen and (max-width: 991px) {
+.middle{
+display:block;
+}
+.vertical-nav{
+display: none;
+}
+#middle-table{
+width: 94%;
+margin-top:20px;
+margin-left: auto;
+margin-right: auto;
+}
+}
+
+@media screen and (max-width: 767px) {
+.cards{
+display: block;
+}
+.middle-table{
+display: none;
+}
+.footers {
+margin-top: 40px;
+}
+}
+
+@media screen and (max-width: 832px) {
+#middle-table{
+margin-left: 10px;
+width: 98%;
+overflow-x: auto;
+overflow-y: hidden;
+}
+#middle-table .table{
+min-width: 797px;
+}
+}
+
+
+@media screen and (max-width: 520px) {
+#middle-table{
+width: 96%;
+}
+}
+
+
+@media screen and (max-width: 350px) {
+.notify{
+right:75px;
+}
+}
