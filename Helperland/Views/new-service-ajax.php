@@ -469,6 +469,10 @@ $('.accept4').on("click", function(e) {
 
             e.preventDefault();  
 
+      <?php if (isset($_SESSION['username'])) { ?>
+            username = "<?php echo $_SESSION['username']; ?>";
+       <?php } ?>  
+
             var ServiceRequestId = $(this).attr('id');
 
             $.ajax({
