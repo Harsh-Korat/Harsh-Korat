@@ -510,7 +510,7 @@ public function CustomerUpdateDetails($array)
         ON servicerequest.AddressId = useraddress.AddressId
         JOIN user
         ON servicerequest.UserId = user.UserId
-        JOIN favoriteandblocked ON favoriteandblocked.TargetUserId = servicerequest.UserId
+               
         where servicerequest.Status = 2 AND servicerequest.Provider_Name = $Provider_name GROUP BY user.UserId";
 
         $stmt =  $this->conn->prepare($sql);
@@ -572,12 +572,20 @@ public function CustomerUpdateDetails($array)
 
     public function BlockCustomerRequest($array)
     {
-        $sql = "INSERT INTO favoriteandblocked (UserId , TargetUserId , IsBlocked)
-        VALUES (:Provider_name , :userid , :IsBlocked)";
+        $sql = "UPDATE favoriteandblocked SET IsBlocked = :IsBlocked where UserId = :Provider_name AND TargetUserId = :userid";
         $stmt =  $this->conn->prepare($sql);
         $result = $stmt->execute($array);
         $count = $stmt->rowCount();
         return ($result);
+    }
+
+public function favoriteandblocked($array1)
+    {
+        $sql = "INSERT INTO favoriteandblocked (UserId, TargetUserId , IsBlocked , IsFavorite)
+        VALUES (:Provideer_name , :customer_name, :isblock, :isfavorite)";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array1);
+ 
     }
 
     public function CheckBlock($userid)
@@ -590,6 +598,27 @@ public function CustomerUpdateDetails($array)
 
         return array($block);
     }
+
+    public function ServiceRequestId($ServiceRequestId)
+    {
+        $sql = "SELECT * FROM servicerequest where ServiceRequestId = $ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userid = $result['UserId'];
+        return array($userid);
+    }
+
+    public function FindBlockCustomer($userid)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where TargetUserId = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userid = $result['IsBlocked'];
+        return array($userid);
+    }
+
 
 }   
 
