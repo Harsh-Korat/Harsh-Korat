@@ -473,7 +473,7 @@ public function ResetPassword()
                          
                      $Address = 
 
-                       '<tr id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                       '<tr>
                             <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
 
                             <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
@@ -485,7 +485,7 @@ public function ResetPassword()
 
                             </td>
                             
-                            <td class="pay">
+                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
                             <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
                             </td>
                             
@@ -552,7 +552,7 @@ public function ResetPassword()
 
                      $Address = 
 
-                       '<tr id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                       '<tr>
                             <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
 
                             <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
@@ -566,7 +566,7 @@ public function ResetPassword()
 
                             </td>
                             
-                            <td class="pay">
+                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
                             <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
                             </td>
                             
@@ -603,7 +603,7 @@ public function ResetPassword()
 
                      $Address = 
 
-                       '<tr id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                       '<tr>
                             <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
 
                             <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
@@ -617,7 +617,7 @@ public function ResetPassword()
 
                             </td>
                             
-                            <td class="pay">
+                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
                             <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
                             </td>
                             
