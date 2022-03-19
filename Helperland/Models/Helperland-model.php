@@ -239,10 +239,26 @@ public function City($pincode)
     {
 
         $sql  = " SELECT
-        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Total_Time,servicerequest.Provider_name
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Total_Time,servicerequest.Provider_Name,servicerequest.Status
           FROM servicerequest 
         JOIN user
-        ON servicerequest.UserId = user.UserId  where user.Email = '$email'";
+        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1)";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function HistoryValues($email)
+    {
+
+        $sql  = " SELECT
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Total_Time,servicerequest.Provider_Name,servicerequest.Status
+          FROM servicerequest 
+        JOIN user
+        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (2, 3)";
 
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
@@ -368,8 +384,17 @@ public function City($pincode)
         return $result;
     }
 
-
     public function GoingCustomerMail($email)
+    {
+        $sql = "SELECT * FROM `user` WHERE Email = '$email'";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    public function BookingBlockCustomer($email)
     {
         $sql = "SELECT * FROM `user` WHERE Email = '$email'";
         $stmt =  $this->conn->prepare($sql);
@@ -492,7 +517,27 @@ public function CustomerUpdateDetails($array)
         ON servicerequest.AddressId = useraddress.AddressId
         JOIN user
         ON servicerequest.UserId = user.UserId
-        where servicerequest.Status = 2 AND servicerequest.Provider_Name = $Provider_name";
+        where servicerequest.Status = 2 AND servicerequest.Provider_Name = $Provider_name ORDER BY servicerequest.ServiceRequestId ASC";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
+    public function MyRating($Provider_name)
+    {
+
+        $sql  = " SELECT * FROM servicerequest 
+        JOIN useraddress
+        ON servicerequest.AddressId = useraddress.AddressId
+        JOIN user
+        ON servicerequest.UserId = user.UserId
+        JOIN  rating
+        ON servicerequest.ServiceRequestId = rating.ServiceRequestId
+        where servicerequest.Status = 2 AND servicerequest.Provider_Name = $Provider_name ORDER BY servicerequest.ServiceRequestId ASC";
 
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
@@ -620,5 +665,141 @@ public function favoriteandblocked($array1)
     }
 
 
-}   
+    public function BookingBlockCustomer100($userid)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where TargetUserId = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userid = $result['IsBlocked'];
+        $Provider_id = $result['UserId'];
+        return array($userid, $Provider_id);
+    }
 
+
+    public function AcceptCustomerMail($userid)
+    {
+        $sql = "SELECT * FROM user where UserId = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function CancelServiceRequest($customerid)
+    {
+        $sql = "SELECT * FROM user where UserId = $customerid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function ProviderDashboard($userid)
+    {
+        $sql = "SELECT * FROM user where UserId = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+    public function FindCustomerBooking($Provider_id)
+    {
+        $sql = "SELECT * FROM user where UserId = $Provider_id";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        $username = $result['Email'];
+
+        return array($username);
+    }
+
+
+
+    public function InsertingBlockCustomer($userid,$Provideer_name)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where TargetUserId = $userid AND UserId = $Provideer_name";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+
+    public function InsertingBlockCustomer1($userid,$Provideer_name)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where TargetUserId = $userid AND UserId = $Provideer_name AND IsBlocked = 1";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+
+    public function ProviderDashboardCount($userid)
+    {
+        $sql = "SELECT * FROM user where UserId = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count  = $stmt->rowCount();
+        return $count;
+    }
+
+    public function UpdateCustomerSchedule($ServiceRequestId)
+    {
+        $sql = "SELECT * FROM servicerequest where ServiceRequestId = $ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $result;
+    }
+
+    public function Rating($ServiceRequestId)
+    {
+        $sql = "SELECT * FROM rating where ServiceRequestId = $ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count  = $stmt->rowCount();
+        return $count;
+    }
+
+    public function RatingOfCustomer($ServiceRequestId)
+    {
+        $sql = "SELECT * FROM rating where ServiceRequestId = $ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return $result;
+    }
+
+    public function OverAllRatingOfServiceProvider1($userid)
+    {
+        $sql = "SELECT * FROM rating where RatingTo = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count  = $stmt->rowCount();
+        return $count;
+    }
+
+
+    public function OverAllRatingOfServiceProvider($userid)
+    {
+        $sql = "SELECT * FROM rating where RatingTo = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function BookingBlockCustomer101($userid)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where TargetUserId = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count  = $stmt->rowCount();
+        return $count;
+    }
+
+}
