@@ -1,0 +1,541 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+/* Service Provider Name */
+ 
+.error-message {
+  color: red;
+    margin-left: 0px;
+}
+
+.welcome{
+height: 118px;
+margin-top: 64px;
+padding-top: 38px;
+text-align: center;
+font-size: 30px;
+font-family: Roboto;
+letter-spacing: 0px;
+color: #4F4F4F;
+background: #F9F9F9 0% 0% no-repeat padding-box;
+}
+
+.hr{
+height: 1px;
+background-color: #e1e1e1;
+}
+
+
+/* Vertical Navbar */
+
+.middle{
+display:flex; 
+justify-content: center; 
+}
+
+.middle-table{
+margin-left: auto;
+margin-right: auto;
+margin-top: 31px;
+}
+
+.vertical-nav{
+width: 262px;
+height: auto;
+margin:0px 31px 0px 0px;
+background-color: #1d7a8c;
+}
+
+.vertical-nav .list-group-item{
+border:2px solid #2f8f9f;
+background-color: #1d7a8c;
+border-color: #2f8f9f;
+font-family: Roboto;
+font-size: 18px;
+font-weight: normal;
+line-height: 2;
+font-stretch: normal;
+font-style: normal;
+letter-spacing: normal;
+text-align: left;
+color: #ffffff;
+}
+
+.vertical-nav ul a:hover{
+cursor: pointer;
+background-color: #146371 !important;
+}
+  
+
+/* Middle Service Provider Table */
+
+.setting .nav-link {
+color: #646464 !important;
+font-family: Roboto;
+font-size: 18px;
+font-weight: bold;
+text-align: center;
+border:none !important;
+border-bottom: 4px solid rgb(220,220,220) !important;
+}
+
+.setting .nav-link.active {
+color: #1d7a8c !important;
+border-color: #1d7a8c !important;
+}
+
+/* Service Provider My Details tab */
+
+.lables{
+font-family: Roboto;
+font-size: 16px;
+color: #646464;
+font-weight: bold;
+}
+
+.address-top{
+margin-top: 20px;
+}
+
+.address{
+margin-top: 10px;
+}
+
+.address .form-control{
+background: #fff;
+font-size: 16px;
+line-height: 20px;
+color: #646464;
+padding: 12px 15px;
+box-shadow: none !important;
+border: 1px solid #dedddd;
+resize: vertical;
+height: 46px;
+display: block;
+width: 100%;
+border-radius: 4px;
+}
+
+#select{
+margin-bottom: 25px;  
+border:none; 
+font-size: 16px;
+line-height: 20px;
+color: #646464;
+padding-left: 15px;
+box-shadow: none !important;
+border: 1px solid #dedddd;
+resize: vertical;
+height: 46px;
+display: block;
+width: 100%;
+border-radius: 4px;
+}
+
+.bottom-hr{
+margin-bottom: 20px;
+}
+
+.select_menu select {
+font-family: Roboto;
+font-size: 16px;
+width: 24%;
+height: 46px;
+padding-left: 10px;
+color: #646464;
+margin-right: 10px;
+border: 1px solid #e1e1e1;
+border-radius: 4px;
+}
+
+.select_menu1 select {
+font-family: Roboto;
+font-size: 16px;
+width: 100%;
+height: 46px;
+padding-left: 10px;
+color: #646464;
+margin-right: 10px;
+border: 1px solid #e1e1e1;
+border-radius: 4px;
+}
+
+#month{
+width: 39%;
+}
+
+
+.save{
+margin-top: 7px;
+background-color: #1d7a8c;
+color: #fff;
+opacity: 0.6;
+width: 10%;
+padding: 9px 28px 8px 25px;
+border:none;
+font-size: 20px;
+font-family: Roboto;
+border-radius: 23px;
+}
+
+.save:hover{
+opacity: 1;
+}
+
+
+/* Service Provider Password tab */
+
+.password-top {
+margin-top: 30px;
+}
+
+.password {
+margin-top: 20px;
+}
+
+.password .form-control{
+background: #fff;
+font-size: 16px;
+line-height: 20px;
+color: #646464;
+padding: 12px 15px;
+box-shadow: none !important;
+border: 1px solid #dedddd;
+resize: vertical;
+height: 46px;
+display: block;
+width: 32%;
+border-radius: 4px;
+}
+
+#save{
+margin-top: 5px;
+}
+
+
+/* Service Provider Manage tab */
+
+.book-flex2{
+display: flex;
+margin-top: 15px;
+}
+
+input[type=checkbox] {
+margin-top: 25px;
+width: 40px !important;
+height: 20px;
+margin-right: 8px;
+}
+
+.pet{
+margin-bottom: 12px;
+color: #4F4F4F;
+font-size: 18px;
+font-family: Roboto;
+margin-top: 22px;
+height: 19px;
+}
+
+.manage{
+color: #646464;
+font-size: 18px;
+font-family: Roboto;
+margin-top: 40px;
+}
+
+
+.mobile-menu{
+width: 98.3%;
+display: none;
+margin-top: 25px;
+padding-bottom: 10px;
+margin-bottom: -5px;
+border-bottom: 1px solid rgb(200,200,200);
+color: #646464 !important;
+font-family: Roboto;
+font-size: 18px;
+font-weight: bold;
+}
+
+.icon{
+display: none;
+font-size: 25px;
+color: #1d7a8c;
+}
+
+.middle-navbar{
+border-bottom: none; 
+margin-right: 15px;
+}
+
+.home{
+margin-right: 15px;
+}
+
+.setting-main{
+width: 79%;
+}
+
+.user-setting{
+width: 50%;
+}
+
+.user-setting1{
+width: 50%;
+}
+
+/* Service Provider Radio */
+
+.booking1{
+margin-top: 25px;
+font-size: 19px;
+font-family: Roboto;
+color: #646464;
+}
+
+.booking-hr{
+width: 88%;
+margin-top: 5px;
+margin-bottom: -10px;
+}
+
+.booking-hr{
+margin-top: 5px;
+margin-bottom: -10px;
+}
+
+.gender{
+margin-bottom: 10px; 
+color: #646464; 
+font-weight: bold;
+}
+
+.title_my{
+margin-top: 10px;
+}
+
+.account-active{
+color: #67b644;
+font-weight: 400;
+}
+
+.setting-radio {
+display: inline-block;
+margin-right: 15px;
+}
+
+input[name="Gender"] {
+width: 17px;
+height: 14px;
+}
+
+.avtarimg {
+margin-top: 10px;
+}
+
+.avatar-img {
+height: 85px;
+border-radius: 85px;
+margin-right: 20px;
+}
+
+.avtarimg .active {
+border: 3px solid #1D7A8c;
+transition: 0.3s all;
+}
+
+.avtarimage {
+display: inline-block;
+}
+
+.avtarimage img:hover {
+cursor: pointer;
+}
+
+.form-group label{
+font-weight: bold;
+font-size: 16px;
+color: #646464
+}
+
+.form-group .setting-radio label{
+font-weight: normal;
+}
+
+.avatar-img1 {
+height: 85px;
+border-radius: 85px;
+margin-right: 20px;
+}
+
+
+/* Media Queries for all */
+
+@media screen and (max-width: 1260px) {
+
+input[type=checkbox] {
+margin-top: 20px;
+width: 55px !important;
+height: 30px;
+margin-right: 12px;
+}
+.save{
+width: 120px;
+padding: 9px 28px 8px 25px;
+}
+#month{
+width: 36%;
+}
+}
+
+
+@media screen and (max-width: 1110px) {
+.select_menu select {
+width: 22%;
+}
+#month{
+width: 35%;
+}
+}
+
+
+@media screen and (max-width: 1020px) {
+.setting .nav-link {
+font-size: 17px;
+}
+}
+
+
+@media screen and (max-width: 989px) {
+.vertical-nav{
+display: none;
+}
+.setting-main{
+width: 90%;
+}
+.select_menu select {
+width: 24%;
+}
+
+#month{
+width: 35%;
+}
+.middle-navbar{
+margin-right: 0px;
+margin-left: 0px;
+}
+.setting-main{
+width: 95%;
+}
+.profit{
+margin-right: 3px;
+}
+.password .form-control{
+width: 40%;
+}
+}
+
+
+@media screen and (max-width: 806px) {
+#month{
+width: 32%;
+}
+}
+
+
+@media screen and (max-width: 767px) {
+.setting-main{
+width: 97%;
+margin-left: 12px;
+}
+.middle-navbar{
+margin-right: 13px;
+}
+.profit{
+margin-right: 13px;
+}
+.password .form-control{
+    width: 98.5%;
+}
+input[type=checkbox] {
+margin-top: 16px;
+width: 70px !important;
+height: 40px;
+margin-right: 13px;
+margin-left: 5px;
+}
+.home{
+margin-right: 13px;
+}
+.pet{
+font-size: 17px;
+}
+.icon, .mobile-menu{
+display: block;
+}
+.dis-non{
+display: none;
+}
+#avtar-mobile{
+margin-top: 20px;
+}
+.select_menu select{
+width: 26%;
+}
+#month{
+width: 40%;
+}
+}
+
+
+@media screen and (max-width: 692px){
+.avatar-img {
+margin-bottom: 20px;
+}
+.title_my{
+margin-top: -15px;
+}
+}
+
+
+@media screen and (max-width: 530px) {
+#month{
+width: 37%;
+}
+}
+
+
+@media screen and (max-width: 500px){
+.password .form-control{
+width: 97%;
+}
+input[type=checkbox] {
+margin-top: 11px;
+width: 120px !important;
+height: 50px;
+}
+}
+
+
+@media screen and (max-width: 400px) {
+.password .form-control{
+width: 96.5%;
+}
+input[type=checkbox] {
+margin-top: 11px;
+width: 140px !important;
+height: 50px;
+}
+#month{
+width: 35%;
+}
+.booking1{
+font-size: 17px;
+}
+}
+
+
+@media screen and (max-width: 350px) {
+#month{
+width: 34%;
+}
+}
