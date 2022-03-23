@@ -895,8 +895,9 @@ public function ResetPassword()
                     $userid = $row['UserId'];
 
                     $count = $this->model->InsertingBlockCustomer1($userid, $Provideer_name);
-                     
-                     if($count == 0){
+                    $count1 = $this->model->InsertingBlockProvider1($userid, $Provideer_name);
+                    
+                     if(($count == 0) && ($count1 == 0)){
 
                         $starttime =  date("H:i", strtotime($Tim)); 
                         $startime = str_replace(":", ".", $starttime);
@@ -2534,18 +2535,19 @@ public function Request()
             $result = $this->model->ServiceRequest($array);
             $GoingtoServiceProvider = $this->model->GoingtoServiceProvider();
             $customer_mail = $this->model->GoingCustomerMail($email);
-            $result_row = $this->model->BookingBlockCustomer101($userid);
-           
+            $result_row = $this->model->BookingBlockCustomer101($userid);          
 
     if ($result) {     
       if($result_row > 0){
 
             $result4 = $this->model->BookingBlockCustomer100($userid);
-            $userid10 = $result4[0]; // 1   0
-            $Provider_id = $result4[1];  // block provider id 
-            $result4 = $this->model->FindCustomerBooking($Provider_id);
+      if (count($result4)) {
+          foreach ($result4 as $row4) {
+            $userid10 = $row4['IsBlocked']; // 1   0
+            $Provider_id = $row4['UserId'];  // block provider id 
+            $result50 = $this->model->FindCustomerBooking($Provider_id);
 
-            $Provider_email = $result4[0];
+            $Provider_email = $result50[0];
 
 
      if($userid10 == 0){
@@ -2576,11 +2578,12 @@ public function Request()
             $email = $row['Email'];
 
           if($Provider_email == $email){
+            
             break;
           }
           else{
-
            include('Accept-Booking-Mail.php');
+          
            }
          }
           }      
@@ -2593,6 +2596,8 @@ public function Request()
           } 
         }
       }
+    }
+  }
       else{
       if (count($GoingtoServiceProvider)) {
           foreach ($GoingtoServiceProvider as $row) {
@@ -3479,15 +3484,18 @@ public function ServiceProviderDetails()
                     $firstname = $row['FirstName'];
                     $lastname = $row['LastName'];
                     $userid = $row['UserId'];
+                    $target_userid = $row['TargetUserId'];
 
-                    $result1 = $this->model->FindBlockCustomer($userid);
+
+                    $result1 = $this->model->NewFindBlockCustomer($userid, $target_userid);
                     $block = $result1[0];
+                    
 
                       if($block == 1){
-                        $block1 = "Block";
+                        $block1 = "Un-block";
                       }
                      if($block == 0){
-                      $block1 = "Unblock";
+                      $block1 = "Block";
                      }
                            
 
@@ -3498,11 +3506,261 @@ public function ServiceProviderDetails()
                       <img src="../assets/image/forma-1-copy-19.png">
                     </div>
                       <p class="service-provider text-center">' . $firstname . ' ' . $lastname . '</p>
-                      <button type="button" class="favourite-bttn" id=' . $userid . '>' . $block1 .'</button>
+                      <button type="button" class="favourite-bttn" id=' . $target_userid . '>' . $block1 .'</button>
                       
                   </section>';
           
            echo $Address;
+
+
+        }
+      }
+    }
+    }
+
+public function FavouritePros()
+    {
+
+        if (isset($_POST)) {
+
+            $email = $_POST['username'];
+
+            $result = $this->model->ResetKey($email);
+            $Provider_name = $result[3];
+
+            
+            $result = $this->model->FavouritePros($Provider_name);
+           
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $userid = $row['UserId'];
+                    $target_userid = $row['TargetUserId'];
+
+                    $Cleanings = $this->model->CountRowsFavouritePros($target_userid,$userid);
+
+
+                    $result1 = $this->model->FindingRowForCustomerBlock($userid,$target_userid);
+
+                    if($result1 > 0){
+
+                      
+
+                    $result1 = $this->model->NewFindBlockCustomer($userid,$target_userid);
+                    $result11 = $this->model->NewFindFavouriteCustomer($userid,$target_userid);
+                    $block = $result1[0];
+                    $favourite = $result11[0];
+
+                      if($block == 0){
+                        $block1 = "Block";
+                      }
+                     if($block == 1){
+                      $block1 = "Un-block";
+                     }
+                           
+                      if($favourite == 0){
+                        $block2 = "favourite";
+                      }
+                     if($favourite == 1){
+                      $block2 = "Un-favourite";
+                     }
+                       
+
+                        $userid1 = $target_userid;
+
+                        $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($userid1);
+                        $Provider_all_ratings = $this->model->OverAllRatingOfServiceProvider($userid1);
+
+                      
+                 if (count($Provider_all_ratings) > 0) {
+                  
+                   $All_Ratings = 0;
+                  foreach ($Provider_all_ratings as $row) {
+                   
+                   $r = $row['Ratings'];
+                   
+                  $All_Ratings = $All_Ratings + $r;
+                  
+                   }
+
+
+                 $average = intval($All_Ratings/$Provider_all_ratings1);
+                      $stars = "";
+                            for ($x = 1; $x <= $average; $x+=1) {
+                             $stars = $stars."<i class='fa fa-star star1'></i>";
+                              
+                               } 
+
+                      $avgs = 5.0 - $average;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
+                              
+                               } 
+
+           $Address = 
+
+                  '<section class="block">
+                    <div class="round text-center" >
+                      <img src="../assets/image/forma-1-copy-19.png">
+                    </div>
+                      <p class="service-provider text-center">'.$firstname.' '.$lastname .'</p>
+                        <span class="time text-center">'. $stars . $stars1.'<span style="margin-left: 10px;">'.$average.'</span></span>
+
+
+                      <p class="service-provider text-center" id="cleaning">'.$Cleanings.' Cleanings</p>
+
+
+                      <span style="display: flex;">
+                      <button type="button" class="remove-bttn" id='.$target_userid.'>'.$block2.'</button>
+                      <button type="button" class="favourite-bttn" id='.$target_userid.'>'.$block1.'</button>
+                      </span>
+                  </section>';
+          
+           echo $Address;
+
+          }
+
+      else{ 
+
+          
+
+                   $All_Ratings = 5;
+            
+                      $average = 0;
+                      $avgs = $All_Ratings;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
+                              
+                               } 
+
+
+           $Address = 
+
+                  '<section class="block">
+                    <div class="round text-center" >
+                      <img src="../assets/image/forma-1-copy-19.png">
+                    </div>
+                      <p class="service-provider text-center">'.$firstname.' '.$lastname .'</p>
+                        <span class="time text-center">'.$stars1.'<span style="margin-left: 10px;">'.$average.'</span></span>
+
+
+                      <p class="service-provider text-center" id="cleaning">'.$Cleanings.' Cleanings</p>
+
+
+                      <span style="display: flex;">
+                      <button type="button" class="remove-bttn" id='.$target_userid.'>'.$block2.'</button>
+                      <button type="button" class="favourite-bttn" id='.$target_userid.'>'.$block1.'</button>
+                      </span>
+                  </section>';
+          
+           echo $Address;
+    }
+  }
+
+
+          if($result1 == 0){
+
+                       
+
+                        $userid = $target_userid;
+
+                        $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($userid);
+                        $Provider_all_ratings = $this->model->OverAllRatingOfServiceProvider($userid);
+                     
+                       
+                 if (count($Provider_all_ratings) > 0) {
+                  
+                   $All_Ratings = 0;
+                  foreach ($Provider_all_ratings as $row) {
+                   
+                   $r = $row['Ratings'];
+                   
+                  $All_Ratings = $All_Ratings + $r;
+                  
+                   }
+                 $average = intval($All_Ratings/$Provider_all_ratings1);
+                      $stars = "";
+                            for ($x = 1; $x <= $average; $x+=1) {
+                             $stars = $stars."<i class='fa fa-star star1'></i>";
+                              
+                               } 
+
+                      $avgs = 5.0 - $average;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
+                              
+                               } 
+
+
+
+
+            $Address =
+
+                  '<section class="block">
+                    <div class="round text-center" >
+                      <img src="../assets/image/forma-1-copy-19.png">
+                    </div>
+                      <p class="service-provider text-center">'.$firstname.' '.$lastname .'</p>
+                        <span class="time text-center"> '. $stars . $stars1.'<span style="margin-left: 10px;">'.$average.'</span></span>
+
+
+                      <p class="service-provider text-center" id="cleaning">'.$Cleanings.' Cleanings</p>
+
+
+                      <span style="display: flex;">
+                      <button type="button" class="remove-bttn" id='.$target_userid.'>Favourite</button>
+                      <button type="button" class="favourite-bttn" id='.$target_userid.'>Block</button>
+                      </span>
+                  </section>';
+
+                  echo $Address;
+           }
+
+           else{
+
+          
+
+            $Address =
+
+                  '<section class="block">
+                    <div class="round text-center" >
+                      <img src="../assets/image/forma-1-copy-19.png">
+                    </div>
+                      <p class="service-provider text-center">'.$firstname.' '.$lastname .'</p>
+                        <span class="time text-center">         
+                                  <i class="fa fa-star star2"></i>
+                                  <i class="fa fa-star star2"></i>
+                                  <i class="fa fa-star star2"></i>
+                                  <i class="fa fa-star star2"></i>
+                                  <i class="fa fa-star star2"></i><span style="margin-left: 10px;">0</span></span>
+
+
+                      <p class="service-provider text-center" id="cleaning">'.$Cleanings.' Cleanings</p>
+
+
+                      <span style="display: flex;">
+                      <button type="button" class="remove-bttn" id='.$target_userid.'>Favourite</button>
+                      <button type="button" class="favourite-bttn" id='.$target_userid.'>Block</button>
+                      </span>
+                  </section>';
+
+                  echo $Address;
+
+
+
+           }
+
+          }
 
 
         }
@@ -3517,11 +3775,13 @@ public function ServiceProviderDetails()
         if (isset($_POST)) {
         
             $email = $_POST['username'];
-            $userid = $_POST['userid'];
+            $target_userid = $_POST['target_userid'];
             
-            $result1 = $this->model->FindBlockCustomer($userid);
-            $block = $result1[0];
-            
+            $result1 = $this->model->ResetKey($email);
+            $userid = $result1[3];
+            $result10 = $this->model->NewFindBlockCustomer($userid,$target_userid);
+            $block = $result10[0];
+
             if($block == 0){
               $IsBlocked = 1;
             }
@@ -3534,15 +3794,16 @@ public function ServiceProviderDetails()
 
             $array = [
                 'Provider_name' => $Provider_name,
-                'userid' => $userid,
+                'userid' => $target_userid,
                 'IsBlocked' => $IsBlocked,
                 
 
             ];
             $result = $this->model->BlockCustomerRequest($array);
 
-            $result2 = $this->model->FindBlockCustomer($userid);
-            $block = $result1[0];
+            $result2 = $this->model->NewFindBlockCustomer($userid, $target_userid);
+            $block1 = $result1[0];
+
             
         if ($block == 1) {
             echo 1;
@@ -3552,6 +3813,194 @@ public function ServiceProviderDetails()
 
         }
     }
+
+
+
+
+
+ public function BlockFavourite()
+    {
+
+        if (isset($_POST)) {
+
+         
+        
+            $email = $_POST['username'];
+            $target_userid = $_POST['target_userid'];
+            
+            $result1 = $this->model->ResetKey($email);
+            $userid = $result1[3];
+            $Rows = $this->model->NewFindBlockCustomerRows($userid,$target_userid);
+
+           if($Rows > 0){
+
+            $result10 = $this->model->NewFindBlockCustomer($userid,$target_userid);
+            $block = $result10[0];
+            $favourite = $result10[1];
+
+            if($favourite == 0){
+
+            if($block == 0){
+              $IsBlocked = 1;
+            }
+            if($block == 1){
+              $IsBlocked = 0;
+            }
+
+            $result = $this->model->ResetKey($email);
+            $Provider_name = $result[3];
+
+            $array = [
+                'Provider_name' => $Provider_name,
+                'userid' => $target_userid,
+                'IsBlocked' => $IsBlocked,
+                
+
+            ];
+            $result = $this->model->BlockCustomerRequest($array);
+
+            $result2 = $this->model->NewFindBlockCustomer($userid, $target_userid);
+            $block1 = $result2[0];
+
+            
+        if ($block1 == 1) {
+            echo 3;
+        } if($block1 == 0) {
+            echo 4;
+        }
+      }else{
+
+      echo 1;
+
+
+      }
+    }
+
+
+    else{
+
+          $IsBlocked = 1;
+          $isfavorite = 0;
+
+            $array = [
+                'Provideer_name' => $userid,
+                'customer_name' => $target_userid,
+                'isblock' => $IsBlocked,
+                'isfavorite' => $isfavorite,
+                
+
+            ];
+            $result = $this->model->favoriteandblocked($array);
+
+            $result2 = $this->model->NewFindBlockCustomer($userid, $target_userid);
+            $block1 = $result2[0];
+
+            
+        if ($block1 == 1) {
+            echo 3;
+        } if($block1 == 0) {
+            echo 4;
+        }
+
+    }
+
+      }
+  }
+
+
+
+ public function RemoveFavourite()
+    {
+
+        if (isset($_POST)) {
+        
+            $email = $_POST['username'];
+            $target_userid = $_POST['target_userid'];
+            
+            $result1 = $this->model->ResetKey($email);
+            $userid = $result1[3]; 
+            $Rows = $this->model->NewFindBlockCustomerRows($userid,$target_userid);
+
+           if($Rows > 0){
+
+            $result10 = $this->model->NewFindFavouriteCustomer($userid,$target_userid);
+            $Favorite = $result10[0];
+            $block = $result10[1];
+
+            if($block == 0){
+
+            if($Favorite == 0){
+              $favorite = 1;
+            }
+            if($Favorite == 1){
+              $favorite = 0;
+            }
+
+            $result = $this->model->ResetKey($email);
+            $Provider_name = $result[3];
+
+            $array = [
+                'Provider_name' => $Provider_name,
+                'userid' => $target_userid,
+                'IsFavorite' => $favorite,
+                
+
+            ];
+            $result = $this->model->FavouritCustomerRequest($array);
+
+            $result2 = $this->model->NewFindFavouriteCustomer($userid, $target_userid);
+            $block1 = $result2[0];
+
+            
+        if ($block1 == 1) {
+            echo 3;
+        } if($block1 == 0) {
+            echo 4;
+        }
+      }else{
+        echo 1;
+      }
+      }
+
+
+    else{
+
+          $IsBlocked = 0;
+          $isfavorite = 1;
+
+            $array = [
+                'Provideer_name' => $userid,
+                'customer_name' => $target_userid,
+                'isblock' => $IsBlocked,
+                'isfavorite' => $isfavorite,
+                
+
+            ];
+            $result = $this->model->favoriteandblocked($array);
+
+            $result2 = $this->model->NewFindFavouriteCustomer($userid, $target_userid);
+            $block1 = $result2[0];
+
+            
+        if ($block1 == 1) {
+            echo 3;
+        } if($block1 == 0) {
+            echo 4;
+        }
+
+    }
+
+      }
+  }
+
+
+
+
+
+
+
+
+
 
 public function RateAddress()
     {
