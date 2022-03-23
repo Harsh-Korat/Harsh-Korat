@@ -35,7 +35,7 @@
     <a class="list-group-item active" href="./customer-dashboard.php">Dashboard</a>
     <a class="list-group-item" href="./service-history.php">Service History</a>
     <a class="list-group-item" href="#">Service Schedule</a>
-    <a class="list-group-item" href="#">Favourite Pros</a>
+    <a class="list-group-item" href="./Favourite-Pros.php">Favourite Pros</a>
     <a class="list-group-item" href="#">Invoices</a>
     <a class="list-group-item" href="#">My Ratings</a>
     <a class="list-group-item" href="#">Notifications</a>
