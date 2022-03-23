@@ -1,7 +1,7 @@
 <?php include('./header.php'); ?>
    
       <title>Service History</title>
-      <link rel="stylesheet" href="../assets/css/blockcustomerss.css">
+      <link rel="stylesheet" href="../assets/css/customer-block.css">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
@@ -103,7 +103,7 @@ function BlockCustomer(){
 
 $('#block_address').on('click', '.favourite-bttn', function() {
  
-var userid = $(this).attr('id');
+var target_userid = $(this).attr('id');
 
 
       <?php if (isset($_SESSION['username'])) { ?>
@@ -118,18 +118,18 @@ var userid = $(this).attr('id');
 
                 data: {
                     
-                    "userid": userid,
+                    "target_userid": target_userid,
                     "username": username,
 
                 },
              
                 success: function(data) {
                   
-                    if (data == 0) {
+                    if (data == 1) {
 
                     
                         Swal.fire({
-                            title: 'Customer has been blocked successfully.',
+                            title: 'Customer has been Un-block successfully.',
                             text: '',
                             icon: 'success',
                             confirmButtonText: 'OK'
@@ -139,9 +139,9 @@ var userid = $(this).attr('id');
                          });
 
                         
-                    } if(data == 1) {
+                    } else {
                         Swal.fire({
-                            title: 'Customer has been unblock successfully',
+                            title: 'Customer has been block successfully',
                             text: '',
                             icon: 'success',
                             confirmButtonText: 'OK'
