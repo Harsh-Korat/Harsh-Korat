@@ -550,13 +550,12 @@ public function CustomerUpdateDetails($array)
     public function BlockCustomer($Provider_name)
     {
 
-        $sql  = " SELECT * FROM servicerequest 
-        JOIN useraddress
-        ON servicerequest.AddressId = useraddress.AddressId
+        $sql  = " SELECT user.FirstName, user.LastName, user.UserId as TargetUserId, servicerequest.Provider_Name as UserId FROM servicerequest 
+
         JOIN user
         ON servicerequest.UserId = user.UserId
                
-        where servicerequest.Status = 2 AND servicerequest.Provider_Name = $Provider_name GROUP BY user.UserId";
+        where servicerequest.Status IN (2,3) AND servicerequest.Provider_Name = $Provider_name GROUP BY user.UserId";
 
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
@@ -565,6 +564,35 @@ public function CustomerUpdateDetails($array)
         return $result;
     }
 
+
+    public function FavouritePros($Provider_name)
+    {
+
+        $sql  = " SELECT user.FirstName, user.LastName, user.UserId as TargetUserId, servicerequest.UserId as UserId  FROM servicerequest 
+        JOIN user
+        ON servicerequest.Provider_Name = user.UserId
+               
+        where servicerequest.Status IN (2,3) AND servicerequest.UserId = $Provider_name GROUP BY servicerequest.Provider_Name";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function CountRowsFavouritePros($target_userid,$userid)
+    {
+
+        $sql  = " SELECT * FROM servicerequest 
+               
+        where servicerequest.Status IN (2,3) AND servicerequest.UserId = $userid AND servicerequest.Provider_Name = $target_userid";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
 
     public function UpcomingTable($Provideer_name)
     {
@@ -624,6 +652,15 @@ public function CustomerUpdateDetails($array)
         return ($result);
     }
 
+    public function FavouritCustomerRequest($array)
+    {
+        $sql = "UPDATE favoriteandblocked SET IsFavorite = :IsFavorite where UserId = :Provider_name AND TargetUserId = :userid";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        $count = $stmt->rowCount();
+        return ($result);
+    }
+
 public function favoriteandblocked($array1)
     {
         $sql = "INSERT INTO favoriteandblocked (UserId, TargetUserId , IsBlocked , IsFavorite)
@@ -664,16 +701,56 @@ public function favoriteandblocked($array1)
         return array($userid);
     }
 
+    public function FindingRowForCustomerBlock($userid,$target_userid)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where UserId = $userid AND TargetUserId = $target_userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+
+
+    public function NewFindBlockCustomer($userid,$target_userid)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where UserId = $userid AND TargetUserId = $target_userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userid = $result['IsBlocked'];
+        $list = $result['IsFavorite'];
+        return array($userid, $list);
+    }
+
+    public function NewFindFavouriteCustomer($userid,$target_userid)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where UserId = $userid AND TargetUserId = $target_userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userid = $result['IsFavorite'];
+        $list = $result['IsBlocked'];
+        return array($userid, $list);
+    }
+
+
+    public function NewFindBlockCustomerRows($userid,$target_userid)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where UserId = $userid AND TargetUserId = $target_userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+
 
     public function BookingBlockCustomer100($userid)
     {
         $sql = "SELECT * FROM favoriteandblocked Where TargetUserId = $userid";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
-        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
-        $userid = $result['IsBlocked'];
-        $Provider_id = $result['UserId'];
-        return array($userid, $Provider_id);
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 
 
@@ -730,6 +807,16 @@ public function favoriteandblocked($array1)
     public function InsertingBlockCustomer1($userid,$Provideer_name)
     {
         $sql = "SELECT * FROM favoriteandblocked Where TargetUserId = $userid AND UserId = $Provideer_name AND IsBlocked = 1";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+
+
+    public function InsertingBlockProvider1($userid,$Provideer_name)
+    {
+        $sql = "SELECT * FROM favoriteandblocked Where TargetUserId = $Provideer_name AND UserId = $userid AND IsBlocked = 1";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
         $count = $stmt->rowCount();
