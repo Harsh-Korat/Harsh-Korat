@@ -580,6 +580,7 @@ $('#discard').on('click', function(){
               
                  success: function(data) {
 
+                   
                     $('.spinner').hide();
                     $('.parent-spinner').hide();
                      
