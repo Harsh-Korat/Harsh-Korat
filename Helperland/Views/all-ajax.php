@@ -470,6 +470,57 @@ $(".service-get").on("click", function(e) {
           }  
     })
 
+
+
+
+    $(".logout").on("click", function(e) {
+          e.preventDefault();
+
+        $('.mobile-nav').hide();
+
+            $.ajax({
+                type: 'POST',
+                url: "http://localhost/Helperland/?controller=Helperland&function=logout",
+                data: {
+
+                    "forgot_email": 0,
+                },
+ 
+                success: function(data) {
+
+
+         
+                     if (data == 1) {
+
+                         Swal.fire({
+                             title: 'You have successfully logged out.',
+                             icon: 'success',
+                             confirmButtonText: 'OK'
+                         }).then(function() {
+                             location.href = "http://localhost/Helperland/Views/index.php";
+  
+                         });
+                    
+
+                     } else {
+                         Swal.fire({
+                             title: 'You have not successfully logged out.', 
+                             icon: 'error',
+                             confirmButtonText: 'OK'
+                         }).then(function() {
+                             location.href = "http://localhost/Helperland/Views/index.php";
+  
+                         });
+                   }
+               }
+            });
+        
+    })
+
+
+
+
+
 })
 
 
