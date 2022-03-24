@@ -61,19 +61,25 @@ public function __construct() {
         $Password = $row['Password'];
         $Name = $row['FirstName'];
         $_SESSION['usertypeid'] = $usertypeid;
+        $status = $row['Status'];
+
         if ($count == 1) {
+            
+            if($status == 0){             
+
             if (password_verify($password, $Password)) {
                 if ($usertypeid == 0) {
                     $_SESSION['username'] = $email;
                     $_SESSION['name'] = $Name;
-                    
-
                     echo 2;
                 } else if ($usertypeid == 1) {
                     $_SESSION['username'] = $email;
-                    $_SESSION['name'] = $Name;
-                   
+                    $_SESSION['name'] = $Name;  
                     echo 3;
+                } else{
+                    $_SESSION['username'] = $email;
+                    $_SESSION['name'] = $Name; 
+                    echo 5;
                 }
 
             }
@@ -81,7 +87,13 @@ public function __construct() {
                echo 1;
             }
 
-        } else {
+        } 
+
+        else{
+          echo 4; 
+        }
+    }
+         else {
              echo 0; 
         }
     }
@@ -89,7 +101,6 @@ public function __construct() {
 
     public function Login1($email, $password)
     {
-
         $sql = "select * from user where Email = '$email'";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
@@ -99,24 +110,38 @@ public function __construct() {
         $Password = $row['Password'];
         $Name = $row['FirstName'];
         $_SESSION['usertypeid'] = $usertypeid;
+        $status = $row['Status'];
 
         if ($count == 1) {
+            
+            if($status == 0){             
+
             if (password_verify($password, $Password)) {
                 if ($usertypeid == 0) {
                     $_SESSION['username'] = $email;
                     $_SESSION['name'] = $Name;
                     echo 2;
-                    
                 } else if ($usertypeid == 1) {
-                    $_SESSION['username'] = $email;
-                    $_SESSION['name'] = $Name;
+ 
                     echo 3;
+                } else{
+
+                    echo 5;
                 }
-            } else {
+
+            }
+             else {
                echo 1;
             }
-        } else {
-           echo 0;
+
+        } 
+
+        else{
+          echo 4; 
+        }
+    }
+         else {
+             echo 0; 
         }
     }
 
@@ -152,7 +177,6 @@ public function Customer_SP($array)
         $count = $stmt->rowCount();
         return $count;
     }
-
 
 
     public function Pincode($postal)
@@ -611,6 +635,22 @@ public function CustomerUpdateDetails($array)
         return $result;
     }
 
+    public function AdminServiceRequests()
+    {
+
+        $sql  = " SELECT useraddress.AddressLine1, useraddress.AddressLine2, useraddress.City, useraddress.PostalCode, user.Mobile, user.FirstName, user.LastName, servicerequest.TotalHours, .servicerequest.Tim, servicerequest.SubTotal, servicerequest.ServiceRequestId, servicerequest.ServiceStartDate, servicerequest.Status as ST,user.UserId FROM servicerequest 
+        JOIN useraddress
+        ON servicerequest.AddressId = useraddress.AddressId
+        JOIN user
+        ON servicerequest.UserId = user.UserId ORDER BY servicerequest.ServiceRequestId ASC";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
     public function UpcomingTableConflict($Provider_name)
     {
 
@@ -887,6 +927,95 @@ public function favoriteandblocked($array1)
         $stmt->execute();
         $count  = $stmt->rowCount();
         return $count;
+    }
+
+    public function Usermanagement()
+    {
+        $sql =  "SELECT user.UserId, user.FirstName, user.LastName, user.UserTypeId, useraddress.PostalCode, user.Mobile, user.Status, user.CreatedDate FROM user LEFT JOIN useraddress ON user.UserId = useraddress.UserId";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function UsermanagementInactive($target_userid)
+    {
+        $sql = "SELECT * FROM user Where UserId = $target_userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userid = $result['Status'];
+        
+        return array($userid);
+    }
+
+    public function UsermanagementInactive1($array)
+    {
+        $sql = "UPDATE user SET Status = :statu WHERE UserId = :target_userid";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+    }
+
+    public function AdminUpdateAddress($addressid1)
+    {
+        $sql =  "SELECT * FROM servicerequest
+         JOIN useraddress ON servicerequest.AddressId = useraddress.AddressId
+         WHERE ServiceRequestId = $addressid1";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
+public function AdminUpdateDetails($array)
+    {
+        $sql = "UPDATE useraddress SET AddressLine1 = :street , AddressLine2 = :houseno, City = :location, PostalCode =:pincode WHERE AddressId = :addressid";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+
+    }
+
+public function UpdateTimeDateByAdmin($array1)
+    {
+        $sql = "UPDATE servicerequest SET ServiceStartDate = :plan_date, Tim = :dash_time WHERE ServiceRequestId = :ServiceRequestId";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array1);
+        return ($result);
+
+    }
+
+
+
+   public function AdminFindPostalCodeRowCount($zip,$sid,$customer,$status,$from_date,$to_date)
+    {
+
+        $sql  = "SELECT *, servicerequest.Status as ST FROM servicerequest LEFT OUTER JOIN user on servicerequest.UserId = user.UserId 
+
+        LEFT OUTER join useraddress ON servicerequest.AddressId = useraddress.AddressId
+        WHERE servicerequest.ServiceRequestId LIKE '%$sid%' AND user.FirstName LIKE '%$customer%' AND servicerequest.Status LIKE '%$status%' AND servicerequest.ZipCode LIKE '%$zip%' AND servicerequest.ServiceStartDate BETWEEN '$from_date' AND '$to_date'
+                ";
+
+       $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function AdminSearchUsermanagement($select,$user_type,$from_date,$to_date)
+    {
+        $sql =  "SELECT * FROM user LEFT OUTER JOIN useraddress ON user.UserId = useraddress.UserId
+        WHERE user.FirstName LIKE '%$select%' AND user.UserTypeId LIKE '%$user_type%' AND user.CreatedDate BETWEEN '$from_date' AND '$to_date'
+                ";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 
 }
