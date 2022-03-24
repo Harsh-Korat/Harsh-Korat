@@ -39,7 +39,7 @@
                         <a class="nav-link log-in" href="#"><?php echo $_SESSION['name']; ?></a>
                     </li>
                     <li class="nav-item  helper">
-                        <a class="nav-link" href="#"><img src="../assets/image/logout.png"></a>
+                        <a class="nav-link logout" href="#"><img src="../assets/image/logout.png"></a>
                     </li>
                 </ul>
             </div>
@@ -85,12 +85,12 @@
     <a href="#">Newsletter Management</a>
     <a href="#">Content Management</a>
     <a href="#">My Settings</a>
-    <a href="#">Logout</a>
+    <a href="#" class="logout">Logout</a>
     <div class="hrr"><hr></div>
 
     <div class="face">
-    <a href="#" class="btn"><img src="./image/ic-facebook.png" alt=""></a>
-    <a href="#" class="btn"><img src="./image/ic-instagram.png" alt=""></a>
+    <a href="#" class="btn"><img src="../assets/image/ic-facebook.png" alt=""></a>
+    <a href="#" class="btn"><img src="../assets/image/ic-instagram.png" alt=""></a>
    </div>
   </div>
  </div>
