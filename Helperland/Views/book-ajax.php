@@ -51,7 +51,30 @@
                              location.href = "http://localhost/Helperland/Views/index.php";
   
                          });
-                      }
+                     
+                      }else if (data == 4) {
+
+                         Swal.fire({
+                             title: 'You are block. You can not able to login.',
+                             icon: 'error',
+                             confirmButtonText: 'Ok'
+                         }).then(function() {
+                             location.href = "http://localhost/Helperland/Views/index.php";
+  
+                         });
+                    
+                     }else if (data == 5) {
+
+                         Swal.fire({
+                             title: 'Admin are not allowed.',
+                             icon: 'error',
+                             confirmButtonText: 'Ok'
+                         }).then(function() {
+                             location.href = "http://localhost/Helperland/Views/index.php";
+  
+                         });
+                    
+                     }
 
                      else {
                          Swal.fire({
