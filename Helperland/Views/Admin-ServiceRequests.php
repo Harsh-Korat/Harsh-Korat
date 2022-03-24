@@ -39,7 +39,7 @@
                         <a class="nav-link log-in" href="#"><?php echo $_SESSION['name']; ?></a>
                     </li>
                     <li class="nav-item  helper">
-                        <a class="nav-link" href="#"><img src="../assets/image/logout.png"></a>
+                        <a class="nav-link logout" href="#"><img src="../assets/image/logout.png"></a>
                     </li>
                 </ul>
             </div>
@@ -84,7 +84,7 @@
     <a href="#">Newsletter Management</a>
     <a href="#">Content Management</a>
     <a href="#">My Settings</a>
-    <a href="#">Logout</a>
+    <a href="#" class="logout">Logout</a>
     <div class="hrr"><hr></div>
 
     <div class="face">
@@ -286,12 +286,14 @@
            <input type="text" id="plan-date" name="calander" placeholder="DD/MM/YYYY" maxlength="10" style="width: 100%;">            
            <img src="../assets/image/admin-calendar-blue.png">                                  
          </div>
+         <div class="plan-date-message text-danger mt-2"></div>
       </div>
 
       <div class="col-md-6 mb-1">
        <label class="street" id="method">Time</label>
         <div class="date_menu">
-         <input type="text" id="dash_time" name="calander" placeholder="Time" maxlength="8" style="width: 100%;"> 
+         <input type="text" id="dash_time" name="calander" placeholder="Time" maxlength="8" style="width: 100%;">
+         <span class="dash_time-message text-danger mt-1"></span> 
          </select>
         </div> 
        </div>
@@ -316,6 +318,7 @@
       <div class="form-group col-md-6 mt-1">
         <label class="street">Pincode</label>
         <input type="number" class="form-control street" id="pincode" placeholder="Pincode" maxlength="5" maxlength="6">
+        <span class="pincode-message text-danger mt-1"></span>
       </div>
    
     <div class="form-group col-md-6 mt-1">
@@ -331,13 +334,13 @@
       <div class="form-group col-md-6 mt-1">
         <label class="street">Street name</label>
         <input type="text" class="form-control" id="invoicestreet" placeholder="Street name" required>
-        <span class="street-message text-danger mt-1"></span>
+        <span class="street-messages text-danger mt-1"></span>
       </div>
  
       <div class="form-group col-md-6 mt-1">
         <label class="street">House number</label>
         <input type="number" class="form-control" id="invoiceshouseno" placeholder="House number" required>
-        <span class="house-message text-danger mt-1"></span>
+        <span class="house-messages text-danger mt-1"></span>
       </div>
     </div>
 
@@ -345,6 +348,7 @@
       <div class="form-group col-md-6 mt-1">
         <label class="street">Pincode</label>
         <input type="number" class="form-control street" id="invoicespincode" placeholder="Pincode" maxlength="5" maxlength="6">
+        <span class="pincode-messages text-danger mt-1"></span>
       </div>
    
     <div class="form-group col-md-6 mt-1">
@@ -418,6 +422,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.3.10/dist/sweetalert2.all.min.js"></script>
+
 
 <?php include('./Admin-ajax.php'); ?>
 
