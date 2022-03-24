@@ -309,7 +309,23 @@ $(".service-get").on("click", function(e) {
 
                       else if(data == 3) {
                          window.location.href = "http://localhost/Helperland/Views/NewService.php";
-                      }
+                      
+                      }else if (data == 4) {
+
+                         Swal.fire({
+                             title: 'You are block. You can not able to login.',
+                             icon: 'error',
+                             confirmButtonText: 'Ok'
+                         }).then(function() {
+                             location.href = "http://localhost/Helperland/Views/index.php";
+  
+                         });
+                    
+                     }else if (data == 5) {
+
+                       window.location.href = "http://localhost/Helperland/Views/Admin-ServiceRequests.php";
+                    
+                     }
 
                      else {
                          Swal.fire({
