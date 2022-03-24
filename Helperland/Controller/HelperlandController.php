@@ -57,6 +57,20 @@ public function Contact()
         }
     }
 
+ public function logout()
+    {
+
+        if (isset($_POST)) {
+    
+              session_unset();
+              session_destroy();
+               
+                echo 1;
+               
+            } 
+        }
+    
+
 
 public function ResetPassword()
     {
