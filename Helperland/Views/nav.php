@@ -143,7 +143,7 @@ $base_url = "http://localhost/Helperland/";
         <div class="dropdown-menu" id="menu" style="margin-top: 15px;">
           <a class="dropdown-item" href="./customer-dashboard.php">My Dashboard</a>
           <a class="dropdown-item" href="./customer-setting.php">My Setting</a>
-          <a class="dropdown-item" href="#">Logout</a>
+          <a class="dropdown-item logout" href="#">Logout</a>
         </div>
        </div>
        </li>
@@ -192,7 +192,7 @@ $base_url = "http://localhost/Helperland/";
     <a href="#">Favourite Pros</a>
     <a href="#">Invoices</a>
     <a href="./customer-setting.php">My Settings</a>
-    <a href="#">Logout</a>
+    <a href="#" class="logout">Logout</a>
 
     <div class="hrr"><hr></div>
 
@@ -269,7 +269,7 @@ $base_url = "http://localhost/Helperland/";
         <div class="dropdown-menu" id="menu" style="margin-top: 15px;">
           <a class="dropdown-item" href="#">My Dashboard</a>
           <a class="dropdown-item" href="./service-provider-setting.php">My Setting</a>
-          <a class="dropdown-item" href="#">Logout</a>
+          <a class="dropdown-item logout" href="#">Logout</a>
         </div>
        </div>
        </li>
@@ -321,7 +321,7 @@ $base_url = "http://localhost/Helperland/";
     <a href="./BlockCustomer.php">Block Customer</a>
     <a href="#">Invoices</a>
     <a href="./service-provider-setting.php">My Settings</a>
-    <a href="#">Logout</a>
+    <a href="#" class="logout">Logout</a>
 
     <div class="hrr"><hr></div>
 
