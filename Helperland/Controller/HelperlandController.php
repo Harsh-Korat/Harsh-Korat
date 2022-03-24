@@ -1678,9 +1678,9 @@ public function ResetPassword()
             if (count($result)) {
                 foreach ($result as $row) {
                     $ServiceStartDate = $row['ServiceStartDate'];
-                    $TotalHours = $row['TotalHours'];
+                    $totaltime = $row['TotalHours'];
                     $ExtraServices = $row['ExtraServices'];
-                    $ServiceRequestId = $row['ServiceRequestId'];//
+                    $ServiceRequestId = $row['ServiceRequestId'];
                     $SubTotal = $row['SubTotal'];
                     $AddressLine1 = $row['AddressLine1'];
                     $AddressLine2 = $row['AddressLine2'];
@@ -1692,12 +1692,49 @@ public function ResetPassword()
 
                     $Tim = $row['Tim'];
 
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
 
 
           $Address = 
 
             '<div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
-              <div class="service-duration">Duration: <span class="duration">' . $TotalHours . '</span></div>
+              <div class="service-duration">Duration: <span class="duration">' . $totaltime . ' Hrs</span></div>
 
               <hr>
               <div class="service-duration">Service Id: <span class="duration">' . $ServiceRequestId . '</span></div>
@@ -1790,7 +1827,7 @@ public function ResetPassword()
           $Address = 
 
             '<div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
-              <div class="service-duration">Duration: <span class="duration">' . $totaltime . '</span></div>
+              <div class="service-duration">Duration: <span class="duration">' . $totaltime . ' Hrs</span></div>
 
               <hr>
               <div class="service-duration">Service Id: <span class="duration">' . $ServiceRequestId . '</span></div>
@@ -3996,12 +4033,6 @@ public function FavouritePros()
 
 
 
-
-
-
-
-
-
 public function RateAddress()
     {
         
@@ -4084,12 +4115,719 @@ public function RateAddress()
 
               echo $Address; 
                     
-
-
                 }
             }
         }
     }
 }
+
+   public function Usermanagement()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+
+            $result = $this->model->Usermanagement();
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $userid = $row['UserId'];
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $usertypeid = $row['UserTypeId'];
+                    $pincode = $row['PostalCode'];
+                    $mobile = $row['Mobile'];
+                    $status = $row['Status'];
+                    $createddate = $row['CreatedDate'];
+
+                    $var = strtotime($createddate);
+                    $createddate = date('d/m/y',$var);
+
+                    if($usertypeid == 0){
+                      $usertype = "Customer";
+                    }
+                    else{
+                      $usertype = "Service Provider";
+                    }
+
+                    if($status == 0){
+                     $state = 'actives">Active';
+                    }else{
+                      $state = 'inactives">Inactive';
+                    }
+
+                    if($status == 0){
+                     $dis = "<a class='dropdown-item'>Inactive</a>";
+
+                    }else{
+                    $dis = "<a class='dropdown-item'>Active</a>";
+                    }
+
+                    
+            $Address = 
+                    '<tr>                                         
+                      <td>'.$firstname.'  '.$lastname.'</td>     
+                      <td></td>
+                      <td>'.$createddate.'</td>
+                      <td>'.$usertype.'</td>    
+                      <td>'.$mobile.'</td>
+                      <td>'.$pincode.'</td>
+                      <td><button type="button" class="btn '.$state.'</button></td>
+                      <td class="dot">   
+                      <div class="dropdown">
+                        <button class="btn" type="button" data-toggle="dropdown">
+                           <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <div class="dropdown-menu menu" id='.$userid.'>'.$dis.'
+                                      
+                            </div>
+                           </div></td>
+                    </tr>';
+
+                        echo $Address;              
+                }
+            }
+        }
+    }
+
+
+   public function AdminSearchUsermanagement()
+    {
+        
+        if (isset($_POST)) {
+
+        
+            $select = $_POST['select'];
+           
+            $user_type = $_POST['user_type'];
+           
+            $from_date = $_POST['from_date'];
+            $to_date = $_POST['to_date'];
+
+           
+            if($select == '' && $user_type == '' && $from_date == '' && $to_date == ''){
+
+            $result = $this->model->Usermanagement();
+
+            }
+            else{
+
+            $from_date = $_POST['from_date'] . ''. ' 00:00:00';
+            $to_date = $_POST['to_date'] . ''. ' 00:00:00';
+
+              $result = $this->model->AdminSearchUsermanagement($select,$user_type,$from_date,$to_date);
+
+            }
+            
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $userid = $row['UserId'];
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $usertypeid = $row['UserTypeId'];
+                    $pincode = $row['PostalCode'];
+                    $mobile = $row['Mobile'];
+                    $status = $row['Status'];
+                    $createddate = $row['CreatedDate'];
+
+                    $var = strtotime($createddate);
+                    $createddate = date('d/m/y',$var);
+
+                    if($usertypeid == 0){
+                      $usertype = "Customer";
+                    }
+                    else{
+                      $usertype = "Service Provider";
+                    }
+
+                    if($status == 0){
+                     $state = 'actives">Active';
+                    }else{
+                      $state = 'inactives">Inactive';
+                    }
+
+                    if($status == 0){
+                     $dis = "<a class='dropdown-item'>Inactive</a>";
+
+                    }else{
+                    $dis = "<a class='dropdown-item'>Active</a>";
+                    }
+
+                    
+            $Address = 
+                    '<tr>                                         
+                      <td>'.$firstname.'  '.$lastname.'</td>     
+                      <td></td>
+                      <td>'.$createddate.'</td>
+                      <td>'.$usertype.'</td>    
+                      <td>'.$mobile.'</td>
+                      <td>'.$pincode.'</td>
+                      <td><button type="button" class="btn '.$state.'</button></td>
+                      <td class="dot">   
+                      <div class="dropdown">
+                        <button class="btn" type="button" data-toggle="dropdown">
+                           <i class="fas fa-ellipsis-v"></i>
+                        </button>
+                        <div class="dropdown-menu menu" id='.$userid.'>'.$dis.'
+                                      
+                            </div>
+                           </div></td>
+                    </tr>';
+
+                        echo $Address;              
+                }
+            }
+        }
+    }
+
+
+
+ public function UsermanagementInactive()
+    {
+
+        if (isset($_POST)) {
+
+            $email = $_POST['username'];
+            $target_userid = $_POST['target_userid'];
+            
+            $result10 = $this->model->UsermanagementInactive($target_userid);
+            $status = $result10[0];
+
+            if($status == 0){
+              $statu = 1;
+            }
+            if($status == 1){
+              $statu = 0;
+            }
+
+            $array = [
+                'target_userid' => $target_userid,
+                'statu' => $statu,            
+
+            ];
+            $result = $this->model->UsermanagementInactive1($array);
+
+            $result2 = $this->model->UsermanagementInactive($target_userid);
+            $status1 = $result2[0];
+
+            
+        if ($status1 == 1) {
+            echo 1;
+        } if($status1 == 0) {
+            echo 0;
+        }
+      }
+    }
+
+
+
+ public function AdminServiceRequests()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+           
+            $result = $this->model->AdminServiceRequests();
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim']; 
+                    $totaltime  = $row['TotalHours'];
+                    $street = $row['AddressLine1'];
+                    $houseno = $row['AddressLine2'];
+                    $city = $row['City'];
+                    $pincode = $row['PostalCode'];
+                    $mobile = $row['Mobile'];
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $status = $row['ST'];
+                    $userid = $row['UserId'];
+                
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+
+                 if($status == 0){
+                  $state = "class='new'>New";
+                 }
+                 elseif($status == 1){
+                  $state = "class='padding1'>Pendding";
+                 }
+                 elseif ($status == 2) {
+                  $state = "class='completed1'>Completed";
+                 }
+                 else{
+                  $state = "class='cancel1'>Cancelled";
+                 }
+
+
+                if($status == 0){
+
+                     $Address = 
+
+                        '<tr>                                         
+                         
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          <img src="../assets/image/calendar2.png" class="calendar"><b>'.$ServiceStartDate.'</b><br>
+                          <img src="../assets/image/layer-712.png" class="clock">'.$Tim.'
+                          </td>
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          '.$firstname.'  '.$lastname.'<br>
+                          <div class="mydiv">
+                            <img src="../assets/image/layer-719.png" class="home">
+                              <div class="desc">'.$street.' '.$houseno.','.$pincode.'  '.$city.'</div> 
+                              </div>
+                           </td>
+
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>   
+
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>
+                          
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <button type="button" '.$state.'</button>
+                           </td>
+
+                           <td class="text-center dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><button type="button" class="btn cancel1">Not Applicable</button></td>
+
+                          <td class="dot">
+                           <div class="dropdown">
+                            <button class="btn" type="button" data-toggle="dropdown">
+                               <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu" id="menu">
+                                  <a class="dropdown-item" data-toggle="modal" data-target="#address-modal" id=' . $ServiceRequestId . '>Edit & Reschedule</a>  
+                                  
+                                  <a class="dropdown-item" href="#">Cancel SR by Cust</a>
+                                  <a class="dropdown-item" href="#">Inquiry</a>  
+                                  <a class="dropdown-item" href="#">History Log</a>
+                                  <a class="dropdown-item" href="#">Download Invoice</a>
+                                  <a class="dropdown-item" href="#">Other Transactions</a>       
+                                </div>
+                               </div>
+                          </td>
+
+                        </tr>';
+
+
+                        echo $Address; 
+
+                    }else{
+
+                    $Address = 
+
+                        '<tr>                                         
+                         
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          <img src="../assets/image/calendar2.png" class="calendar"><b>'.$ServiceStartDate.'</b><br>
+                          <img src="../assets/image/layer-712.png" class="clock">'.$Tim.'
+                          </td>
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          '.$firstname.'  '.$lastname.'<br>
+                          <div class="mydiv">
+                            <img src="../assets/image/layer-719.png" class="home">
+                              <div class="desc">'.$street.' '.$houseno.','.$pincode.'  '.$city.'</div> 
+                              </div>
+                           </td>
+
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>   
+
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>
+                          
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <button type="button" '.$state.'</button>
+                           </td>
+
+                           <td class="text-center dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><button type="button" class="btn cancel1">Not Applicable</button></td>
+                        
+                          <td class="dot">
+                           <div class="dropdown">
+                            <button class="btn" type="button" data-toggle="dropdown">
+                               <i class="fas fa-ellipsis-v"></i>
+                            </button>
+              
+                              <div class="dropdown-menu" id="menu">
+                                  <a class="dropdown-item">Refund</a>  
+                                  
+                                  <a class="dropdown-item" href="#">Inquiry</a> 
+                                  <a class="dropdown-item" href="#">History Log</a>
+                                  <a class="dropdown-item" href="#">Download Invoice</a>
+                                  <a class="dropdown-item" href="#">Has Issue</a>
+                                  <a class="dropdown-item" href="#">Other Transactions</a>       
+                                </div>
+                               </div>
+                          </td>
+
+                        </tr>';
+
+
+
+
+                        echo $Address; 
+
+
+
+                    }
+
+                 }
+              }
+          }
+      }
+
+
+
+    public function AdminUpdateAddress()
+    {
+        
+        if (isset($_POST)) {
+            $addressid1 = $_POST['addressid1'];
+
+            $result = $this->model->AdminUpdateAddress($addressid1);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $street = $row['AddressLine1'];
+                    $houseno = $row['AddressLine2'];
+                    $city = $row['City'];
+                    $pincode = $row['PostalCode'];
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    
+                    $Tim = $row['Tim']; 
+                    $totaltime  = $row['TotalHours'];
+
+
+                    
+                        $starttime =  date("H:i", strtotime($Tim)); 
+
+                       
+
+                   
+     
+                    $result = [$street, $houseno, $city, $pincode, $ServiceStartDate, $starttime];
+
+                    echo json_encode($result);
+
+
+            
+                                    }
+                                }
+                            }
+                        }
+
+
+  public function AdminUpdateDetails()
+     {
+
+         if (isset($_POST)) {
+    
+             $ServiceRequestId = $_POST['addressid'];
+             $plan_date = $_POST['plan_date'];
+             $dash_time = $_POST['dash_time'];
+
+             $dash_time = $dash_time . ':00';        
+
+             $result1 = $this->model->UpdateCustomerSchedule($ServiceRequestId);
+
+             $array1 = [
+                      'plan_date' => $plan_date,
+                      'dash_time' => $dash_time,
+                      'ServiceRequestId' => $ServiceRequestId,
+                      ];
+
+              $result2 = $this->model->UpdateTimeDateByAdmin($array1);
+
+              $addressid = $result1['AddressId'];
+             
+                  $array = [
+                      'street' => $_POST['street'],
+                      'houseno' => $_POST['houseno'],
+                      'addressid' => $addressid,
+                      'pincode' => $_POST['pincode'],
+                      'location' => $_POST['location'],
+
+                  ];
+
+
+                  $result = $this->model->AdminUpdateDetails($array);
+             
+              echo 1;
+            }
+         }
+
+
+
+ public function AdminFindPostalCode()
+    {
+        
+        if (isset($_POST)) {
+            $zip = $_POST['zip'];
+            $sid = $_POST['sid'];
+           
+            $customer = $_POST['customer'];
+           
+            $status = $_POST['status'];
+           
+            $from_date = $_POST['from_date'];
+            $to_date = $_POST['to_date'];
+
+            if($zip == '' && $sid == '' && $customer == '' && $status == '' && $from_date == '' && $to_date == ''){
+
+             $result = $this->model->AdminServiceRequests();
+            }
+            else{
+
+              $result = $this->model->AdminFindPostalCodeRowCount($zip,$sid,$customer,$status,$from_date,$to_date);
+
+            }
+
+          
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim']; 
+                    $totaltime  = $row['TotalHours'];
+                    $street = $row['AddressLine1'];
+                    $houseno = $row['AddressLine2'];
+                    $city = $row['City'];
+                    $pincode = $row['PostalCode'];
+                    $mobile = $row['Mobile'];
+                    $firstname = $row['FirstName'];
+                    $lastname = $row['LastName'];
+                    $status = $row['ST'];
+                    $userid = $row['UserId'];
+                
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+
+                 if($status == 0){
+                  $state = "class='new'>New";
+                 }
+                 elseif($status == 1){
+                  $state = "class='padding1'>Pendding";
+                 }
+                 elseif ($status == 2) {
+                  $state = "class='completed1'>Completed";
+                 }
+                 else{
+                  $state = "class='cancel1'>Cancelled";
+                 }
+
+
+                if($status == 0){
+
+                     $Address = 
+
+                        '<tr>                                         
+                         
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          <img src="../assets/image/calendar2.png" class="calendar"><b>'.$ServiceStartDate.'</b><br>
+                          <img src="../assets/image/layer-712.png" class="clock">'.$Tim.'
+                          </td>
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          '.$firstname.'  '.$lastname.'<br>
+                          <div class="mydiv">
+                            <img src="../assets/image/layer-719.png" class="home">
+                              <div class="desc">'.$street.' '.$houseno.','.$pincode.'  '.$city.'</div> 
+                              </div>
+                           </td>
+
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>   
+
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>
+                          
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <button type="button" '.$state.'</button>
+                           </td>
+
+                           <td class="text-center dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><button type="button" class="btn cancel1">Not Applicable</button></td>
+
+                          <td class="dot">
+                           <div class="dropdown">
+                            <button class="btn" type="button" data-toggle="dropdown">
+                               <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <div class="dropdown-menu" id="menu">
+                                  <a class="dropdown-item" data-toggle="modal" data-target="#address-modal" id=' . $ServiceRequestId . '>Edit & Reschedule</a>  
+                                  
+                                  <a class="dropdown-item" href="#">Cancel SR by Cust</a>
+                                  <a class="dropdown-item" href="#">Inquiry</a>  
+                                  <a class="dropdown-item" href="#">History Log</a>
+                                  <a class="dropdown-item" href="#">Download Invoice</a>
+                                  <a class="dropdown-item" href="#">Other Transactions</a>       
+                                </div>
+                               </div>
+                          </td>
+
+                        </tr>';
+
+
+                        echo $Address; 
+
+                    }else{
+
+                    $Address = 
+
+                        '<tr>                                         
+                         
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          <img src="../assets/image/calendar2.png" class="calendar"><b>'.$ServiceStartDate.'</b><br>
+                          <img src="../assets/image/layer-712.png" class="clock">'.$Tim.'
+                          </td>
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          '.$firstname.'  '.$lastname.'<br>
+                          <div class="mydiv">
+                            <img src="../assets/image/layer-719.png" class="home">
+                              <div class="desc">'.$street.' '.$houseno.','.$pincode.'  '.$city.'</div> 
+                              </div>
+                           </td>
+
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>   
+
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>
+                          
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <button type="button" '.$state.'</button>
+                           </td>
+
+                           <td class="text-center dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><button type="button" class="btn cancel1">Not Applicable</button></td>
+                        
+                          <td class="dot">
+                           <div class="dropdown">
+                            <button class="btn" type="button" data-toggle="dropdown">
+                               <i class="fas fa-ellipsis-v"></i>
+                            </button>
+              
+                              <div class="dropdown-menu" id="menu">
+                                  <a class="dropdown-item">Refund</a>  
+                                  
+                                  <a class="dropdown-item" href="#">Inquiry</a> 
+                                  <a class="dropdown-item" href="#">History Log</a>
+                                  <a class="dropdown-item" href="#">Download Invoice</a>
+                                  <a class="dropdown-item" href="#">Has Issue</a>
+                                  <a class="dropdown-item" href="#">Other Transactions</a>       
+                                </div>
+                               </div>
+                          </td>
+
+                        </tr>';
+
+
+
+
+                        echo $Address; 
+
+
+
+                    }
+
+                 }
+              }
+          }
+        }
+      
+
+
+
 
 }
