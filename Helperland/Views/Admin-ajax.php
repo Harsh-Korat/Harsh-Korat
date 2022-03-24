@@ -112,7 +112,60 @@ $('#Admin_address').on('click', '.dropdown-item', function() {
     $(".edit-address").on("click", function(e) {
           e.preventDefault();
 
-            
+
+      if($('#plan-date').val() == "" || $("#dash_time").val() == "" || $("#street").val() == "" || $("#houseno").val() == "" || $("#pincode").val() == "" || $("#invoicestreet").val() == "" || $("#invoiceshouseno").val() == "" || $("#invoicespincode").val() == ""){
+
+
+       if ($("#plan-date").val() == "") {
+       $(".plan-date-message").addClass('error-message').text("Date is required");
+       }else {
+       $(".plan-date-message").removeClass('error-message').text("");
+       }
+
+       if ($("#dash_time").val() == "") {
+       $(".dash_time-message").addClass('error-message').text("Time is required");
+       }else {
+       $(".dash_time-message").removeClass('error-message').text("");
+       }
+
+       if ($("#street").val() == "") {
+       $(".street-message").addClass('error-message').text("Street is required");
+       }else {
+       $(".street-message").removeClass('error-message').text("");
+       }
+
+       if ($("#houseno").val() == "") {
+       $(".house-message").addClass('error-message').text("House Number is required");
+       }else {
+       $(".house-message").removeClass('error-message').text("");
+       }
+
+       if ($("#pincode").val() == "") {
+       $(".pincode-message").addClass('error-message').text("Pincode is required");
+       }else {
+       $(".pincode-message").removeClass('error-message').text("");
+       }
+
+       if ($("#invoicestreet").val() == "") {
+       $(".street-messages").addClass('error-message').text("Street is required");
+       }else {
+       $(".street-messages").removeClass('error-message').text("");
+       }
+
+       if ($("#invoiceshouseno").val() == "") {
+       $(".house-messages").addClass('error-message').text("House Number is required");
+       }else {
+       $(".house-messages").removeClass('error-message').text("");
+       }
+
+       if ($("#invoicespincode").val() == "") {
+       $(".pincode-messages").addClass('error-message').text("Pincode is required");
+       }else {
+       $(".pincode-messages").removeClass('error-message').text("");
+       }
+ }  
+
+    else{        
             var addressid = $(this).attr('id');
             var plan_date = $.trim($("#plan-date").val());
             var dash_time = $.trim($("#dash_time").val());
@@ -168,6 +221,7 @@ $('#Admin_address').on('click', '.dropdown-item', function() {
                   }                    
 
             });
+          }
             
     })
 
@@ -351,6 +405,59 @@ AdminServiceRequests();
       }
 
 })
+
+
+
+
+
+    $(".logout").on("click", function(e) {
+          e.preventDefault();
+
+      $('.mobile-nav').hide();
+
+            $.ajax({
+                type: 'POST',
+                url: "http://localhost/Helperland/?controller=Helperland&function=logout",
+                data: {
+
+                    "forgot_email": 0,
+                },
+ 
+                success: function(data) {
+
+
+         
+                     if (data == 1) {
+
+                         Swal.fire({
+                             title: 'You have successfully logged out.',
+                             icon: 'success',
+                             confirmButtonText: 'OK'
+                         }).then(function() {
+                             location.href = "http://localhost/Helperland/Views/index.php";
+  
+                         });
+                    
+
+                     } else {
+                         Swal.fire({
+                             title: 'You have not successfully logged out.', 
+                             icon: 'error',
+                             confirmButtonText: 'OK'
+                         }).then(function() {
+                             location.href = "http://localhost/Helperland/Views/index.php";
+  
+                         });
+                   }
+               }
+            });
+        
+    })
+
+
+
+
+
 
 })
 
