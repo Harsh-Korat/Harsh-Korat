@@ -1018,4 +1018,53 @@ public function UpdateTimeDateByAdmin($array1)
         return $result;
     }
 
+ public function DeleteServiceByAdmin($array)
+    {
+        $sql = "DELETE from servicerequest WHERE ServiceRequestId = :addressid";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute($array);
+        return ($result);
+
+    }
+
+    public function CheckAddressOfCustomerForChanges($ServiceRequestId)
+    {
+
+        $sql  = " SELECT useraddress.AddressLine1, useraddress.AddressLine2, useraddress.City, useraddress.PostalCode, user.Mobile, user.FirstName, user.LastName, servicerequest.TotalHours, .servicerequest.Tim, servicerequest.SubTotal, servicerequest.ServiceRequestId, servicerequest.ServiceStartDate, servicerequest.Status as ST,user.UserId FROM servicerequest 
+        JOIN useraddress
+        ON servicerequest.AddressId = useraddress.AddressId
+        JOIN user
+        ON servicerequest.UserId = user.UserId where servicerequest.ServiceRequestId = $ServiceRequestId";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function FindDeleteCustomerByAdmin($userid)
+    {
+        $sql = "SELECT * FROM user where UserId = $userid";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+
+ public function ServiceSchedule($UserId){
+      $sql = "SELECT servicerequest.ServiceRequestId, ServiceStartDate, Tim, TotalHours, ServiceProviderId, TotalCost, servicerequest.Status,              user.FirstName, user.LastName, AddressLine1, AddressLine2, City, State, servicerequest.ZipCode FROM servicerequest 
+            LEFT OUTER JOIN user ON user.UserId = servicerequest.UserId
+            LEFT OUTER JOIN useraddress ON useraddress.UserId = servicerequest.AddressId
+            WHERE servicerequest.Status = 1 AND servicerequest.Provider_Name = $UserId";
+       
+        $statement =  $this->conn->prepare($sql);
+        $statement->execute();
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $row;
+    }
+
+
 }
