@@ -2594,8 +2594,8 @@ public function Request()
             $result4 = $this->model->BookingBlockCustomer100($userid);
       if (count($result4)) {
           foreach ($result4 as $row4) {
-            $userid10 = $row4['IsBlocked']; // 1   0
-            $Provider_id = $row4['UserId'];  // block provider id 
+            $userid10 = $row4['IsBlocked']; 
+            $Provider_id = $row4['UserId'];   
             $result50 = $this->model->FindCustomerBooking($Provider_id);
 
             $Provider_email = $result50[0];
@@ -4454,7 +4454,7 @@ public function RateAddress()
                             <div class="dropdown-menu" id="menu">
                                   <a class="dropdown-item" data-toggle="modal" data-target="#address-modal" id=' . $ServiceRequestId . '>Edit & Reschedule</a>  
                                   
-                                  <a class="dropdown-item" href="#">Cancel SR by Cust</a>
+                                  <a class="dropdown-item" id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#delete-modal">Cancel SR by Cust</a>
                                   <a class="dropdown-item" href="#">Inquiry</a>  
                                   <a class="dropdown-item" href="#">History Log</a>
                                   <a class="dropdown-item" href="#">Download Invoice</a>
@@ -4587,9 +4587,28 @@ public function RateAddress()
              $plan_date = $_POST['plan_date'];
              $dash_time = $_POST['dash_time'];
 
+             $street = $_POST['street'];
+             $houseno = $_POST['houseno'];
+             $pincode = $_POST['pincode'];
+
+             $dash_time11 = $dash_time;
              $dash_time = $dash_time . ':00';        
 
              $result1 = $this->model->UpdateCustomerSchedule($ServiceRequestId);
+
+             $database_date = $result1['ServiceStartDate'];
+             $database_time = $result1['Tim'];
+             $userid = $result1['UserId'];
+
+
+          $result11 = $this->model->CheckAddressOfCustomerForChanges($ServiceRequestId);
+
+             $database_street = $result11['AddressLine1'];
+             $database_houseno = $result11['AddressLine2'];
+             $database_pincode = $result11['PostalCode'];
+             $userid12 = $result11['UserId'];
+
+
 
              $array1 = [
                       'plan_date' => $plan_date,
@@ -4598,6 +4617,7 @@ public function RateAddress()
                       ];
 
               $result2 = $this->model->UpdateTimeDateByAdmin($array1);
+
 
               $addressid = $result1['AddressId'];
              
@@ -4612,6 +4632,41 @@ public function RateAddress()
 
 
                   $result = $this->model->AdminUpdateDetails($array);
+
+             if(($database_date != $plan_date || $database_time != $dash_time) && ($database_street == $street && $database_houseno == $houseno && $database_pincode == $pincode)){
+
+             $result3 = $this->model->ProviderDashboard($userid);
+             $email = $result3['Email'];
+             $plan_date = $plan_date;
+             $dash_time11 = $dash_time11;
+             $ServiceRequestId = $ServiceRequestId;
+
+             include('Admin-Mail.php');
+             }
+
+
+            if(($database_street != $street || $database_houseno != $houseno || $database_pincode != $pincode) && ($database_date == $plan_date && $database_time == $dash_time)){
+
+           $result12 = $this->model->ProviderDashboard($userid12);
+           $email1 = $result12['Email'];
+
+           $ServiceRequestId = $ServiceRequestId;
+
+           include('Admin-Mail.php');            
+           }
+
+
+            if(($database_date != $plan_date || $database_time != $dash_time) && ($database_street != $street || $database_houseno != $houseno || $database_pincode != $pincode)){
+
+             $result4 = $this->model->ProviderDashboard($userid);
+             $email2 = $result4['Email'];
+             $plan_date = $plan_date;
+             $dash_time11 = $dash_time11;
+             $ServiceRequestId = $ServiceRequestId;
+
+             include('Admin-Mail.php');
+
+           }
              
               echo 1;
             }
@@ -4757,7 +4812,7 @@ public function RateAddress()
                             <div class="dropdown-menu" id="menu">
                                   <a class="dropdown-item" data-toggle="modal" data-target="#address-modal" id=' . $ServiceRequestId . '>Edit & Reschedule</a>  
                                   
-                                  <a class="dropdown-item" href="#">Cancel SR by Cust</a>
+                                  <a class="dropdown-item" id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#delete-modal">Cancel SR by Cust</a>
                                   <a class="dropdown-item" href="#">Inquiry</a>  
                                   <a class="dropdown-item" href="#">History Log</a>
                                   <a class="dropdown-item" href="#">Download Invoice</a>
@@ -4841,6 +4896,43 @@ public function RateAddress()
         }
       
 
+ public function DeleteServiceByAdmin()
+    {
+
+        if (isset($_POST)) {
+        
+            $addressid = $_POST['addressid'];
+
+            $ServiceRequestId = $addressid;
+
+
+          $result1 = $this->model->UpdateCustomerSchedule($ServiceRequestId);
+
+          $userid = $result1['UserId'];
+
+             $result4 = $this->model->FindDeleteCustomerByAdmin($userid);
+             $email4 = $result4['Email'];
+
+             $ServiceRequestId = $ServiceRequestId;
+
+             include('Admin-Mail.php');
+
+
+            $array = [
+                'addressid' => $addressid,
+            ];
+
+            $result = $this->model->DeleteServiceByAdmin($array);
+            
+        if ($result) {
+
+            echo 1;
+        } else {
+            echo 0;
+        }
+
+        }
+    }
 
 
 
