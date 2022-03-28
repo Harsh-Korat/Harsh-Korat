@@ -540,6 +540,188 @@ $('.delete_two').on("click", function(e) {
 
 
 
+   $(".calculate").on("click", function(e) {
+          e.preventDefault();
+            
+              var amount_select = $.trim($("#amount_select").val());
+            
+              var amount = $.trim($("#amount").val());
+
+               var Total = $('.sub span').text();
+                Total_amount = parseFloat(Total);
+
+
+              if(amount_select == 1){
+             
+              if(Total_amount < amount){
+
+              $(".amount-msg").addClass('error-message').text("Please select Amount less than Paid Amount");
+              $("#calculate_amount").val("");
+
+              }else{
+
+             $(".amount-msg").removeClass('error-message').text("");
+              $("#calculate_amount").val(amount);
+              }
+            }
+
+              else{
+
+              if(100 < amount){
+              $(".amount-msg").addClass('error-message').text("Please Select less than or equal to 100 Percentage");
+              $("#calculate_amount").val("");
+
+              }else{
+              $(".amount-msg").removeClass('error-message').text("");
+              var per = (Total_amount * amount)/100;
+              $("#calculate_amount").val(per);          
+
+               }  
+              }
+
+})
+
+
+
+
+$('#Admin_address').on('click', '.dropdown-item', function() {
+        addressid = $(this).attr('id');
+        $('#refund-modal .refund').attr('id', addressid);
+
+  });
+
+
+$('#Admin_address').on('click', '.dropdown-item', function() {
+        var addressid1 = $(this).attr('id');
+
+   Refunded();
+
+
+     function Refunded() {
+
+      
+            $.ajax({
+                type: 'POST',
+                url: "http://localhost/Helperland/?controller=Helperland&function=Refunded",
+                data: {
+                    
+                    "addressid1": addressid1,
+                },
+        
+                success: function(data) {
+
+     
+         
+                $("#refunded_address").html(data);
+
+                }
+           });
+      }
+  });
+
+
+
+$('#Admin_address').on('click', '.dis-ref', function() {
+
+       $(".refund").addClass('disabled');
+
+});
+
+
+  $(".refund").on("click", function(e) {
+          e.preventDefault();
+
+
+      if($('#amount').val() == "" || $("#rufund_comment").val() == "" || $("#rufund_emp").val() == ""){
+
+
+       if ($("#amount").val() == "") {
+       $(".amount-msg").addClass('error-message').text("Please enter the Amount and Calculate refund");
+       }else {
+       $(".amount-msg").removeClass('error-message').text("");
+       }
+
+       if ($("#rufund_comment").val() == "") {
+       $(".rufund_comment-message").addClass('error-message').text("Please enter the reason for refund");
+       }else {
+       $(".rufund_comment-message").removeClass('error-message').text("");
+       }
+
+       if ($("#rufund_emp").val() == "") {
+       $(".rufund_emp-message").addClass('error-message').text("Please enter the EMP Notes");
+       }else {
+       $(".rufund_emp-message").removeClass('error-message').text("");
+       }
+
+    }
+
+    else{      
+           $('#refund-modal').hide();
+
+           $('.spinner').show();
+           $('.parent-spinner').show();
+
+            var addressid = $(this).attr('id');
+
+            var calculate_amount = $.trim($("#calculate_amount").val());
+
+            var status = 4;
+
+            $.ajax({
+                type: 'POST',
+                url: "http://localhost/Helperland/?controller=Helperland&function=UpdateRefunded",
+                data: {
+
+                    "addressid": addressid,
+                    "calculate_amount": calculate_amount,
+                    "status": status,
+                    
+                },
+ 
+                success: function(data) {
+
+                
+
+             $('.spinner').hide();
+             $('.parent-spinner').hide();               
+                  
+
+                    if (data == 1) {
+
+                        Swal.fire({
+                            title: 'Amount Refunded Successfully',
+                            text: '',
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then(function() {
+                            
+                           location.href = "http://localhost/Helperland/Views/Admin-ServiceRequests.php";
+                         });
+
+        
+                    } else {
+                        Swal.fire({
+                            title: 'Amount Refunded Not Successfully',
+                            text: 'Please Try Again',
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        }).then(function() {
+                             location.href = "http://localhost/Helperland/Views/Admin-ServiceRequests.php";
+  
+                         });
+
+                        
+                    } 
+                  }                    
+
+            });
+
+        }
+          
+            
+    })
+
+
 
 })
 
