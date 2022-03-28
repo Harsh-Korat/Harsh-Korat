@@ -3,7 +3,7 @@
 <head>
    
       <title>Service request</title>
-      <link rel="stylesheet" href="../assets/css/admin-servicerequests.css">
+      <link rel="stylesheet" href="../assets/css/admin-servicerequests1.css">
       <meta charset="utf-8">
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,6 +28,7 @@ border: none;
 .cancel1:hover{
 color: #FFFFFF;
 }
+
   
 </style>
 
@@ -259,7 +260,7 @@ color: #FFFFFF;
       <th>Service ID</th>
       <th>Service date</th>
       <th>Customer details </th>
-      <th>Service provider </th>
+      <th class="text-center">Service provider </th>
       <th class="text-center">Gross Amount </th>
       <th class="text-center">Net Amount </th>
       <th>Discount </th>
@@ -459,6 +460,72 @@ color: #FFFFFF;
     </div>
 
 
+<!-- Refund Modal -->
+
+<div class="modal fade" id="refund-modal">
+   <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" id="cancel-border">
+          <h4 class="modal-title" id="warning"><b>Refund Amount</b></h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        
+<div class="modal-body" id="cancel">
+ <div class="container">
+
+  <form method="POST">
+   <div id="bottom-address">
+
+    <div id="refunded_address">
+
+    </div>
+
+     <div class="row">
+      <div class="form-group col-md-6">
+        <label class="street">Amount</label>
+        <div class="refunded">
+        <input type="text" class="form-control" id="amount">
+        <select name="amount" class="form-control" id="amount_select">   
+         <option value="0">Percentage</option>
+         <option value="1">Fixed</option>
+        </select>
+        </div>
+        <div class="amount-msg mt-1"></div>
+      </div>
+ 
+      <div class="form-group col-md-6">
+        <label class="street">Calculate</label>
+        <div class="refunded">
+         <button type="submit" class="form-control calculate" style="background-color: #eee; width: 50%;">Calculate</button>
+         <input type="text" class="form-control" id="calculate_amount">
+      </div>
+    </div>
+    </div>
+
+
+    <div class="booking-warning"><b>Why you want to refund amount?</b>
+      <textarea class="text-area" id="rufund_comment" placeholder="Why you want to refund amount?" required></textarea>
+      <div class="rufund_comment-message"></div>
+    </div> 
+
+    <div class="booking-warning"><b>Call Center EMP Notes</b>
+      <textarea class="text-area area1" id="rufund_emp" placeholder="Enter Notes" required></textarea>
+      <div class="rufund_emp-message"></div>
+    </div> 
+
+     <div class="form-group mt-3">
+       <button type="submit" class="btn btn-login form-control refund">Refund</button>
+     </div>
+    </div>
+   </form>
+  </div>
+ </div>
+</div>
+</div>
+</div>
+
+
+
 <!-- Spinner -->
 
  <div class="parent-spinner">
@@ -479,3 +546,5 @@ color: #FFFFFF;
 
 </body>
 </html>
+
+
