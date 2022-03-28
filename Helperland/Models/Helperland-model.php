@@ -263,7 +263,7 @@ public function City($pincode)
     {
 
         $sql  = " SELECT
-        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Total_Time,servicerequest.Provider_Name,servicerequest.Status
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
           FROM servicerequest 
         JOIN user
         ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1)";
@@ -274,6 +274,72 @@ public function City($pincode)
 
         return $result;
     }
+
+    public function DasboardSearchByTable($email)
+    {
+
+        $sql  = " SELECT
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
+          FROM servicerequest 
+        JOIN user
+        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1) ORDER BY servicerequest.ServiceRequestId DESC";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function DasboardSearchByTable1($email)
+    {
+
+        $sql  = " SELECT
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
+          FROM servicerequest 
+        JOIN user
+        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1) ORDER BY servicerequest.ServiceStartDate DESC";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function DasboardSearchByTable2($email)
+    {
+
+        $sql  = " SELECT
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
+          FROM servicerequest 
+        JOIN user
+        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1) ORDER BY user.FirstName DESC";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function DasboardSearchByTable3($email)
+    {
+
+        $sql  = " SELECT
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
+          FROM servicerequest 
+        JOIN user
+        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1) ORDER BY servicerequest.SubTotal DESC";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
 
     public function HistoryValues($email)
     {
@@ -377,6 +443,16 @@ public function City($pincode)
 
     }
 
+
+ public function UpdateRefunded($addressid1,$calculate_amount,$status)
+    {
+        $sql = "UPDATE servicerequest SET RefundedAmount = $calculate_amount, Status = $status WHERE ServiceRequestId = $addressid1";
+        $stmt =  $this->conn->prepare($sql);
+        $result = $stmt->execute();
+        return ($result);
+
+    }
+
  public function DashDelete($array)
     {
         $sql = "DELETE from servicerequest WHERE ServiceRequestId = :ServiceRequestId";
@@ -473,6 +549,15 @@ public function CustomerUpdateDetails($array)
         return $result;
     }
 
+    public function FindProviderSettingDetails($Provideer_name)
+    {
+        $sql = "SELECT * FROM useraddress where UserId = $Provideer_name";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
     public function ProviderAddress($email)
     {
         $sql =  "SELECT * FROM useraddress WHERE Email = '$email'  ORDER BY AddressId DESC";
@@ -481,6 +566,15 @@ public function CustomerUpdateDetails($array)
         $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
+    }
+
+    public function ProviderAddress123($Provideer_name)
+    {
+        $sql =  "SELECT * FROM useraddress WHERE UserId = $Provideer_name";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
     }
 
 
@@ -497,6 +591,15 @@ public function CustomerUpdateDetails($array)
     public function UpdateServiceProviderAddress1($array)
     {
         $sql = "UPDATE `useraddress` SET `AddressLine1`= :street ,`AddressLine2`= :houseno,`City`=:location,`State`= :state ,`PostalCode`= :pincode ,`Mobile`=:mobilenum WHERE `Email` = :email ";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute($array);
+        $count = $stmt->rowCount();
+        return array($count);
+    }
+
+    public function UpdateServiceProviderAddress11111($array)
+    {
+        $sql = "UPDATE `useraddress` SET `AddressLine1`= :street ,`AddressLine2`= :houseno,`City`=:location,`State`= :state ,`PostalCode`= :pincode ,`Mobile`=:mobilenum WHERE `UserId` = :Provideer_name ";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute($array);
         $count = $stmt->rowCount();
@@ -638,7 +741,7 @@ public function CustomerUpdateDetails($array)
     public function AdminServiceRequests()
     {
 
-        $sql  = " SELECT useraddress.AddressLine1, useraddress.AddressLine2, useraddress.City, useraddress.PostalCode, user.Mobile, user.FirstName, user.LastName, servicerequest.TotalHours, .servicerequest.Tim, servicerequest.SubTotal, servicerequest.ServiceRequestId, servicerequest.ServiceStartDate, servicerequest.Status as ST,user.UserId FROM servicerequest 
+        $sql  = " SELECT useraddress.AddressLine1, useraddress.AddressLine2, useraddress.City, useraddress.PostalCode, user.Mobile, user.FirstName, user.LastName, servicerequest.TotalHours, .servicerequest.Tim, servicerequest.SubTotal, servicerequest.ServiceRequestId, servicerequest.ServiceStartDate, servicerequest.Status as ST,user.UserId, servicerequest.Provider_Name FROM servicerequest 
         JOIN useraddress
         ON servicerequest.AddressId = useraddress.AddressId
         JOIN user
@@ -1066,5 +1169,20 @@ public function UpdateTimeDateByAdmin($array1)
         return $row;
     }
 
+
+    public function Extraqueryes($Provider_name,$approvestarttime,$approveendtime,$ServiceStartDate1)
+    {
+
+    $sql  = " SELECT * FROM servicerequest where
+
+        servicerequest.ServiceStartDate = '$ServiceStartDate1' AND  servicerequest.Tim BETWEEN '$approvestarttime' AND '$approveendtime'
+        AND servicerequest.Status = 1 AND servicerequest.Provider_Name = $Provider_name";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $count  = $stmt->rowCount();
+        return $count;
+    
+    }
 
 }
