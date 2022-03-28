@@ -654,6 +654,242 @@ public function ResetPassword()
     }
 
 
+   public function DasboardSearchByTable()
+    {
+        
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+            $number = $_POST['number'];
+
+            if($number == 1){
+            $result = $this->model->DasboardSearchByTable($email);
+            }else if($number == 2){
+            $result = $this->model->DasboardSearchByTable1($email);
+            }else if($number == 3){
+            $result = $this->model->DasboardSearchByTable2($email);
+            }else{
+            $result = $this->model->DasboardSearchByTable3($email);
+            }
+
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $SubTotal = $row['SubTotal'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $Tim = $row['Tim'];  
+                    $totaltime  = $row['TotalHours'];
+                    $userid = $row['Provider_Name'];
+                
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+                        $provider_row1 = $this->model->ProviderDashboardCount($userid);
+
+                        if($provider_row1 == 0){
+                         
+                     $Address = 
+
+                       '<tr>
+                            <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
+
+                            <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
+                            <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
+                            <img src="../assets/image/layer-712.png" class="clock">' . $Tim .'
+                            </td>
+
+                            <td>
+
+                            </td>
+                            
+                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
+                            <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
+                            </td>
+                            
+                            <td class="text-center">
+                            <button type="button" 
+                            id=' .$ServiceRequestId. ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
+
+                            <button id=' .$ServiceRequestId. ' class="btn cancel-lap" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
+                            </td>
+                        </tr>';
+
+
+
+                        echo $Address;
+
+
+
+                        
+                      }
+
+                        if($provider_row1 > 0){
+
+                        $provider_row = $this->model->ProviderDashboard($userid);
+
+                        $Service_Provider_Name1 = $provider_row['FirstName'];
+                        $Service_Provider_Name2 = $provider_row['LastName'];
+
+                        $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
+
+                        $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($userid);
+                        $Provider_all_ratings = $this->model->OverAllRatingOfServiceProvider($userid);
+                     
+                       
+                 if (count($Provider_all_ratings) > 0) {
+                   $All_Ratings = 0;
+                  foreach ($Provider_all_ratings as $row) {
+                   
+                   $r = $row['Ratings'];
+                   
+                  $All_Ratings = $All_Ratings + $r;
+                  
+                   }
+                 $average = intval($All_Ratings/$Provider_all_ratings1);
+
+
+                      
+
+                      
+                      $stars = "";
+                            for ($x = 1; $x <= $average; $x+=1) {
+                             $stars = $stars."<i class='fa fa-star star1'></i>";
+                              
+                               } 
+
+                      $avgs = 5.0 - $average;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
+                              
+                               } 
+
+
+                     $Address = 
+
+                       '<tr>
+                            <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
+
+                            <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
+                            <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
+                            <img src="../assets/image/layer-712.png" class="clock">' . $Tim .'
+                            </td>
+
+                            <td>
+                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <span class="time">' . $stars . $stars1.' '.$average.'</span>
+
+                            </td>
+                            
+                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
+                            <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
+                            </td>
+                            
+                            <td class="text-center">
+                            <button type="button" 
+                            id=' .$ServiceRequestId. ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
+
+                            <button id=' .$ServiceRequestId. ' class="btn cancel-lap" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
+                            </td>
+                        </tr>';
+
+
+
+                        echo $Address;
+
+
+                   }
+
+
+                   else{
+                 
+                 $All_Ratings = 5;
+            
+                      $average = 0.0;
+                      $avgs = $All_Ratings;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
+                              
+                               } 
+
+
+                     $Address = 
+
+                       '<tr>
+                            <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
+
+                            <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
+                            <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
+                            <img src="../assets/image/layer-712.png" class="clock">' . $Tim .'
+                            </td>
+
+                            <td>
+                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <span class="time">' .$stars1.' '.$average.'</span>
+
+                            </td>
+                            
+                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
+                            <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
+                            </td>
+                            
+                            <td class="text-center">
+                            <button type="button" 
+                            id=' .$ServiceRequestId. ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
+
+                            <button id=' .$ServiceRequestId. ' class="btn cancel-lap" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
+                            </td>
+                        </tr>';
+
+
+
+                        echo $Address;
+                  } 
+                  }             
+                }
+            }
+        }
+    }
+
    public function ModalDasboard()
     {
         
@@ -1667,11 +1903,9 @@ public function ResetPassword()
                     $ServiceRequestId = $row['ServiceRequestId'];
                     $Tim = $row['Tim'];
                         $starttime =  date("H:i", strtotime($Tim)); 
-                        $startime = str_replace(":", ".", $starttime);
-                        $Tim = intval($startime);
-
-
-
+                        $Tim = str_replace(":", ":", $starttime);
+                       
+                      
                   
                  $result = [$ServiceStartDate, $ServiceRequestId, $Tim];    
 
@@ -1885,7 +2119,7 @@ public function ResetPassword()
             $Date = $_POST['dash_date'];
             $Tim1 = $_POST['dash_time']; 
 
-            $Tim1 = $Tim1 . ':00:00';
+            $Tim1 = $Tim1 . ':00';
 
             if(($status == 0) && ($Provider_name == 0)){ 
 
@@ -1903,8 +2137,6 @@ public function ResetPassword()
          }
 
          if($status == 1){
-
-         
 
        //$Tim = $results[0];
         $Tim = $Tim1; 
@@ -1955,65 +2187,13 @@ public function ResetPassword()
 
 
 
-
-$result1 = $this->model->UpcomingTableConflict($Provider_name); 
-
-
-   if (count($result1)) {
-        foreach ($result1 as $row) {
+     $result1 = $this->model->Extraqueryes($Provider_name,$approvestarttime,$approveendtime,$ServiceStartDate1); 
 
 
-                    $ServiceStartDate = $row['ServiceStartDate'];
-                    $
-                    $totaltime = $row['TotalHours'];
-                    $Tim = $row['Tim']; 
-
-                        $starttime =  date("H:i", strtotime($Tim)); 
-                        $startime = str_replace(":", ".", $starttime);
-                        $hoursq = intval($startime);
-                        $realPartq =  $startime - $hoursq;
-                        $minutesq = intval($realPartq * 60);
-                         if ($minutesq == 18) {
-                             $minutesq = 5;
-                         } else {
-                              $minutesq = 0;
-                          }
-                          $startime =  $hoursq . "." . $minutesq;
-
-                          $hours = intval($totaltime);
-                          $realPart = $totaltime - $hours;
-                          $minutes = intval($realPart * 60);
-                          if ($minutes == 30) {
-                              $minutes = 5;
-                          } else {
-                              $minutes = 0;
-                          }
-                          $totaltimes = $hours . ":" . $minutes;
-                          $totaltimes = str_replace(":", ".", $totaltimes);
-
-                          $totaltimes = number_format(($startime +  $totaltimes), 2);
-                          $var1 = intval($totaltimes);
-                          $var2 = $totaltimes - $var1;
-                          if ($var2 == 0.50) {
-                              $var2 = 30;
-                          } else {
-                              $var2 = 00;
-                          }
-                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
-                          $totaltimes = str_replace(".", ":", $totaltimes);
-
-                       
-                        $Tim = $starttime. '-' .$totaltimes;
-
-                        $completestarttime = $starttime; //
-                        $completeendtime = $totaltimes;
-
-                       
-
-
-    if((($completeendtime <= $approvestarttime) &&  ($ServiceStartDate1 == $ServiceStartDate)) || (($approveendtime <= $completestarttime) && ($ServiceStartDate1 == $ServiceStartDate)) || (($completestarttime == $approvestarttime) && ($completeendtime == $approveendtime) && ($ServiceStartDate1 == $ServiceStartDate))) {
+                                                                  
+   if($result1 == 0) {
           
-            $array = [
+           $array = [
                 'ServiceStartDate' => $Date,
                 'Tim' => $Tim1,
                 'ServiceRequestId' => $ServiceRequestId,
@@ -2022,59 +2202,20 @@ $result1 = $this->model->UpcomingTableConflict($Provider_name);
             $result = $this->model->DashUpdate($array);
            
           echo 1;
-          break;
-          
+        
         }
 
-         elseif(($completestarttime <= $approveendtime && $completeendtime >= $approveendtime) && ($ServiceStartDate1 == $ServiceStartDate)){
-         echo 22;           
+     else{
+ 
+       echo 4;
 
+     }
 
-         break;
-         }elseif(($completestarttime <= $approvestarttime && $completeendtime >= $approvestarttime) && ($ServiceStartDate1 == $ServiceStartDate)){
-         echo 5;
-         break;
-         }
+  }
 
-         elseif(($completestarttime <= $approveendtime && $completeendtime >= $approveendtime) && ($ServiceStartDate1 == $ServiceStartDate)){
-
-
-             echo 2;  
-             break;
-
-         }
-
-
-        elseif(($completestarttime >= $approvestarttime && $completeendtime >= $approvestarttime) && ($ServiceStartDate1 == $ServiceStartDate)){
-
-
-             echo 5;  
-             break;
-
-         }
-
-  else{
-
-                 echo 2;
-                 break;
-              
-         }
-
-       }
-
-      }
-
-            
-        
-
-        // if ($result) {
-        //     echo 1;
-        // } else {
-        //     echo 0;
-        // }
-}
         }
     }
+
 
 
  public function CustomerRating()
@@ -2239,6 +2380,8 @@ $result1 = $this->model->UpcomingTableConflict($Provider_name);
       $ServiceStartDate1 = $results[1];
       $totaltime = $results[2];
 
+
+
                         $starttime =  date("H:i", strtotime($Tim)); 
                         $startime = str_replace(":", ".", $starttime);
                         $hoursq = intval($startime);
@@ -2287,212 +2430,72 @@ $result1 = $this->model->UpcomingTableConflict($Provider_name);
             $Provider_name = $result1[3];
 
         
-        $result1 = $this->model->UpcomingTableConflict($Provider_name);  
+      //  $result1 = $this->model->UpcomingTableConflict($Provider_name); 
 
-
-
-      if (count($result1)) {
-        foreach ($result1 as $row) {
-
-
-                    $ServiceStartDate = $row['ServiceStartDate'];
-                    $totaltime = $row['TotalHours'];
-                    $Tim = $row['Tim']; 
-
-                        $starttime =  date("H:i", strtotime($Tim)); 
-                        $startime = str_replace(":", ".", $starttime);
-                        $hoursq = intval($startime);
-                        $realPartq =  $startime - $hoursq;
-                        $minutesq = intval($realPartq * 60);
-                         if ($minutesq == 18) {
-                             $minutesq = 5;
-                         } else {
-                              $minutesq = 0;
-                          }
-                          $startime =  $hoursq . "." . $minutesq;
-
-                          $hours = intval($totaltime);
-                          $realPart = $totaltime - $hours;
-                          $minutes = intval($realPart * 60);
-                          if ($minutes == 30) {
-                              $minutes = 5;
-                          } else {
-                              $minutes = 0;
-                          }
-                          $totaltimes = $hours . ":" . $minutes;
-                          $totaltimes = str_replace(":", ".", $totaltimes);
-
-                          $totaltimes = number_format(($startime +  $totaltimes), 2);
-                          $var1 = intval($totaltimes);
-                          $var2 = $totaltimes - $var1;
-                          if ($var2 == 0.50) {
-                              $var2 = 30;
-                          } else {
-                              $var2 = 00;
-                          }
-                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
-                          $totaltimes = str_replace(".", ":", $totaltimes);
-
-                       
-                        $Tim = $starttime. '-' .$totaltimes;
-
-                        $completestarttime = $starttime; //
-                        $completeendtime = $totaltimes;
-
-                       // echo $completestarttime;
+      $result1 = $this->model->Extraqueryes($Provider_name,$approvestarttime,$approveendtime,$ServiceStartDate1); 
 
 
                                                                   
-    if(($completeendtime <= $approvestarttime) &&  ($ServiceStartDate1 == $ServiceStartDate) || ($approveendtime <= $completestarttime) && ($ServiceStartDate1 == $ServiceStartDate)) {
+   if($result1 == 0) {
           
-             $email = $_POST['username'];
+              $email = $_POST['username'];
 
-             $result2 = $this->model->ResetKey($email);
-             $Provider_name = $result2[3];
-             $service_provider_name = $result2[0];
-             $ServiceRequestId = $_POST['ServiceRequestId'];
-             $ServiceRequestId1 = $ServiceRequestId;
-             $status = 1;
-             $array = [
-                 'ServiceRequestId' => $ServiceRequestId,
-                 'status' => $status,
-                 'Provider_name' => $Provider_name,
+              $result2 = $this->model->ResetKey($email);
+              $Provider_name = $result2[3];
+              $service_provider_name = $result2[0];
+              $ServiceRequestId = $_POST['ServiceRequestId'];
+              $ServiceRequestId1 = $ServiceRequestId;
+              $status = 1;
+              $array = [
+                  'ServiceRequestId' => $ServiceRequestId,
+                  'status' => $status,
+                  'Provider_name' => $Provider_name,
 
-             ];
-             $result = $this->model->NewServiceRequestAccept($array);
+              ];
+              $result = $this->model->NewServiceRequestAccept($array);
 
-            $GoingtoServiceProvider = $this->model->GoingtoServiceProvider();
-            $ServiceRequestId2 = $this->model->ServiceRequestId($ServiceRequestId);
-            $userid = $ServiceRequestId2[0];
+             $GoingtoServiceProvider = $this->model->GoingtoServiceProvider();
+             $ServiceRequestId2 = $this->model->ServiceRequestId($ServiceRequestId);
+             $userid = $ServiceRequestId2[0];
 
-            $ServiceRequestId3 = $this->model->AcceptCustomerMail($userid);
+             $ServiceRequestId3 = $this->model->AcceptCustomerMail($userid);
             
 
-    if ($result) {     
-      if (count($GoingtoServiceProvider)) {
-          foreach ($GoingtoServiceProvider as $row) {
-            $email1 = $row['Email'];
+     if ($result) {     
+       if (count($GoingtoServiceProvider)) {
+           foreach ($GoingtoServiceProvider as $row) {
+             $email1 = $row['Email'];
+             $service_provider_name = $service_provider_name;
+             $ServiceRequestId1 = $ServiceRequestId1;
+
+             if($email1 == $email){
+               break;
+             }
+
+             else{
+            include('Accept-Provider-Message.php');
+          }
+            }
+           }      
+
+       if (count($ServiceRequestId3)) {
+           foreach ($ServiceRequestId3 as $row) {
             $service_provider_name = $service_provider_name;
             $ServiceRequestId1 = $ServiceRequestId1;
-
-            if($email1 == $email){
-              break;
+            $email1 = $row['Email'];
+            include('Accept-Customer-mail.php');
             }
-
-            else{
-           include('Accept-Provider-Message.php');
-         }
-           }
-          }      
-
-      if (count($ServiceRequestId3)) {
-          foreach ($ServiceRequestId3 as $row) {
-           $service_provider_name = $service_provider_name;
-           $ServiceRequestId1 = $ServiceRequestId1;
-           $email1 = $row['Email'];
-           include('Accept-Customer-mail.php');
-           }
-          } 
+           } 
            
-          }
+           }
 
-          echo 1;
-          break;
-        }
-
-         elseif(($completestarttime <= $approveendtime && $completeendtime >= $approveendtime) && ($ServiceStartDate1 == $ServiceStartDate)){
-         echo 22;  
-         break;         
-
-         }elseif(($completestarttime <= $approvestarttime && $completeendtime >= $approvestarttime) && ($ServiceStartDate1 == $ServiceStartDate)){
-         echo 5;
-         break;
+           echo 1;
          }
-
-         elseif(($completestarttime <= $approveendtime && $completeendtime >= $approveendtime) && ($ServiceStartDate1 == $ServiceStartDate)){
-
-
-             echo 2; 
-             break; 
-
-         }
-
-        elseif(($completestarttime >= $approvestarttime && $completeendtime >= $approvestarttime) && ($ServiceStartDate1 == $ServiceStartDate)){
-
-
-             echo 5;  
-             break;
-
-         }
-
-  else{
-
-                 echo 2;
-                 break;
-              
-         }
-       }
+     else{
  
+       echo 4;
 
-}
-        else{
-
-
-     $email = $_POST['username'];
-
-             $result2 = $this->model->ResetKey($email);
-             $Provider_name = $result2[3];
-             $service_provider_name = $result2[0];
-             $ServiceRequestId = $_POST['ServiceRequestId'];
-             $ServiceRequestId1 = $ServiceRequestId;
-             $status = 1;
-             $array = [
-                 'ServiceRequestId' => $ServiceRequestId,
-                 'status' => $status,
-                 'Provider_name' => $Provider_name,
-
-             ];
-             $result = $this->model->NewServiceRequestAccept($array);
-
-            $GoingtoServiceProvider = $this->model->GoingtoServiceProvider();
-            $ServiceRequestId2 = $this->model->ServiceRequestId($ServiceRequestId);
-            $userid = $ServiceRequestId2[0];
-
-            $ServiceRequestId3 = $this->model->AcceptCustomerMail($userid);
-            
-
-    if ($result) {     
-      if (count($GoingtoServiceProvider)) {
-          foreach ($GoingtoServiceProvider as $row) {
-            $email1 = $row['Email'];
-            $service_provider_name = $service_provider_name;
-            $ServiceRequestId1 = $ServiceRequestId1;
-
-            if($email1 == $email){
-              break;
-            }
-
-            else{
-           include('Accept-Provider-Message.php');
-         }
-           }
-          }      
-
-      if (count($ServiceRequestId3)) {
-          foreach ($ServiceRequestId3 as $row) {
-           $service_provider_name = $service_provider_name;
-           $ServiceRequestId1 = $ServiceRequestId1;
-           $email1 = $row['Email'];
-           include('Accept-Customer-mail.php');
-           }
-          } 
-           
-          }
-
-          echo 1;
-        
-
-      }
+     }
 
        }
 
@@ -3239,26 +3242,13 @@ public function ServiceProviderDetails()
                     $mobile = $row['Mobile'];
                     $date = $row['DateOfBirth'];
                     $languageid = $row['LanguageId'];
-                   // $statusactive = $row['Status'];
                     $avtarimg = $row['UserProfilePicture'];
                     $natinallity = $row['NationalityId'];
                     $gender = $row['Gender'];
                     $ZipCode = $row['ZipCode'];
                     $isactives = $row['IsActive'];
-                    $address = $this->model->ProviderAddress($email);
-                    if (count($address)) {
-                        foreach ($address as $addr) {
-                            $street = $addr['AddressLine1'];
-                            $houseno = $addr['AddressLine2'];
-                            $postalcode = $addr['PostalCode'];
-                            $city = $addr['City'];
-                        }
-                    }
-                    if ($isactives == "Yes") {
-                        $isactive = 1;
-                    } else {
-                        $isactive = 0;
-                    }
+
+
                     if (!empty($date)) {
 
                         list($year, $month, $day) = explode("-", $date);
@@ -3268,7 +3258,7 @@ public function ServiceProviderDetails()
                         $day = "Day";
                     }
 
-                    $result = [$firstname, $lastname, $email, $mobile, $day, $month, $year, $languageid, $isactive, $avtarimg, $natinallity, $gender, $street, $houseno, $postalcode, $city, $ZipCode];
+                    $result = [$firstname, $lastname, $email, $mobile, $day, $month, $year, $languageid, $avtarimg, $natinallity, $gender];
 
                     echo json_encode($result);
                 }
@@ -3276,6 +3266,33 @@ public function ServiceProviderDetails()
         }
     }
 
+
+public function ServiceProviderDetails11()
+    {
+        if (isset($_POST)) {
+            $email = $_POST['username'];
+
+            $result1 = $this->model->ResetKey($email);
+            $Provideer_name = $result1[3];
+
+                    $address = $this->model->FindProviderSettingDetails($Provideer_name);
+                    if (count($address)) {
+                        foreach ($address as $addr) {
+                            $street = $addr['AddressLine1'];
+                            $houseno = $addr['AddressLine2'];
+                            $postalcode = $addr['PostalCode'];
+                            $city = $addr['City'];
+
+                    $result = [$street, $houseno, $postalcode, $city];
+
+                    echo json_encode($result);
+
+                        }
+                    }
+
+
+        }
+    }
 
 
  public function UpcomingRequestComplete()
@@ -4357,6 +4374,7 @@ public function RateAddress()
                     $lastname = $row['LastName'];
                     $status = $row['ST'];
                     $userid = $row['UserId'];
+                    $Provider_name = $row['Provider_Name'];
                 
 
                         $starttime =  date("H:i", strtotime($Tim)); 
@@ -4406,8 +4424,10 @@ public function RateAddress()
                  elseif ($status == 2) {
                   $state = "class='completed1'>Completed";
                  }
-                 else{
+                 elseif ($status == 3){
                   $state = "class='cancel1'>Cancelled";
+                 }else{
+                  $state = "class='ref'>Refunded";
                  }
 
 
@@ -4468,7 +4488,193 @@ public function RateAddress()
 
                         echo $Address; 
 
-                    }else{
+                    }else if($status == 4){
+
+
+                        $provider_row = $this->model->ProviderDashboard($Provider_name);
+
+                        $Service_Provider_Name1 = $provider_row['FirstName'];
+                        $Service_Provider_Name2 = $provider_row['LastName'];
+
+                        $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
+
+                        $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($Provider_name);
+                        $Provider_all_ratings = $this->model->OverAllRatingOfServiceProvider($Provider_name);
+                     
+                       
+                 if (count($Provider_all_ratings) > 0) {
+                   $All_Ratings = 0;
+                  foreach ($Provider_all_ratings as $row) {
+                   
+                   $r = $row['Ratings'];
+                   
+                  $All_Ratings = $All_Ratings + $r;
+                  
+                   }
+                 $average = intval($All_Ratings/$Provider_all_ratings1);
+
+                      $stars = "";
+                            for ($x = 1; $x <= $average; $x+=1) {
+                             $stars = $stars."<i class='fa fa-star star1'></i>";
+                              
+                               } 
+
+                      $avgs = 5.0 - $average;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
+                              
+                               } 
+
+
+                     $Address = 
+
+
+                        '<tr>                                         
+                         
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          <img src="../assets/image/calendar2.png" class="calendar"><b>'.$ServiceStartDate.'</b><br>
+                          <img src="../assets/image/layer-712.png" class="clock">'.$Tim.'
+                          </td>
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          '.$firstname.'  '.$lastname.'<br>
+                          <div class="mydiv">
+                            <img src="../assets/image/layer-719.png" class="home">
+                              <div class="desc">'.$street.' '.$houseno.','.$pincode.'  '.$city.'</div> 
+                              </div>
+                           </td>
+
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+
+                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <span class="time">' . $stars . $stars1.' '.$average.'</span>                           
+
+                           </td>   
+
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>
+                          
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <button type="button" '.$state.'</button>
+                           </td>
+
+                           <td class="text-center dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><button type="button" class="btn cancel1">Not Applicable</button></td>
+                        
+                          <td class="dot">
+                           <div class="dropdown">
+                            <button class="btn" type="button" data-toggle="dropdown">
+                               <i class="fas fa-ellipsis-v"></i>
+                            </button>
+              
+                              <div class="dropdown-menu" id="menu">
+                                  <a class="dropdown-item dis-ref" data-toggle="modal" data-target="#refund-modal" id=' . $ServiceRequestId . '>Refund</a>  
+                                  
+                                  <a class="dropdown-item" href="#">Inquiry</a> 
+                                  <a class="dropdown-item" href="#">History Log</a>
+                                  <a class="dropdown-item" href="#">Download Invoice</a>
+                                  <a class="dropdown-item" href="#">Has Issue</a>
+                                  <a class="dropdown-item" href="#">Other Transactions</a>       
+                                </div>
+                               </div>
+                          </td>
+
+                        </tr>';
+                   
+                   echo $Address;
+
+
+
+                    }  else{
+                 
+                 $All_Ratings = 5;
+            
+                      $average = 0.0;
+                      $avgs = $All_Ratings;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
+                              
+                               } 
+
+
+                     $Address = 
+                      
+
+                        '<tr>                                         
+                         
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          <img src="../assets/image/calendar2.png" class="calendar"><b>'.$ServiceStartDate.'</b><br>
+                          <img src="../assets/image/layer-712.png" class="clock">'.$Tim.'
+                          </td>
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          '.$firstname.'  '.$lastname.'<br>
+                          <div class="mydiv">
+                            <img src="../assets/image/layer-719.png" class="home">
+                              <div class="desc">'.$street.' '.$houseno.','.$pincode.'  '.$city.'</div> 
+                              </div>
+                           </td>
+
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+
+                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <span class="time">' .$stars1.' '.$average.'</span>                          
+
+                           </td>   
+
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>
+                          
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <button type="button" '.$state.'</button>
+                           </td>
+
+                           <td class="text-center dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><button type="button" class="btn cancel1">Not Applicable</button></td>
+                        
+                          <td class="dot">
+                           <div class="dropdown">
+                            <button class="btn" type="button" data-toggle="dropdown">
+                               <i class="fas fa-ellipsis-v"></i>
+                            </button>
+              
+                              <div class="dropdown-menu" id="menu">
+                                  <a class="dropdown-item dis-ref" data-toggle="modal" data-target="#refund-modal" id=' . $ServiceRequestId . '>Refund</a>  
+                                  
+                                  <a class="dropdown-item" href="#">Inquiry</a> 
+                                  <a class="dropdown-item" href="#">History Log</a>
+                                  <a class="dropdown-item" href="#">Download Invoice</a>
+                                  <a class="dropdown-item" href="#">Has Issue</a>
+                                  <a class="dropdown-item" href="#">Other Transactions</a>       
+                                </div>
+                               </div>
+                          </td>
+
+                        </tr>';
+
+
+                 echo $Address;
+
+               }
+
+             }
+
+
+                    else{
 
                     $Address = 
 
@@ -4510,7 +4716,7 @@ public function RateAddress()
                             </button>
               
                               <div class="dropdown-menu" id="menu">
-                                  <a class="dropdown-item">Refund</a>  
+                                  <a class="dropdown-item" data-toggle="modal" data-target="#refund-modal" id=' . $ServiceRequestId . '>Refund</a>  
                                   
                                   <a class="dropdown-item" href="#">Inquiry</a> 
                                   <a class="dropdown-item" href="#">History Log</a>
@@ -4576,6 +4782,66 @@ public function RateAddress()
                                 }
                             }
                         }
+
+
+    public function Refunded()
+    {
+        
+        if (isset($_POST)) {
+            $addressid1 = $_POST['addressid1'];
+
+            $result = $this->model->Dasboard1($addressid1);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $subtotal = $row['SubTotal'];
+                    $refundedamount = $row['RefundedAmount'];   
+
+                    $Balance = ($subtotal - $refundedamount);
+
+                    if($refundedamount == ''){
+                      $refundedamount = 0;
+                    }
+
+              $Address =                  
+
+                     '<div class="row">
+                      <div class="form-group col-md-4 mt-1">
+                        <p class="street sub">Paid Amount<br><span id="Paid_Amount">'.$subtotal.' €</span></p>     
+                      </div>
+                     
+                      <div class="form-group col-md-4 mt-1">
+                        <p class="street">Refunded Amount<br><span id="Refunded_Amount">'.$refundedamount.' €</span></p>     
+                      </div>
+                      
+                      <div class="form-group col-md-4 mt-1">
+                        <p class="street bal">In Balance Amount<br><span id="Balance_Amount">'.$Balance.'.00 €</span></p>     
+                      </div>
+                    </div>';
+
+                    echo $Address;
+
+
+            
+                                    }
+                                }
+                            }
+                        }
+
+
+    public function UpdateRefunded()
+    {
+        
+        if (isset($_POST)) {
+            $addressid1 = $_POST['addressid'];
+            $calculate_amount = $_POST['calculate_amount'];
+            $status = $_POST['status'];
+ 
+            $result = $this->model->UpdateRefunded($addressid1,$calculate_amount,$status);
+
+            echo 1;
+
+    }
+  }
 
 
   public function AdminUpdateDetails()
@@ -4715,6 +4981,7 @@ public function RateAddress()
                     $lastname = $row['LastName'];
                     $status = $row['ST'];
                     $userid = $row['UserId'];
+                    $Provider_name = $row['Provider_Name'];
                 
 
                         $starttime =  date("H:i", strtotime($Tim)); 
@@ -4764,8 +5031,10 @@ public function RateAddress()
                  elseif ($status == 2) {
                   $state = "class='completed1'>Completed";
                  }
-                 else{
+                 elseif ($status == 3){
                   $state = "class='cancel1'>Cancelled";
+                 }else{
+                  $state = "class='ref'>Refunded";
                  }
 
 
@@ -4826,7 +5095,192 @@ public function RateAddress()
 
                         echo $Address; 
 
-                    }else{
+                    }else if($status == 4){
+
+
+                        $provider_row = $this->model->ProviderDashboard($Provider_name);
+
+                        $Service_Provider_Name1 = $provider_row['FirstName'];
+                        $Service_Provider_Name2 = $provider_row['LastName'];
+
+                        $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
+
+                        $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($Provider_name);
+                        $Provider_all_ratings = $this->model->OverAllRatingOfServiceProvider($Provider_name);
+                     
+                       
+                 if (count($Provider_all_ratings) > 0) {
+                   $All_Ratings = 0;
+                  foreach ($Provider_all_ratings as $row) {
+                   
+                   $r = $row['Ratings'];
+                   
+                  $All_Ratings = $All_Ratings + $r;
+                  
+                   }
+                 $average = intval($All_Ratings/$Provider_all_ratings1);
+
+                      $stars = "";
+                            for ($x = 1; $x <= $average; $x+=1) {
+                             $stars = $stars."<i class='fa fa-star star1'></i>";
+                              
+                               } 
+
+                      $avgs = 5.0 - $average;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
+                              
+                               } 
+
+
+                     $Address = 
+
+
+                        '<tr>                                         
+                         
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          <img src="../assets/image/calendar2.png" class="calendar"><b>'.$ServiceStartDate.'</b><br>
+                          <img src="../assets/image/layer-712.png" class="clock">'.$Tim.'
+                          </td>
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          '.$firstname.'  '.$lastname.'<br>
+                          <div class="mydiv">
+                            <img src="../assets/image/layer-719.png" class="home">
+                              <div class="desc">'.$street.' '.$houseno.','.$pincode.'  '.$city.'</div> 
+                              </div>
+                           </td>
+
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+
+                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <span class="time">' . $stars . $stars1.' '.$average.'</span>                           
+
+                           </td>   
+
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>
+                          
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <button type="button" '.$state.'</button>
+                           </td>
+
+                           <td class="text-center dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><button type="button" class="btn cancel1">Not Applicable</button></td>
+                        
+                          <td class="dot">
+                           <div class="dropdown">
+                            <button class="btn" type="button" data-toggle="dropdown">
+                               <i class="fas fa-ellipsis-v"></i>
+                            </button>
+              
+                              <div class="dropdown-menu" id="menu">
+                                  <a class="dropdown-item dis-ref" data-toggle="modal" data-target="#refund-modal" id=' . $ServiceRequestId . '>Refund</a>  
+                                  
+                                  <a class="dropdown-item" href="#">Inquiry</a> 
+                                  <a class="dropdown-item" href="#">History Log</a>
+                                  <a class="dropdown-item" href="#">Download Invoice</a>
+                                  <a class="dropdown-item" href="#">Has Issue</a>
+                                  <a class="dropdown-item" href="#">Other Transactions</a>       
+                                </div>
+                               </div>
+                          </td>
+
+                        </tr>';
+                   
+                   echo $Address;
+
+
+
+                    }  else{
+                 
+                 $All_Ratings = 5;
+            
+                      $average = 0.0;
+                      $avgs = $All_Ratings;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
+                              
+                               } 
+
+
+                     $Address = 
+                      
+
+                        '<tr>                                         
+                         
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          <img src="../assets/image/calendar2.png" class="calendar"><b>'.$ServiceStartDate.'</b><br>
+                          <img src="../assets/image/layer-712.png" class="clock">'.$Tim.'
+                          </td>
+
+                          <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                          '.$firstname.'  '.$lastname.'<br>
+                          <div class="mydiv">
+                            <img src="../assets/image/layer-719.png" class="home">
+                              <div class="desc">'.$street.' '.$houseno.','.$pincode.'  '.$city.'</div> 
+                              </div>
+                           </td>
+
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+
+                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <span class="time">' .$stars1.' '.$average.'</span>                          
+
+                           </td>   
+
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
+                           
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal"></td>
+                          
+                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
+                            <button type="button" '.$state.'</button>
+                           </td>
+
+                           <td class="text-center dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><button type="button" class="btn cancel1">Not Applicable</button></td>
+                        
+                          <td class="dot">
+                           <div class="dropdown">
+                            <button class="btn" type="button" data-toggle="dropdown">
+                               <i class="fas fa-ellipsis-v"></i>
+                            </button>
+              
+                              <div class="dropdown-menu" id="menu">
+                                  <a class="dropdown-item dis-ref" data-toggle="modal" data-target="#refund-modal" id=' . $ServiceRequestId . '>Refund</a>  
+                                  
+                                  <a class="dropdown-item" href="#">Inquiry</a> 
+                                  <a class="dropdown-item" href="#">History Log</a>
+                                  <a class="dropdown-item" href="#">Download Invoice</a>
+                                  <a class="dropdown-item" href="#">Has Issue</a>
+                                  <a class="dropdown-item" href="#">Other Transactions</a>       
+                                </div>
+                               </div>
+                          </td>
+
+                        </tr>';
+
+
+                 echo $Address;
+
+               }
+
+             }
+
+                    else{
 
                     $Address = 
 
@@ -4868,7 +5322,7 @@ public function RateAddress()
                             </button>
               
                               <div class="dropdown-menu" id="menu">
-                                  <a class="dropdown-item">Refund</a>  
+                                  <a class="dropdown-item" data-toggle="modal" data-target="#refund-modal" id=' . $ServiceRequestId . '>Refund</a>  
                                   
                                   <a class="dropdown-item" href="#">Inquiry</a> 
                                   <a class="dropdown-item" href="#">History Log</a>
