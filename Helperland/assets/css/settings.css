@@ -1,0 +1,551 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+/* Customer Name */
+
+.welcome{
+height: 118px;
+margin-top: 64px;
+padding-top: 38px;
+text-align: center;
+font-size: 30px;
+font-family: Roboto;
+letter-spacing: 0px;
+color: #4F4F4F;
+background: #F9F9F9 0% 0% no-repeat padding-box;
+}
+
+.hr{
+height: 1px;
+background-color: #e1e1e1;
+}
+
+
+/* Vertical Navbar */
+
+.middle{
+display:flex; 
+justify-content: center; 
+}
+
+.middle-table{
+margin-left: auto;
+margin-right: auto;
+margin-top: 31px;
+}
+
+.vertical-nav{
+width: 262px;
+height: auto;
+margin:0px 31px 0px 0px;
+background-color: #1d7a8c;
+}
+
+.vertical-nav .list-group-item{
+border:3px solid #2f8f9f;
+background-color: #1d7a8c;
+border-color: #2f8f9f;
+font-family: Roboto;
+font-size: 18px;
+font-weight: normal;
+line-height: 2;
+font-stretch: normal;
+font-style: normal;
+letter-spacing: normal;
+text-align: left;
+color: #ffffff;
+}
+
+.vertical-nav ul a:hover{
+cursor: pointer;
+background-color: #146371 !important;
+}
+  
+
+/* Middle Customer Table */
+
+.setting .nav-link {
+color: #646464 !important;
+font-family: Roboto;
+font-size: 18px;
+font-weight: bold;
+text-align: center;
+border:none !important;
+border-bottom: 4px solid rgb(220,220,220) !important;
+}
+
+.setting .nav-link.active {
+color: #1d7a8c !important;
+border-color: #1d7a8c !important;
+}
+
+/* Customer My Details tab */
+
+.lables{
+font-family: Roboto;
+font-size: 16px;
+color: #646464;
+font-weight: bold;
+}
+
+.address-top{
+margin-top: 20px;
+}
+
+.address{
+margin-top: 10px;
+}
+
+.address .form-control{
+background: #fff;
+font-size: 16px;
+line-height: 20px;
+color: #646464;
+padding: 12px 15px;
+box-shadow: none !important;
+border: 1px solid #dedddd;
+resize: vertical;
+height: 46px;
+display: block;
+width: 100%;
+border-radius: 4px;
+}
+
+.bottom-hr{
+margin-bottom: 20px;
+}
+
+.select_menu select {
+font-family: Roboto;
+font-size: 16px;
+width: 24%;
+height: 46px;
+padding-left: 10px;
+color: #646464;
+margin-right: 10px;
+border: 1px solid #e1e1e1;
+border-radius: 4px;
+}
+
+#month{
+width: 40%;
+}
+
+#language{
+width: 150px;
+}
+
+.save{
+margin-top: 25px;
+background-color: #1d7a8c;
+color: #fff;
+opacity: 0.6;
+width: 10%;
+padding: 9px 28px 8px 25px;
+border:none;
+font-size: 20px;
+font-family: Roboto;
+border-radius: 23px;
+}
+
+.save:hover{
+opacity: 1;
+}
+
+
+/* Customer Address tab */
+
+.table{
+border: 3px solid #c1c1c1 !important;
+margin-top: 40px;
+margin-bottom: 30px !important;
+}
+
+.radio {
+text-align: center;
+align-items: center;
+line-height: 60px;
+}
+
+tr{
+border-bottom: 3px solid #c1c1c1 !important;
+}
+
+.middle-part{
+background-color: #f1f1f1;
+width: 100%;
+height: auto;
+border: 2px solid #c1c1c1;
+}
+
+.address-row {
+padding-top: 5px;
+color: #646464;
+font-size: 17px;
+font-family: Roboto;
+}
+.address-row1 {
+padding-top: 5px;
+padding-bottom: 5px;
+color: #4F4F4F;
+font-size: 17px;
+font-family: Roboto;
+}
+
+.right{
+margin-right: 10px;
+}
+
+.action {
+text-align: center;
+padding-top: 25px !important;
+}
+
+.edit {
+text-align: center;
+text-decoration: none;
+margin-left: 10px;
+}
+
+.edit:hover {
+text-decoration: none;
+}
+
+.new_address {
+background: #1d7a8c;
+border: none !important;
+font-size: 16px;
+line-height: 24px;
+color: #fff !important;
+transition: all .3s ease;
+padding: 11px 25px;
+border-radius: 50px;
+opacity: 0.6
+}
+
+.new_address:hover {
+background: #146371 !important;
+border: none;
+outline: 0 !important;
+opacity: 1;
+}
+
+
+/* Customer Password tab */
+
+.password-top {
+margin-top: 30px;
+}
+
+.password {
+margin-top: 20px;
+}
+
+.password .form-control{
+background: #fff;
+font-size: 16px;
+line-height: 20px;
+color: #646464;
+padding: 12px 15px;
+box-shadow: none !important;
+border: 1px solid #dedddd;
+resize: vertical;
+height: 46px;
+display: block;
+width: 32%;
+border-radius: 4px;
+}
+
+#save{
+margin-top: 5px;
+}
+
+
+/* Customer Manage tab */
+
+.book-flex2{
+display: flex;
+margin-top: 15px;
+}
+
+input[type=checkbox] {
+margin-top: 25px;
+width: 40px !important;
+height: 20px;
+margin-right: 8px;
+}
+
+.pet{
+margin-bottom: 12px;
+color: #4F4F4F;
+font-size: 18px;
+font-family: Roboto;
+margin-top: 22px;
+height: 19px;
+}
+
+.manage{
+color: #646464;
+font-size: 18px;
+font-family: Roboto;
+margin-top: 40px;
+}
+
+
+/*Address modal */
+
+
+#warning{
+color: #646464;
+font-family: Roboto;
+margin-left: 12px;
+color: #646464;
+font-size: 26px;
+}
+
+#cancel-border{
+border-bottom: none;
+}
+
+#address-modal .close{
+font-size: 40px;
+}
+
+#cancel{
+padding-top: 5px;
+}
+
+.street{
+font-size: 18px;
+color: #646464 !important;
+font-family: Roboto;
+}
+
+#bottom-address .form-control{
+height: 45px;
+}
+
+.btn-login ,.btn-login:focus{
+height: 50px;
+font-size: 20px !important;
+font-weight: medium;
+background-color: #006072 !important;
+opacity: 0.6;
+border-radius: 30px !important;
+color: #ffffff !important;
+border: solid 1px rgba(255, 255, 255, 0.5);
+}
+
+.btn-login:hover{
+opacity: 1;
+}
+
+.mobile-menu{
+display: none;
+margin-top: 25px;
+padding-bottom: 10px;
+margin-bottom: -5px;
+border-bottom: 1px solid rgb(200,200,200);
+color: #646464 !important;
+font-family: Roboto;
+font-size: 18px;
+font-weight: bold;
+}
+
+.icon{
+display: none;
+font-size: 25px;
+color: #1d7a8c;
+}
+
+.middle-navbar{
+border-bottom: none; 
+margin-right: 15px;
+}
+
+.home{
+margin-right: 15px;
+}
+
+.setting-main{
+width: 79%;
+}
+
+.user-setting{
+width: 22%;
+}
+
+.user-setting1{
+width: 28%;
+}
+
+.profit{
+margin-right: 25px;
+}
+
+/* Modals */
+
+#warning{
+color: #646464;
+font-family: Roboto;
+margin-left: 12px;
+color: #646464;
+font-size: 26px;
+}
+
+.booking-warning{
+font-size: 18px;
+font-family: Roboto;
+color: #646464;
+}
+
+.btn-login ,.btn-login:focus{
+height: 50px;
+width: 200px;
+font-size: 20px !important;
+font-weight: medium;
+background-color: #006072 !important;
+opacity: 0.6;
+border-radius: 30px !important;
+color: #ffffff !important;
+border: solid 1px rgba(255, 255, 255, 0.5);
+}
+
+.btn-login:hover{
+opacity: 1;
+}
+
+#delete-modal .close{
+font-size: 30px;
+}
+
+#cancel{
+padding-top: 5px;
+}
+
+#cancel-border{
+border-bottom: none;
+}
+
+
+/* Media Queries for all */
+
+@media screen and (max-width: 1260px) {
+
+input[type=checkbox] {
+margin-top: 20px;
+width: 55px !important;
+height: 30px;
+margin-right: 12px;
+}
+.save{
+width: 120px;
+padding: 9px 28px 8px 25px;
+}
+}
+
+
+@media screen and (max-width: 1110px) {
+.select_menu select {
+width: 22%;
+}
+#month{
+width: 35%;
+}
+}
+
+
+@media screen and (max-width: 1020px) {
+.setting .nav-link {
+font-size: 17px;
+}
+}
+
+
+@media screen and (max-width: 989px) {
+.vertical-nav{
+display: none;
+}
+.setting-main{
+width: 90%;
+}
+.select_menu select {
+width: 28%;
+}
+
+#month{
+width: 45%;
+}
+.middle-navbar{
+margin-right: 0px;
+margin-left: 0px;
+}
+.setting-main{
+width: 95%;
+}
+.profit{
+margin-right: 3px;
+}
+.password .form-control{
+width: 40%;
+}
+}
+
+
+@media screen and (max-width: 767px) {
+.setting-main{
+width: 97%;
+margin-left: 12px;
+}
+.middle-navbar{
+margin-right: 13px;
+}
+.profit{
+margin-right: 13px;
+}
+.password .form-control{
+    width: 98.5%;
+}
+input[type=checkbox] {
+margin-top: 16px;
+width: 70px !important;
+height: 40px;
+margin-right: 13px;
+margin-left: 5px;
+}
+.home{
+margin-right: 13px;
+}
+.pet{
+font-size: 17px;
+}
+.icon, .mobile-menu{
+display: block;
+}
+.dis-non{
+display: none;
+}
+}
+
+
+@media screen and (max-width: 500px){
+.password .form-control{
+width: 97%;
+}
+input[type=checkbox] {
+margin-top: 11px;
+width: 120px !important;
+height: 50px;
+}
+}
+
+
+@media screen and (max-width: 400px) {
+.password .form-control{
+width: 96.5%;
+}
+input[type=checkbox] {
+margin-top: 11px;
+width: 140px !important;
+height: 50px;
+}
+}
