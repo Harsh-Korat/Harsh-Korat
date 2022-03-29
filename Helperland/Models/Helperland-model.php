@@ -33,6 +33,16 @@ public function __construct() {
         return array($username, $resetkey, $count, $userid);
     }
 
+    public function ProviderName($email)
+    {
+        $sql = "select * from user where Email = '$email'";
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $row  = $stmt->fetch(PDO::FETCH_ASSOC);
+        $firstname = $row['FirstName'];
+        return array($firstname);
+    }
+
 
 
  public function ResetPass($array)
@@ -1029,7 +1039,7 @@ public function UpdateTimeDateByAdmin($array1)
         $sql  = "SELECT *, servicerequest.Status as ST FROM servicerequest LEFT OUTER JOIN user on servicerequest.UserId = user.UserId 
 
         LEFT OUTER join useraddress ON servicerequest.AddressId = useraddress.AddressId
-        WHERE servicerequest.ServiceRequestId LIKE '%$sid%' AND user.FirstName LIKE '%$customer%' AND servicerequest.Status LIKE '%$status%' AND servicerequest.ZipCode LIKE '%$zip%' AND servicerequest.ServiceStartDate BETWEEN '$from_date' AND '$to_date'
+        WHERE servicerequest.ServiceRequestId LIKE '%$sid%' AND (user.FirstName LIKE '%$customer%' OR user.LastName LIKE '%$customer%') AND servicerequest.Status LIKE '%$status%' AND servicerequest.ZipCode LIKE '%$zip%' AND (servicerequest.ServiceStartDate BETWEEN '$from_date' AND '$to_date')
                 ";
 
        $stmt =  $this->conn->prepare($sql);
@@ -1039,11 +1049,119 @@ public function UpdateTimeDateByAdmin($array1)
         return $result;
     }
 
+   public function AdminFindPostalCodeRowCount555($zip,$sid,$customer,$status,$from_date,$to_date)
+    {
+
+        $sql  = "SELECT *, servicerequest.Status as ST FROM servicerequest LEFT OUTER JOIN user on servicerequest.UserId = user.UserId 
+
+        LEFT OUTER join useraddress ON servicerequest.AddressId = useraddress.AddressId
+        WHERE servicerequest.ZipCode LIKE '%$zip%' ";
+
+       $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+   public function AdminFindPostalCodeRowCount444($zip,$sid,$customer,$status,$from_date,$to_date)
+    {
+
+        $sql  = "SELECT *, servicerequest.Status as ST FROM servicerequest LEFT OUTER JOIN user on servicerequest.UserId = user.UserId 
+
+        LEFT OUTER join useraddress ON servicerequest.AddressId = useraddress.AddressId
+        WHERE servicerequest.ServiceRequestId LIKE '%$sid%' ";
+
+       $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+   public function AdminFindPostalCodeRowCount333($zip,$sid,$customer,$status,$from_date,$to_date)
+    {
+
+        $sql  = "SELECT *, servicerequest.Status as ST FROM servicerequest LEFT OUTER JOIN user on servicerequest.UserId = user.UserId 
+
+        LEFT OUTER join useraddress ON servicerequest.AddressId = useraddress.AddressId
+        WHERE user.FirstName LIKE '%$customer%' OR user.LastName LIKE '%$customer%' ";
+
+       $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+   public function AdminFindPostalCodeRowCount222($zip,$sid,$customer,$status,$from_date,$to_date)
+    {
+
+        $sql  = "SELECT *, servicerequest.Status as ST FROM servicerequest LEFT OUTER JOIN user on servicerequest.UserId = user.UserId 
+
+        LEFT OUTER join useraddress ON servicerequest.AddressId = useraddress.AddressId
+        WHERE servicerequest.Status LIKE '%$status%'";
+
+       $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+   public function AdminFindPostalCodeRowCount111($zip,$sid,$customer,$status,$from_date,$to_date)
+    {
+
+        $sql  = "SELECT *, servicerequest.Status as ST FROM servicerequest LEFT OUTER JOIN user on servicerequest.UserId = user.UserId 
+
+        LEFT OUTER join useraddress ON servicerequest.AddressId = useraddress.AddressId
+        WHERE servicerequest.ServiceStartDate BETWEEN '$from_date' AND '$to_date' ";
+
+       $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
     public function AdminSearchUsermanagement($select,$user_type,$from_date,$to_date)
     {
-        $sql =  "SELECT * FROM user LEFT OUTER JOIN useraddress ON user.UserId = useraddress.UserId
-        WHERE user.FirstName LIKE '%$select%' AND user.UserTypeId LIKE '%$user_type%' AND user.CreatedDate BETWEEN '$from_date' AND '$to_date'
+        $sql =  "SELECT * FROM user JOIN useraddress ON user.UserId = useraddress.UserId
+        WHERE (user.FirstName LIKE '%$select%' OR user.LastName LIKE '%$select%') AND user.UserTypeId LIKE '%$user_type%' AND user.CreatedDate BETWEEN '$from_date' AND '$to_date'
                 ";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function AdminSearchUsermanagement123($select,$user_type,$from_date,$to_date)
+    {
+        $sql =  "SELECT * FROM user JOIN useraddress ON user.UserId = useraddress.UserId
+        WHERE user.CreatedDate BETWEEN '$from_date' AND '$to_date' ";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function AdminSearchUsermanagement111($select,$user_type,$from_date,$to_date)
+    {
+        $sql =  "SELECT * FROM user JOIN useraddress ON user.UserId = useraddress.UserId
+        WHERE user.FirstName LIKE '%$select%' OR user.LastName LIKE '%$select%' AND user.UserTypeId LIKE '%$user_type%' ";
+
+        $stmt =  $this->conn->prepare($sql);
+        $stmt->execute();
+        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function AdminSearchUsermanagement1234($select,$user_type,$from_date,$to_date)
+    {
+        $sql =  "SELECT * FROM user JOIN useraddress ON user.UserId = useraddress.UserId WHERE user.UserTypeId LIKE '%$user_type%' ";
 
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
