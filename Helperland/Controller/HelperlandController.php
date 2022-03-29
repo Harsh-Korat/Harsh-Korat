@@ -303,8 +303,6 @@ public function ResetPassword()
     }
 
 
-
-
     public function AddressCustomer()
     {
         
@@ -426,7 +424,6 @@ public function ResetPassword()
 
 
 
-
    public function Dasboard()
     {
         
@@ -515,9 +512,6 @@ public function ResetPassword()
 
                         echo $Address;
 
-
-
-                        
                       }
 
                         if($provider_row1 > 0){
@@ -526,7 +520,18 @@ public function ResetPassword()
 
                         $Service_Provider_Name1 = $provider_row['FirstName'];
                         $Service_Provider_Name2 = $provider_row['LastName'];
+                        $Provider_img = $provider_row['UserProfilePicture'];
 
+                        if($Provider_img == ''){
+                        $Provider_img1 = '../assets/image/forma-1-copy-19.png" class="round"';
+
+                        }else{
+                        $Provider_img1 = ''.$Provider_img.'" style="width:40px;height:40px; margin-right:10px; margin-top:5px;margin-bottom:-8px;"';
+                        }
+
+                        $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
+
+                      
                         $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
 
                         $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($userid);
@@ -544,10 +549,6 @@ public function ResetPassword()
                    }
                  $average = intval($All_Ratings/$Provider_all_ratings1);
 
-
-                      
-
-                      
                       $stars = "";
                             for ($x = 1; $x <= $average; $x+=1) {
                              $stars = $stars."<i class='fa fa-star star1'></i>";
@@ -575,7 +576,7 @@ public function ResetPassword()
                             </td>
 
                             <td>
-                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
                               <span class="time">' . $stars . $stars1.' '.$average.'</span>
 
                             </td>
@@ -595,8 +596,6 @@ public function ResetPassword()
 
 
                         echo $Address;
-
-
                    }
 
 
@@ -614,7 +613,6 @@ public function ResetPassword()
                               
                                } 
 
-
                      $Address = 
 
                        '<tr>
@@ -626,7 +624,7 @@ public function ResetPassword()
                             </td>
 
                             <td>
-                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
                               <span class="time">' .$stars1.' '.$average.'</span>
 
                             </td>
@@ -643,8 +641,6 @@ public function ResetPassword()
                             </td>
                         </tr>';
 
-
-
                         echo $Address;
                   } 
                   }             
@@ -654,241 +650,6 @@ public function ResetPassword()
     }
 
 
-   public function DasboardSearchByTable()
-    {
-        
-        if (isset($_POST)) {
-            $email = $_POST['username'];
-            $number = $_POST['number'];
-
-            if($number == 1){
-            $result = $this->model->DasboardSearchByTable($email);
-            }else if($number == 2){
-            $result = $this->model->DasboardSearchByTable1($email);
-            }else if($number == 3){
-            $result = $this->model->DasboardSearchByTable2($email);
-            }else{
-            $result = $this->model->DasboardSearchByTable3($email);
-            }
-
-            if (count($result)) {
-                foreach ($result as $row) {
-                    $ServiceStartDate = $row['ServiceStartDate'];
-                    $SubTotal = $row['SubTotal'];
-                    $ServiceRequestId = $row['ServiceRequestId'];
-                    $Tim = $row['Tim'];  
-                    $totaltime  = $row['TotalHours'];
-                    $userid = $row['Provider_Name'];
-                
-
-                        $starttime =  date("H:i", strtotime($Tim)); 
-                        $startime = str_replace(":", ".", $starttime);
-                        $hoursq = intval($startime);
-                        $realPartq =  $startime - $hoursq;
-                        $minutesq = intval($realPartq * 60);
-                         if ($minutesq == 18) {
-                             $minutesq = 5;
-                         } else {
-                              $minutesq = 0;
-                          }
-                          $startime =  $hoursq . "." . $minutesq;
-
-                          $hours = intval($totaltime);
-                          $realPart = $totaltime - $hours;
-                          $minutes = intval($realPart * 60);
-                          if ($minutes == 30) {
-                              $minutes = 5;
-                          } else {
-                              $minutes = 0;
-                          }
-                          $totaltimes = $hours . ":" . $minutes;
-                          $totaltimes = str_replace(":", ".", $totaltimes);
-
-                          $totaltimes = number_format(($startime +  $totaltimes), 2);
-                          $var1 = intval($totaltimes);
-                          $var2 = $totaltimes - $var1;
-                          if ($var2 == 0.50) {
-                              $var2 = 30;
-                          } else {
-                              $var2 = 00;
-                          }
-                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
-                          $totaltimes = str_replace(".", ":", $totaltimes);
-
-                       
-                        $Tim = $starttime. '-' .$totaltimes;
-
-                        $provider_row1 = $this->model->ProviderDashboardCount($userid);
-
-                        if($provider_row1 == 0){
-                         
-                     $Address = 
-
-                       '<tr>
-                            <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
-
-                            <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
-                            <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
-                            <img src="../assets/image/layer-712.png" class="clock">' . $Tim .'
-                            </td>
-
-                            <td>
-
-                            </td>
-                            
-                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
-                            <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
-                            </td>
-                            
-                            <td class="text-center">
-                            <button type="button" 
-                            id=' .$ServiceRequestId. ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
-
-                            <button id=' .$ServiceRequestId. ' class="btn cancel-lap" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
-                            </td>
-                        </tr>';
-
-
-
-                        echo $Address;
-
-
-
-                        
-                      }
-
-                        if($provider_row1 > 0){
-
-                        $provider_row = $this->model->ProviderDashboard($userid);
-
-                        $Service_Provider_Name1 = $provider_row['FirstName'];
-                        $Service_Provider_Name2 = $provider_row['LastName'];
-
-                        $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
-
-                        $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($userid);
-                        $Provider_all_ratings = $this->model->OverAllRatingOfServiceProvider($userid);
-                     
-                       
-                 if (count($Provider_all_ratings) > 0) {
-                   $All_Ratings = 0;
-                  foreach ($Provider_all_ratings as $row) {
-                   
-                   $r = $row['Ratings'];
-                   
-                  $All_Ratings = $All_Ratings + $r;
-                  
-                   }
-                 $average = intval($All_Ratings/$Provider_all_ratings1);
-
-
-                      
-
-                      
-                      $stars = "";
-                            for ($x = 1; $x <= $average; $x+=1) {
-                             $stars = $stars."<i class='fa fa-star star1'></i>";
-                              
-                               } 
-
-                      $avgs = 5.0 - $average;
-
-
-                      $stars1 = "";
-                            for ($x = 1; $x <= $avgs; $x+=1) {
-                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
-                              
-                               } 
-
-
-                     $Address = 
-
-                       '<tr>
-                            <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
-
-                            <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
-                            <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
-                            <img src="../assets/image/layer-712.png" class="clock">' . $Tim .'
-                            </td>
-
-                            <td>
-                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
-                              <span class="time">' . $stars . $stars1.' '.$average.'</span>
-
-                            </td>
-                            
-                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
-                            <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
-                            </td>
-                            
-                            <td class="text-center">
-                            <button type="button" 
-                            id=' .$ServiceRequestId. ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
-
-                            <button id=' .$ServiceRequestId. ' class="btn cancel-lap" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
-                            </td>
-                        </tr>';
-
-
-
-                        echo $Address;
-
-
-                   }
-
-
-                   else{
-                 
-                 $All_Ratings = 5;
-            
-                      $average = 0.0;
-                      $avgs = $All_Ratings;
-
-
-                      $stars1 = "";
-                            for ($x = 1; $x <= $avgs; $x+=1) {
-                             $stars1 = $stars1."<i class='fa fa-star star2'></i>";
-                              
-                               } 
-
-
-                     $Address = 
-
-                       '<tr>
-                            <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId .'</td>
-
-                            <td class="dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
-                            <img src="../assets/image/calendar2.png" class="calendar"><b>' . $ServiceStartDate . '</b><br>
-                            <img src="../assets/image/layer-712.png" class="clock">' . $Tim .'
-                            </td>
-
-                            <td>
-                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
-                              <span class="time">' .$stars1.' '.$average.'</span>
-
-                            </td>
-                            
-                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
-                            <span class="pay1"><b>€</b></span><span class="pay2"><b>' . $SubTotal . '</b></span>
-                            </td>
-                            
-                            <td class="text-center">
-                            <button type="button" 
-                            id=' .$ServiceRequestId. ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
-
-                            <button id=' .$ServiceRequestId. ' class="btn cancel-lap" data-toggle="modal" data-target="#cancel-modal">Cancel</button>
-                            </td>
-                        </tr>';
-
-
-
-                        echo $Address;
-                  } 
-                  }             
-                }
-            }
-        }
-    }
 
    public function ModalDasboard()
     {
@@ -951,8 +712,13 @@ public function ResetPassword()
                          $Service_Provider_Name = "";
 
                      $Address = 
-                                    
-                                    '<h4 class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId . '</h4>
+                                                       
+
+                                '<div class="cards">
+                                 <div class="card">
+                                   <div class="card-body">
+
+                                    <h4 class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId . '</h4>
                                 <hr>
 
                                    <p class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">    
@@ -971,7 +737,12 @@ public function ResetPassword()
                                     <p class="text-center card-buttn">
                                        <button type="button" id=' . $ServiceRequestId . ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
                                        <button class="btn cancel-lap" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#cancel-modal">Cancel</button>
-                                    </p>';
+                                    </p>
+
+
+                               </div>
+                              </div>
+                            </div>';
 
 
 
@@ -985,6 +756,15 @@ public function ResetPassword()
 
                         $Service_Provider_Name1 = $provider_row['FirstName'];
                         $Service_Provider_Name2 = $provider_row['LastName'];
+
+                        $Provider_img = $provider_row['UserProfilePicture'];
+
+                        if($Provider_img == ''){
+                        $Provider_img1 = '../assets/image/forma-1-copy-19.png" class="round"';
+
+                        }else{
+                        $Provider_img1 = ''.$Provider_img.'" style="width:40px;height:40px; margin-right:10px;"';
+                        }
 
                         $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
                         $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($userid);
@@ -1002,10 +782,6 @@ public function ResetPassword()
                    }
                  $average = intval($All_Ratings/$Provider_all_ratings1);
 
-
-                      
-
-                      
                       $stars = "";
                             for ($x = 1; $x <= $average; $x+=1) {
                              $stars = $stars."<i class='fa fa-star star1'></i>";
@@ -1024,7 +800,11 @@ public function ResetPassword()
 
                      $Address = 
                                     
-                                    '<h4 class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId . '</h4>
+                                '<div class="cards">
+                                 <div class="card">
+                                   <div class="card-body">
+
+                                    <h4 class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId . '</h4>
                                 <hr>
 
                                    <p class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">    
@@ -1036,11 +816,8 @@ public function ResetPassword()
 
                                    <hr>
 
-
-                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
                              <span class="time">' . $stars . $stars1.' '.$average.'</span>
-
-                            
 
                                    </p>
 
@@ -1050,7 +827,12 @@ public function ResetPassword()
                                     <p class="text-center card-buttn">
                                        <button type="button" id=' . $ServiceRequestId . ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
                                        <button class="btn cancel-lap" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#cancel-modal">Cancel</button>
-                                    </p>';
+                                    </p>
+
+
+                                   </div>
+                                  </div>
+                                </div>';
 
 
 
@@ -1061,10 +843,6 @@ public function ResetPassword()
                  
                  $All_Ratings = 5;
 
-                           
-                           
-                   
-            
                       $average = 0.0;
                       $avgs = $All_Ratings;
 
@@ -1077,7 +855,11 @@ public function ResetPassword()
 
                      $Address = 
                                     
-                                    '<h4 class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId . '</h4>
+                                '<div class="cards">
+                                 <div class="card">
+                                   <div class="card-body">
+
+                                    <h4 class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">' . $ServiceRequestId . '</h4>
                                 <hr>
 
                                    <p class="card-text dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">    
@@ -1089,11 +871,8 @@ public function ResetPassword()
 
                                    <hr>
 
-
-                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
                              <span class="time">' .$stars1.' '.$average.'</span>
-
-                            
 
                                    </p>
 
@@ -1103,17 +882,16 @@ public function ResetPassword()
                                     <p class="text-center card-buttn">
                                        <button type="button" id=' . $ServiceRequestId . ' class="save" data-toggle="modal" data-target="#date-modal">Reschedule</button>
                                        <button class="btn cancel-lap" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#cancel-modal">Cancel</button>
-                                    </p>';
+                                    </p>
 
-
+                                   </div>
+                                  </div>
+                                </div>';
 
                         echo $Address; 
 
-
-
-
-              }
-            }
+                  }
+                }
               }
             }
         }
@@ -1187,10 +965,6 @@ public function ResetPassword()
                         $Tim = $starttime. '-' .$totaltimes;
 
 
-
-                 //   $Provider_name = $row['Provider_name'];
-
-
                      $Address = 
 
                       
@@ -1221,8 +995,6 @@ public function ResetPassword()
                             <button class="btn"  id=' . $ServiceRequestId . ' class="dashboard accept2" data-toggle="modal" data-target="#schedule-modal">Accept</button>
                             </td>
                           </tr>';
-
-
 
                         echo $Address;              
                 }
@@ -1299,11 +1071,6 @@ public function ResetPassword()
                        
                         $Tim = $starttime. '-' .$totaltimes;
 
-
-
-                 //   $Provider_name = $row['Provider_name'];
-
-
                      $Address = 
 
                 
@@ -1336,16 +1103,12 @@ public function ResetPassword()
                       </div>
                      </div>';
 
-
-
                         echo $Address;              
                 }
               }
             }
         }
     }
-
-
 
 
 
@@ -1426,6 +1189,14 @@ public function ResetPassword()
 
                         $Service_Provider_Name1 = $provider_row['FirstName'];
                         $Service_Provider_Name2 = $provider_row['LastName'];
+                        $Provider_img = $provider_row['UserProfilePicture'];
+
+                        if($Provider_img == ''){
+                        $Provider_img1 = '../assets/image/forma-1-copy-19.png" class="round"';
+
+                        }else{
+                        $Provider_img1 = ''.$Provider_img.'" style="width:40px;height:40px; margin-right:10px;"';
+                        }
 
                         $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
 
@@ -1449,7 +1220,7 @@ public function ResetPassword()
                                </td>
                                        
                                 <td id="provider_name">
-                                <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                                <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
 
 
                                 <span class="time">         
@@ -1458,8 +1229,7 @@ public function ResetPassword()
                                   <i class="fa fa-star star2"></i>
                                   <i class="fa fa-star star2"></i>
                                   <i class="fa fa-star star2"></i></span>
-  
-                                        
+          
                                 </td>
                              
                                 <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
@@ -1474,8 +1244,6 @@ public function ResetPassword()
                                 <button type="button" id=' . $ServiceRequestId . ' class="btn dashboard rate-sp" data-toggle="modal" data-target="#rate-modal" disabled>Rate SP</button>  
                                 </td>
                             </tr>';
-
-
 
                         echo $Address; 
                       }
@@ -1496,7 +1264,7 @@ public function ResetPassword()
                                </td>
                                        
                                 <td id="provider_name">
-                                <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                                <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
 
 
                                 <span class="time">         
@@ -1505,8 +1273,7 @@ public function ResetPassword()
                                   <i class="fa fa-star star2"></i>
                                   <i class="fa fa-star star2"></i>
                                   <i class="fa fa-star star2"></i></span>
-  
-                                        
+       
                                 </td>
                              
                                 <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal">
@@ -1521,8 +1288,6 @@ public function ResetPassword()
                                 <button type="button" id=' . $ServiceRequestId . ' class="btn dashboard rate-sp" data-toggle="modal" data-target="#rate-modal">Rate SP</button>  
                                 </td>
                             </tr>';
-
-
 
                         echo $Address; 
                       }
@@ -1560,7 +1325,7 @@ public function ResetPassword()
                                </td>
                                        
                                 <td id="provider_name">
-                                <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                                <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
                                 <span class="time">    
 
    
@@ -1586,22 +1351,11 @@ public function ResetPassword()
 
                         echo $Address; 
 
-
-
                       }
-
-
                 }
             }
         }
     }
-
-
-
-
-
-
-
 
 
 
@@ -1630,7 +1384,6 @@ public function ResetPassword()
                     $cancel = "class='btn cancel1'>Cancelled";
                     }
 
-                   
                         $starttime =  date("H:i", strtotime($Tim)); 
                         $startime = str_replace(":", ".", $starttime);
                         $hoursq = intval($startime);
@@ -1682,6 +1435,14 @@ public function ResetPassword()
 
                         $Service_Provider_Name1 = $provider_row['FirstName'];
                         $Service_Provider_Name2 = $provider_row['LastName'];
+                        $Provider_img = $provider_row['UserProfilePicture'];
+
+                        if($Provider_img == ''){
+                        $Provider_img1 = '../assets/image/forma-1-copy-19.png" class="round"';
+
+                        }else{
+                        $Provider_img1 = ''.$Provider_img.'" style="width:40px;height:40px; margin-right:10px;"';
+                        }
 
                         $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
 
@@ -1692,8 +1453,6 @@ public function ResetPassword()
                     if(($rating == 0) && ($status == 3)){
 
                    $Address = 
-
-                              
 
                      '<div class="cards">
                        <div class="card">
@@ -1709,8 +1468,7 @@ public function ResetPassword()
                                 </P>
                                
                                 <P classcard-text provider_name>
-                                <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
-
+                                <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
 
                                 <span class="time_star">         
                                   <i class="fa fa-star star_modal1"></i>
@@ -1751,9 +1509,6 @@ public function ResetPassword()
 
                      if(($rating == 0) && ($status == 2)){
 
-
-
-
                    $Address = 
 
                               
@@ -1771,8 +1526,7 @@ public function ResetPassword()
                                 </P>
                                
                                 <P classcard-text provider_name>
-                                <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
-
+                                <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
 
                                 <span class="time_star">         
                                   <i class="fa fa-star star_modal1"></i>
@@ -1808,11 +1562,10 @@ public function ResetPassword()
                              </div>';
 
                     echo $Address;   
-                     }
+                  }
 
 
                  if($rating > 0){
-
 
                       $customer_rating = $this->model->RatingOfCustomer($ServiceRequestId);
 
@@ -1821,7 +1574,7 @@ public function ResetPassword()
                             for ($x = 1; $x <= $avg; $x+=1) {
                              $stars = $stars."<i class='fa fa-star star1'></i>";
                               
-                               } 
+                             } 
 
                       $avgs = 5.0 - $avg;
 
@@ -1830,8 +1583,7 @@ public function ResetPassword()
                             for ($x = 1; $x <= $avgs; $x+=1) {
                              $stars1 = $stars1."<i class='fa fa-star star2'></i>";
                               
-                               } 
-
+                           } 
 
                    $Address = 
 
@@ -1850,7 +1602,7 @@ public function ResetPassword()
                                 </P>
                                
                                 <P classcard-text provider_name>
-                                <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                                <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
 
 
                                   <span class="time">' . $stars . $stars1.' '.$avg.' </span>
@@ -1882,7 +1634,7 @@ public function ResetPassword()
                              </div>';
 
                     echo $Address; 
- }
+                 }
 
 
                 }
@@ -1938,6 +1690,8 @@ public function ResetPassword()
                     $Email = $row['Email'];
                     $HasPets = $row['HasPets'];
 
+                    $Provider_name = $row['Provider_Name'];
+
                     $Tim = $row['Tim'];
 
                         $starttime =  date("H:i", strtotime($Tim)); 
@@ -1977,11 +1731,94 @@ public function ResetPassword()
                        
                         $Tim = $starttime. '-' .$totaltimes;
 
+                    }
 
+            if($Provider_name == 0){
+
+              $Address = 
+
+                 '<div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
+                    <div class="service-duration">Duration: <span class="duration">' . $totaltime . ' Hrs</span></div>
+
+                    <hr>
+                    <div class="service-duration">Service Id: <span class="duration">' . $ServiceRequestId . '</span></div>
+                    <div class="service-duration">Extras: <span class="duration">' . $ExtraServices . '</span></div>
+                    <div class="service-duration">Net Amount: <span class="amount">' . $SubTotal . ' €</span></div>
+
+                    <hr> 
+
+                    <div class="service-duration">Service Address: <span class="duration">' . $AddressLine1 . ' ' . $AddressLine2 . ', ' . $City . ' ' .  $PostalCode .'</span></div>
+                    <div class="service-duration">Billing Address: <span class="duration">Same as clieaning Address</span></div>
+                    <div class="service-duration">Phone: <span class="duration">' . $Mobile . '</span></div>
+                    <div class="service-duration">Email: <span class="duration">' . $Email . '</span></div>
+
+                  <hr>
+                  
+                  <div class="service-duration">Comments</div>
+                  <div class="duration"><span><i class="fa-solid fa-circle-xmark"></i></span><span id="duration">I do not have pets at home</span></div>
+
+                    <hr>
+
+                 <div class="form-group mt-3 book-flex">
+                    <button type="submit" class="btn btn-login1 form-control" data-toggle="modal" data-target="#date-modal" data-dismiss="modal"><i class="fa-solid fa-clock-rotate-left"></i>Reshedule</button>
+                    <button type="submit" class="btn btn-login1 form-control" id="login-1" data-toggle="modal" data-target="#cancel-modal" data-dismiss="modal"><i class="fa-solid fa-xmark"></i>Cancel</button>
+                 </div>'; 
+
+                echo $Address; 
+
+              }else{
+
+                        $provider_row = $this->model->ProviderDashboard($Provider_name);
+
+                        $Service_Provider_Name1 = $provider_row['FirstName'];
+                        $Service_Provider_Name2 = $provider_row['LastName'];
+                        $Provider_img = $provider_row['UserProfilePicture'];
+
+                        if($Provider_img == ''){
+                        $Provider_img1 = '../assets/image/forma-1-copy-19.png" class="round_modals"';
+
+                        }else{
+                        $Provider_img1 = ''.$Provider_img.'" style="width:40px;height:40px; margin-right:10px;"';
+                        }
+
+                        $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
+
+                        $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($Provider_name);
+                        $Provider_all_ratings = $this->model->OverAllRatingOfServiceProvider($Provider_name);
+                     
+                       
+                 if (count($Provider_all_ratings) > 0) {
+                   $All_Ratings = 0;
+                  foreach ($Provider_all_ratings as $row) {
+                   
+                   $r = $row['Ratings'];
+                   
+                  $All_Ratings = $All_Ratings + $r;
+                  
+                   }
+                 $average = intval($All_Ratings/$Provider_all_ratings1);
+
+                      $stars = "";
+                            for ($x = 1; $x <= $average; $x+=1) {
+                             $stars = $stars."<i class='fa fa-star star1_modals'></i>";
+                              
+                               } 
+
+                      $avgs = 5.0 - $average;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2_modals'></i>";
+                              
+                               } 
 
           $Address = 
 
-            '<div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
+            
+          '<div class="right_provider">
+            <div class="right_provider_width">
+            <div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
               <div class="service-duration">Duration: <span class="duration">' . $totaltime . ' Hrs</span></div>
 
               <hr>
@@ -1994,15 +1831,337 @@ public function ResetPassword()
               <div class="service-duration">Service Address: <span class="duration">' . $AddressLine1 . ' ' . $AddressLine2 . ', ' . $City . ' ' .  $PostalCode .'</span></div>
               <div class="service-duration">Billing Address: <span class="duration">Same as clieaning Address</span></div>
               <div class="service-duration">Phone: <span class="duration">' . $Mobile . '</span></div>
-              <div class="service-duration">Email: <span class="duration">' . $Email . '</span></div>';     
+              <div class="service-duration">Email: <span class="duration">' . $Email . '</span></div>
 
-              echo $Address;              
+            <hr>
+            
+            <div class="service-duration">Comments</div>
+            <div class="duration"><span><i class="fa-solid fa-circle-xmark"></i></span><span id="duration">I do not have pets at home</span></div>
 
+              <hr>
+
+
+           <div class="form-group mt-3 book-flex">
+              <button type="submit" class="btn btn-login1 form-control" data-toggle="modal" data-target="#date-modal" data-dismiss="modal"><i class="fa-solid fa-clock-rotate-left"></i>Reshedule</button>
+              <button type="submit" class="btn btn-login1 form-control" id="login-1" data-toggle="modal" data-target="#cancel-modal" data-dismiss="modal"><i class="fa-solid fa-xmark"></i>Cancel</button>
+           </div>
+
+              </div>
+
+              <span class="border_provider"></span>
+                <div class="Provider_Modals">
+                  <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
+                  <span class="time_modals">' . $stars . $stars1.' '.$average.'</span>                           
+                </div> 
+              </div> ';     
+
+              echo $Address;       
+
+                  }else{
+
+                   $All_Ratings = 5;
+            
+                      $average = 0.0;
+                      $avgs = $All_Ratings;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2_modals'></i>";
+                              
+                               } 
+          $Address = 
+
+            
+          '<div class="right_provider">
+            <div class="right_provider_width">
+            <div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
+              <div class="service-duration">Duration: <span class="duration">' . $totaltime . ' Hrs</span></div>
+
+              <hr>
+              <div class="service-duration">Service Id: <span class="duration">' . $ServiceRequestId . '</span></div>
+              <div class="service-duration">Extras: <span class="duration">' . $ExtraServices . '</span></div>
+              <div class="service-duration">Net Amount: <span class="amount">' . $SubTotal . ' €</span></div>
+
+              <hr> 
+
+              <div class="service-duration">Service Address: <span class="duration">' . $AddressLine1 . ' ' . $AddressLine2 . ', ' . $City . ' ' .  $PostalCode .'</span></div>
+              <div class="service-duration">Billing Address: <span class="duration">Same as clieaning Address</span></div>
+              <div class="service-duration">Phone: <span class="duration">' . $Mobile . '</span></div>
+              <div class="service-duration">Email: <span class="duration">' . $Email . '</span></div>
+
+            <hr>
+            
+            <div class="service-duration">Comments</div>
+            <div class="duration"><span><i class="fa-solid fa-circle-xmark"></i></span><span id="duration">I do not have pets at home</span></div>
+
+              <hr>
+
+           <div class="form-group mt-3 book-flex">
+              <button type="submit" class="btn btn-login1 form-control" data-toggle="modal" data-target="#date-modal" data-dismiss="modal"><i class="fa-solid fa-clock-rotate-left"></i>Reshedule</button>
+              <button type="submit" class="btn btn-login1 form-control" id="login-1" data-toggle="modal" data-target="#cancel-modal" data-dismiss="modal"><i class="fa-solid fa-xmark"></i>Cancel</button>
+           </div>
+
+              </div>
+
+              <span class="border_provider"></span>
+                <div class="Provider_Modals">
+                  <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
+                  <span class="time_modals">' .$stars1.' '.$average.'</span>                          
+                </div> 
+              </div> ';     
+
+              echo $Address;
+
+                }
 
                 }
             }
         }
     }
+
+
+
+  public function AdminDasboard2()
+    {
+        
+        if (isset($_POST)) {
+            $addressid1 = $_POST['addressid1'];
+
+            $result = $this->model->Dasboard2($addressid1);
+            if (count($result)) {
+                foreach ($result as $row) {
+                    $ServiceStartDate = $row['ServiceStartDate'];
+                    $totaltime = $row['TotalHours'];
+                    $ExtraServices = $row['ExtraServices'];
+                    $ServiceRequestId = $row['ServiceRequestId'];
+                    $SubTotal = $row['SubTotal'];
+                    $AddressLine1 = $row['AddressLine1'];
+                    $AddressLine2 = $row['AddressLine2'];
+                    $City = $row['City'];
+                    $PostalCode = $row['PostalCode'];
+                    $Mobile = $row['Mobile'];
+                    $Email = $row['Email'];
+                    $HasPets = $row['HasPets'];
+                    $status = $row['Status'];
+
+                    $Provider_name = $row['Provider_Name'];
+
+                    $Tim = $row['Tim'];
+
+                        $starttime =  date("H:i", strtotime($Tim)); 
+                        $startime = str_replace(":", ".", $starttime);
+                        $hoursq = intval($startime);
+                        $realPartq =  $startime - $hoursq;
+                        $minutesq = intval($realPartq * 60);
+                         if ($minutesq == 18) {
+                             $minutesq = 5;
+                         } else {
+                              $minutesq = 0;
+                          }
+                          $startime =  $hoursq . "." . $minutesq;
+
+                          $hours = intval($totaltime);
+                          $realPart = $totaltime - $hours;
+                          $minutes = intval($realPart * 60);
+                          if ($minutes == 30) {
+                              $minutes = 5;
+                          } else {
+                              $minutes = 0;
+                          }
+                          $totaltimes = $hours . ":" . $minutes;
+                          $totaltimes = str_replace(":", ".", $totaltimes);
+
+                          $totaltimes = number_format(($startime +  $totaltimes), 2);
+                          $var1 = intval($totaltimes);
+                          $var2 = $totaltimes - $var1;
+                          if ($var2 == 0.50) {
+                              $var2 = 30;
+                          } else {
+                              $var2 = 00;
+                          }
+                          $totaltimes = number_format(($var1 . '.' . $var2), 2);
+                          $totaltimes = str_replace(".", ":", $totaltimes);
+
+                       
+                        $Tim = $starttime. '-' .$totaltimes;
+
+                    }
+
+            if($status == 0 || $status == 1 || $status == 2 || $status == 3){
+
+              $Address = 
+
+                 '<div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
+                    <div class="service-duration">Duration: <span class="duration">' . $totaltime . ' Hrs</span></div>
+
+                    <hr>
+                    <div class="service-duration">Service Id: <span class="duration">' . $ServiceRequestId . '</span></div>
+                    <div class="service-duration">Extras: <span class="duration">' . $ExtraServices . '</span></div>
+                    <div class="service-duration">Net Amount: <span class="amount">' . $SubTotal . ' €</span></div>
+
+                    <hr> 
+
+                    <div class="service-duration">Service Address: <span class="duration">' . $AddressLine1 . ' ' . $AddressLine2 . ', ' . $City . ' ' .  $PostalCode .'</span></div>
+                    <div class="service-duration">Billing Address: <span class="duration">Same as clieaning Address</span></div>
+                    <div class="service-duration">Phone: <span class="duration">' . $Mobile . '</span></div>
+                    <div class="service-duration">Email: <span class="duration">' . $Email . '</span></div>
+
+                  <hr>
+                  
+                  <div class="service-duration">Comments</div>
+                  <div class="duration"><span><i class="fa-solid fa-circle-xmark"></i></span><span id="duration">I do not have pets at home</span></div>
+
+                    <hr>'; 
+
+                echo $Address; 
+
+               }else{
+
+                        $provider_row = $this->model->ProviderDashboard($Provider_name);
+
+                        $Service_Provider_Name1 = $provider_row['FirstName'];
+                        $Service_Provider_Name2 = $provider_row['LastName'];
+                        $Provider_img = $provider_row['UserProfilePicture'];
+
+                        if($Provider_img == ''){
+                        $Provider_img1 = '../assets/image/forma-1-copy-19.png" class="round_modals"';
+
+                        }else{
+                        $Provider_img1 = ''.$Provider_img.'" style="width:40px;height:40px; margin-right:10px;"';
+                        }
+
+                        $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
+
+                        $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($Provider_name);
+                        $Provider_all_ratings = $this->model->OverAllRatingOfServiceProvider($Provider_name);
+                     
+                       
+                 if (count($Provider_all_ratings) > 0) {
+                   $All_Ratings = 0;
+                  foreach ($Provider_all_ratings as $row) {
+                   
+                   $r = $row['Ratings'];
+                   
+                  $All_Ratings = $All_Ratings + $r;
+                  
+                   }
+                 $average = intval($All_Ratings/$Provider_all_ratings1);
+
+                      $stars = "";
+                            for ($x = 1; $x <= $average; $x+=1) {
+                             $stars = $stars."<i class='fa fa-star star1_modals'></i>";
+                              
+                               } 
+
+                      $avgs = 5.0 - $average;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2_modals'></i>";
+                              
+                               } 
+
+          $Address = 
+
+            
+          '<div class="right_provider">
+            <div class="right_provider_width">
+            <div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
+              <div class="service-duration">Duration: <span class="duration">' . $totaltime . ' Hrs</span></div>
+
+              <hr>
+              <div class="service-duration">Service Id: <span class="duration">' . $ServiceRequestId . '</span></div>
+              <div class="service-duration">Extras: <span class="duration">' . $ExtraServices . '</span></div>
+              <div class="service-duration">Net Amount: <span class="amount">' . $SubTotal . ' €</span></div>
+
+              <hr> 
+
+              <div class="service-duration">Service Address: <span class="duration">' . $AddressLine1 . ' ' . $AddressLine2 . ', ' . $City . ' ' .  $PostalCode .'</span></div>
+              <div class="service-duration">Billing Address: <span class="duration">Same as clieaning Address</span></div>
+              <div class="service-duration">Phone: <span class="duration">' . $Mobile . '</span></div>
+              <div class="service-duration">Email: <span class="duration">' . $Email . '</span></div>
+
+            <hr>
+            
+            <div class="service-duration">Comments</div>
+            <div class="duration"><span><i class="fa-solid fa-circle-xmark"></i></span><span id="duration">I do not have pets at home</span></div>
+
+              <hr>
+
+              </div>
+
+              <span class="border_provider"></span>
+                <div class="Provider_Modals">
+                  <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
+                  <span class="time_modals">' . $stars . $stars1.' '.$average.'</span>                           
+                </div> 
+              </div> ';     
+
+              echo $Address;       
+
+                  }else{
+
+                   $All_Ratings = 5;
+            
+                      $average = 0.0;
+                      $avgs = $All_Ratings;
+
+
+                      $stars1 = "";
+                            for ($x = 1; $x <= $avgs; $x+=1) {
+                             $stars1 = $stars1."<i class='fa fa-star star2_modals'></i>";
+                              
+                               } 
+
+
+          $Address = 
+
+            
+          '<div class="right_provider">
+            <div class="right_provider_width">
+            <div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
+              <div class="service-duration">Duration: <span class="duration">' . $totaltime . ' Hrs</span></div>
+
+              <hr>
+              <div class="service-duration">Service Id: <span class="duration">' . $ServiceRequestId . '</span></div>
+              <div class="service-duration">Extras: <span class="duration">' . $ExtraServices . '</span></div>
+              <div class="service-duration">Net Amount: <span class="amount">' . $SubTotal . ' €</span></div>
+
+              <hr> 
+
+              <div class="service-duration">Service Address: <span class="duration">' . $AddressLine1 . ' ' . $AddressLine2 . ', ' . $City . ' ' .  $PostalCode .'</span></div>
+              <div class="service-duration">Billing Address: <span class="duration">Same as clieaning Address</span></div>
+              <div class="service-duration">Phone: <span class="duration">' . $Mobile . '</span></div>
+              <div class="service-duration">Email: <span class="duration">' . $Email . '</span></div>
+
+            <hr>
+            
+            <div class="service-duration">Comments</div>
+            <div class="duration"><span><i class="fa-solid fa-circle-xmark"></i></span><span id="duration">I do not have pets at home</span></div>
+
+              <hr>
+
+              </div>
+
+              <span class="border_provider"></span>
+                <div class="Provider_Modals">
+                  <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
+                  <span class="time_modals">' .$stars1.' '.$average.'</span>                          
+                </div> 
+              </div> ';     
+
+              echo $Address;
+
+                }
+
+                }
+            }
+        }
+    }
+
+
 
 
   public function ServiceRequestModal()
@@ -2068,10 +2227,6 @@ public function ResetPassword()
                         $Tim = $starttime. '-' .$totaltimes;
 
 
-                    
-
-
-
           $Address = 
 
             '<div class="service-warning">' .$ServiceStartDate . ' ' . $Tim . '</div>
@@ -2099,15 +2254,11 @@ public function ResetPassword()
 
 
 
-
-
  public function DashUpdate()
     {
 
         if (isset($_POST)) {
             $email = $_POST['username'];
-
-    
             $ServiceRequestId = $_POST['ServiceRequestId'];
 
             $reschedule = $this->model->UpdateCustomerSchedule($ServiceRequestId);
@@ -2138,11 +2289,9 @@ public function ResetPassword()
 
          if($status == 1){
 
-       //$Tim = $results[0];
-        $Tim = $Tim1; 
-        $totaltime = $totaltime1;
-      $ServiceStartDate1 = $Date;
-    //  $totaltime = $results[2];
+            $Tim = $Tim1; 
+            $totaltime = $totaltime1;
+          $ServiceStartDate1 = $Date;
 
                         $starttime =  date("H:i", strtotime($Tim)); 
                         $startime = str_replace(":", ".", $starttime);
@@ -2181,15 +2330,11 @@ public function ResetPassword()
                        
                         $Tim = $starttime. '-' .$totaltimes;
 
-                        $approvestarttime = $starttime; //13 
-                        $approveendtime = $totaltimes;//18
-
-
+                        $approvestarttime = $starttime; 
+                        $approveendtime = $totaltimes;
 
 
      $result1 = $this->model->Extraqueryes($Provider_name,$approvestarttime,$approveendtime,$ServiceStartDate1); 
-
-
                                                                   
    if($result1 == 0) {
           
@@ -2213,9 +2358,8 @@ public function ResetPassword()
 
   }
 
-        }
-    }
-
+ }
+}
 
 
  public function CustomerRating()
@@ -2234,12 +2378,9 @@ public function ResetPassword()
             $status = $result1['Status'];
             $Provider_name = $result1['Provider_Name'];
 
-
            $result = $this->model->ResetKey($email);
-
            $username = $result[3]; 
-         
-
+        
             $array = [
                 'username' => $username,
                 'gender' => $gender,
@@ -2263,7 +2404,6 @@ public function ResetPassword()
 
         }
     }
-
 
 
  public function EditCustomerDetails()
@@ -2341,7 +2481,6 @@ public function ResetPassword()
             $lastname = $ServiceRequestId4['LastName'];
             $username = $firstname . ' ' . $lastname;
             
-
     if ($result) {        
 
       if (count($ServiceRequestId3)) {
@@ -2359,9 +2498,6 @@ public function ResetPassword()
             echo 1;
 
           }
-
-
-
             
         }
     }
@@ -2376,11 +2512,9 @@ public function ResetPassword()
 
       $results = $this->model->NewServiceRequestConflict($ServiceRequestId); 
       
-      $Tim = $results[0];
-      $ServiceStartDate1 = $results[1];
-      $totaltime = $results[2];
-
-
+            $Tim = $results[0];
+            $ServiceStartDate1 = $results[1];
+            $totaltime = $results[2];
 
                         $starttime =  date("H:i", strtotime($Tim)); 
                         $startime = str_replace(":", ".", $starttime);
@@ -2419,22 +2553,15 @@ public function ResetPassword()
                        
                         $Tim = $starttime. '-' .$totaltimes;
 
-                        $approvestarttime = $starttime; //13 
-                        $approveendtime = $totaltimes;//18
-
-
+                        $approvestarttime = $starttime; 
+                        $approveendtime = $totaltimes;
 
             $email = $_POST['username'];
 
             $result1 = $this->model->ResetKey($email);
             $Provider_name = $result1[3];
 
-        
-      //  $result1 = $this->model->UpcomingTableConflict($Provider_name); 
-
       $result1 = $this->model->Extraqueryes($Provider_name,$approvestarttime,$approveendtime,$ServiceStartDate1); 
-
-
                                                                   
    if($result1 == 0) {
           
@@ -2460,7 +2587,6 @@ public function ResetPassword()
 
              $ServiceRequestId3 = $this->model->AcceptCustomerMail($userid);
             
-
      if ($result) {     
        if (count($GoingtoServiceProvider)) {
            foreach ($GoingtoServiceProvider as $row) {
@@ -2502,7 +2628,6 @@ public function ResetPassword()
  }
 
 
-
  public function DeleteAddress()
     {
 
@@ -2524,7 +2649,6 @@ public function ResetPassword()
 
         }
     }
-
 
 
 public function Request()
@@ -2678,7 +2802,6 @@ public function Request()
   }
 
 
-
   public function CustomerDetails()
     {
         if (isset($_POST)) {
@@ -2709,7 +2832,6 @@ public function Request()
             }
         }
     }
-
 
 
   public function CustomerUpdateDetails()
@@ -2762,9 +2884,6 @@ public function Request()
                     $lastname = $row['LastName'];
                     $mobile = $row['Mobile'];
 
-
-                
-
                         $starttime =  date("H:i", strtotime($Tim)); 
                         $startime = str_replace(":", ".", $starttime);
                         $hoursq = intval($startime);
@@ -2802,14 +2921,10 @@ public function Request()
                        
                         $Tim = $starttime. '-' .$totaltimes;
 
-
-
-                 //   $Provider_name = $row['Provider_name'];
                   if($number == 1){
 
                      $Address = 
 
-                      
                           '<tr id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
                             <td>' . $ServiceRequestId .'</td>
 
@@ -2828,8 +2943,6 @@ public function Request()
                             </td>
                             
                           </tr>';
-
-
 
                         echo $Address;              
                 }
@@ -2866,9 +2979,6 @@ public function Request()
                           </div>';
                       
                        echo $Address;   
-
-
-
               }   
             }
         }
@@ -2889,21 +2999,13 @@ public function Request()
 
                 foreach ($result as $row) {
                     $ServiceStartDate = $row['ServiceStartDate'];
-                   // $SubTotal = $row['SubTotal'];
                     $ServiceRequestId = $row['ServiceRequestId'];
                     $Tim = $row['Tim']; 
                     $totaltime  = $row['TotalHours'];
-                  //  $street = $row['AddressLine1'];
-                    // $houseno = $row['AddressLine2'];
-                    // $city = $row['City'];
-                    // $pincode = $row['PostalCode'];
                      $firstname = $row['FirstName'];
                      $lastname = $row['LastName'];
                      $ratings = $row['Ratings'];
-                    // $mobile = $row['Mobile'];
                      $comment = $row['Comments'];
-
-
 
                         $starttime =  date("H:i", strtotime($Tim)); 
                         $startime = str_replace(":", ".", $starttime);
@@ -2939,9 +3041,7 @@ public function Request()
                           $totaltimes = number_format(($var1 . '.' . $var2), 2);
                           $totaltimes = str_replace(".", ":", $totaltimes);
 
-                       
                         $Tim = $starttime. '-' .$totaltimes;
-
 
                       $stars = "";
                             for ($x = 1; $x <= $ratings; $x+=1) {
@@ -2950,7 +3050,6 @@ public function Request()
                                } 
 
                       $avgs = 5.0 - $ratings;
-
 
                       $stars1 = "";
                             for ($x = 1; $x <= $avgs; $x+=1) {
@@ -2967,10 +3066,7 @@ public function Request()
                   $ratings = "Good";
                   }
 
-
-
-                 //   $Provider_name = $row['Provider_name'];
-                  if($number == 1){
+            if($number == 1){
 
                      $Address = 
 
@@ -2994,13 +3090,10 @@ public function Request()
                         </div>
                         </div>';
 
-
-
                         echo $Address;              
                 }
 
                   if($number == 0){
-
 
                       $Address = 
 
@@ -3036,8 +3129,6 @@ public function Request()
         }
     }
 }
-
-
 
 
  public function UpcomingTable()
@@ -3100,18 +3191,13 @@ public function Request()
                           }
                           $totaltimes = number_format(($var1 . '.' . $var2), 2);
                           $totaltimes = str_replace(".", ":", $totaltimes);
-
                        
                         $Tim = $starttime. '-' .$totaltimes;
-
-
-                 //   $Provider_name = $row['Provider_name'];
                    
                    if($number == 1){
 
                      $Address = 
 
-                
                             '<tr id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
                               <td>'. $ServiceRequestId .'</td>
 
@@ -3139,14 +3225,12 @@ public function Request()
                               </td>
                             </tr>';
 
-
-
                         echo $Address; 
 
                       }
 
 
-                   if($number == 0){
+                if($number == 0){
 
                      $Address = 
 
@@ -3248,7 +3332,6 @@ public function ServiceProviderDetails()
                     $ZipCode = $row['ZipCode'];
                     $isactives = $row['IsActive'];
 
-
                     if (!empty($date)) {
 
                         list($year, $month, $day) = explode("-", $date);
@@ -3289,8 +3372,6 @@ public function ServiceProviderDetails11()
 
                         }
                     }
-
-
         }
     }
 
@@ -3396,8 +3477,6 @@ public function ServiceProviderDetails11()
             $ServiceRequestId = $_POST['ServiceRequestId'];
             $ServiceRequestId1 = $ServiceRequestId;
 
-
-
             $status = 3;
 
             $array = [
@@ -3411,7 +3490,6 @@ public function ServiceProviderDetails11()
             $ServiceRequestId2 = $this->model->ServiceRequestId($ServiceRequestId);
             $userid = $ServiceRequestId2[0];
             $ServiceRequestId3 = $this->model->AcceptCustomerMail($userid);
-
 
     if ($result) {     
       if (count($GoingtoServiceProvider)) {
@@ -3442,7 +3520,6 @@ public function ServiceProviderDetails11()
          echo 1;
 
           }    
-
 
         }
     }
@@ -3554,11 +3631,9 @@ public function ServiceProviderDetails11()
                     $userid = $row['UserId'];
                     $target_userid = $row['TargetUserId'];
 
-
                     $result1 = $this->model->NewFindBlockCustomer($userid, $target_userid);
                     $block = $result1[0];
                     
-
                       if($block == 1){
                         $block1 = "Un-block";
                       }
@@ -3579,12 +3654,11 @@ public function ServiceProviderDetails11()
                   </section>';
           
            echo $Address;
-
-
         }
       }
     }
-    }
+  }
+
 
 public function FavouritePros()
     {
@@ -3596,7 +3670,6 @@ public function FavouritePros()
             $result = $this->model->ResetKey($email);
             $Provider_name = $result[3];
 
-            
             $result = $this->model->FavouritePros($Provider_name);
            
             if (count($result)) {
@@ -3606,14 +3679,20 @@ public function FavouritePros()
                     $userid = $row['UserId'];
                     $target_userid = $row['TargetUserId'];
 
-                    $Cleanings = $this->model->CountRowsFavouritePros($target_userid,$userid);
+                        $Provider_img = $row['UserProfilePicture'];
 
+                        if($Provider_img == ''){
+                        $Provider_img1 = '../assets/image/forma-1-copy-19.png" class="round"';
+
+                        }else{
+                        $Provider_img1 = ''.$Provider_img.'" style="width:100px;height:100px;margin-top:25px;"';
+                        }
+
+                    $Cleanings = $this->model->CountRowsFavouritePros($target_userid,$userid);
 
                     $result1 = $this->model->FindingRowForCustomerBlock($userid,$target_userid);
 
                     if($result1 > 0){
-
-                      
 
                     $result1 = $this->model->NewFindBlockCustomer($userid,$target_userid);
                     $result11 = $this->model->NewFindFavouriteCustomer($userid,$target_userid);
@@ -3634,7 +3713,6 @@ public function FavouritePros()
                       $block2 = "Un-favourite";
                      }
                        
-
                         $userid1 = $target_userid;
 
                         $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($userid1);
@@ -3652,35 +3730,29 @@ public function FavouritePros()
                   
                    }
 
-
                  $average = intval($All_Ratings/$Provider_all_ratings1);
                       $stars = "";
                             for ($x = 1; $x <= $average; $x+=1) {
                              $stars = $stars."<i class='fa fa-star star1'></i>";
-                              
                                } 
 
                       $avgs = 5.0 - $average;
 
-
                       $stars1 = "";
                             for ($x = 1; $x <= $avgs; $x+=1) {
                              $stars1 = $stars1."<i class='fa fa-star star2'></i>";
-                              
                                } 
 
            $Address = 
 
                   '<section class="block">
-                    <div class="round text-center" >
-                      <img src="../assets/image/forma-1-copy-19.png">
+                    <div class="text-center" >
+                      <img src="'.$Provider_img1.'>
                     </div>
                       <p class="service-provider text-center">'.$firstname.' '.$lastname .'</p>
                         <span class="time text-center">'. $stars . $stars1.'<span style="margin-left: 10px;">'.$average.'</span></span>
 
-
                       <p class="service-provider text-center" id="cleaning">'.$Cleanings.' Cleanings</p>
-
 
                       <span style="display: flex;">
                       <button type="button" class="remove-bttn" id='.$target_userid.'>'.$block2.'</button>
@@ -3692,9 +3764,7 @@ public function FavouritePros()
 
           }
 
-      else{ 
-
-          
+        else{ 
 
                    $All_Ratings = 5;
             
@@ -3708,19 +3778,16 @@ public function FavouritePros()
                               
                                } 
 
-
            $Address = 
 
                   '<section class="block">
-                    <div class="round text-center" >
-                      <img src="../assets/image/forma-1-copy-19.png">
+                    <div class="text-center" >
+                      <img src="'.$Provider_img1.'>
                     </div>
                       <p class="service-provider text-center">'.$firstname.' '.$lastname .'</p>
                         <span class="time text-center">'.$stars1.'<span style="margin-left: 10px;">'.$average.'</span></span>
 
-
                       <p class="service-provider text-center" id="cleaning">'.$Cleanings.' Cleanings</p>
-
 
                       <span style="display: flex;">
                       <button type="button" class="remove-bttn" id='.$target_userid.'>'.$block2.'</button>
@@ -3734,8 +3801,6 @@ public function FavouritePros()
 
 
           if($result1 == 0){
-
-                       
 
                         $userid = $target_userid;
 
@@ -3768,22 +3833,16 @@ public function FavouritePros()
                              $stars1 = $stars1."<i class='fa fa-star star2'></i>";
                               
                                } 
-
-
-
-
             $Address =
 
                   '<section class="block">
-                    <div class="round text-center" >
-                      <img src="../assets/image/forma-1-copy-19.png">
+                    <div class="text-center" >
+                      <img src="'.$Provider_img1.'>
                     </div>
                       <p class="service-provider text-center">'.$firstname.' '.$lastname .'</p>
                         <span class="time text-center"> '. $stars . $stars1.'<span style="margin-left: 10px;">'.$average.'</span></span>
 
-
                       <p class="service-provider text-center" id="cleaning">'.$Cleanings.' Cleanings</p>
-
 
                       <span style="display: flex;">
                       <button type="button" class="remove-bttn" id='.$target_userid.'>Favourite</button>
@@ -3796,13 +3855,11 @@ public function FavouritePros()
 
            else{
 
-          
-
             $Address =
 
                   '<section class="block">
-                    <div class="round text-center" >
-                      <img src="../assets/image/forma-1-copy-19.png">
+                    <div class="text-center" >
+                      <img src="'.$Provider_img1.'>
                     </div>
                       <p class="service-provider text-center">'.$firstname.' '.$lastname .'</p>
                         <span class="time text-center">         
@@ -3812,9 +3869,7 @@ public function FavouritePros()
                                   <i class="fa fa-star star2"></i>
                                   <i class="fa fa-star star2"></i><span style="margin-left: 10px;">0</span></span>
 
-
                       <p class="service-provider text-center" id="cleaning">'.$Cleanings.' Cleanings</p>
-
 
                       <span style="display: flex;">
                       <button type="button" class="remove-bttn" id='.$target_userid.'>Favourite</button>
@@ -3823,18 +3878,13 @@ public function FavouritePros()
                   </section>';
 
                   echo $Address;
-
-
-
            }
-
           }
-
 
         }
       }
     }
-    }
+  }
 
 
  public function BlockCustomerRequest()
@@ -3865,34 +3915,27 @@ public function FavouritePros()
                 'userid' => $target_userid,
                 'IsBlocked' => $IsBlocked,
                 
-
             ];
             $result = $this->model->BlockCustomerRequest($array);
 
             $result2 = $this->model->NewFindBlockCustomer($userid, $target_userid);
             $block1 = $result1[0];
 
-            
         if ($block == 1) {
             echo 1;
         } if($block == 0) {
             echo 0;
-        }
+      }
 
-        }
     }
-
-
-
+  }
 
 
  public function BlockFavourite()
     {
 
         if (isset($_POST)) {
-
-         
-        
+       
             $email = $_POST['username'];
             $target_userid = $_POST['target_userid'];
             
@@ -3940,7 +3983,6 @@ public function FavouritePros()
 
       echo 1;
 
-
       }
     }
 
@@ -3956,24 +3998,21 @@ public function FavouritePros()
                 'isblock' => $IsBlocked,
                 'isfavorite' => $isfavorite,
                 
-
             ];
             $result = $this->model->favoriteandblocked($array);
 
             $result2 = $this->model->NewFindBlockCustomer($userid, $target_userid);
             $block1 = $result2[0];
 
-            
         if ($block1 == 1) {
             echo 3;
         } if($block1 == 0) {
             echo 4;
         }
+     }
 
-    }
-
-      }
   }
+}
 
 
 
@@ -4062,8 +4101,6 @@ public function FavouritePros()
   }
 
 
-
-
 public function RateAddress()
     {
         
@@ -4110,8 +4147,6 @@ public function RateAddress()
                               
                                } 
 
-
-
           $Address = 
 
            '<div class="round-main">
@@ -4120,7 +4155,6 @@ public function RateAddress()
             </div>';    
 
               echo $Address; 
-
               }  
 
           else{
@@ -4151,6 +4185,7 @@ public function RateAddress()
         }
     }
 }
+
 
    public function Usermanagement()
     {
@@ -4226,15 +4261,11 @@ public function RateAddress()
         
         if (isset($_POST)) {
 
-        
             $select = $_POST['select'];
-           
             $user_type = $_POST['user_type'];
-           
             $from_date = $_POST['from_date'];
             $to_date = $_POST['to_date'];
 
-           
             if($select == '' && $user_type == '' && $from_date == '' && $to_date == ''){
 
             $result = $this->model->Usermanagement();
@@ -4376,7 +4407,6 @@ public function RateAddress()
                     $userid = $row['UserId'];
                     $Provider_name = $row['Provider_Name'];
                 
-
                         $starttime =  date("H:i", strtotime($Tim)); 
                         $startime = str_replace(":", ".", $starttime);
                         $hoursq = intval($startime);
@@ -4411,9 +4441,7 @@ public function RateAddress()
                           $totaltimes = number_format(($var1 . '.' . $var2), 2);
                           $totaltimes = str_replace(".", ":", $totaltimes);
 
-                       
                         $Tim = $starttime. '-' .$totaltimes;
-
 
                  if($status == 0){
                   $state = "class='new'>New";
@@ -4429,7 +4457,6 @@ public function RateAddress()
                  }else{
                   $state = "class='ref'>Refunded";
                  }
-
 
                 if($status == 0){
 
@@ -4496,6 +4523,18 @@ public function RateAddress()
                         $Service_Provider_Name1 = $provider_row['FirstName'];
                         $Service_Provider_Name2 = $provider_row['LastName'];
 
+                        $Provider_img = $provider_row['UserProfilePicture'];
+
+                        if($Provider_img == ''){
+                        $Provider_img1 = '../assets/image/forma-1-copy-19.png" class="round"';
+
+                        }else{
+                        $Provider_img1 = ''.$Provider_img.'" style="width:40px;height:40px; margin-right:10px;"';
+                        }
+
+                        $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
+
+                      
                         $Service_Provider_Name = $Service_Provider_Name1 . ' ' . $Service_Provider_Name2;
 
                         $Provider_all_ratings1 = $this->model->OverAllRatingOfServiceProvider1($Provider_name);
@@ -4550,10 +4589,10 @@ public function RateAddress()
                            </td>
 
                            <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
-
-                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              
+                              <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
                               <span class="time">' . $stars . $stars1.' '.$average.'</span>                           
-
+                              
                            </td>   
 
                            <td class="pay dashboard" id=' . $ServiceRequestId . ' data-toggle="modal" data-target="#schedule-modal"><span class="pay2"><b>'.$SubTotal.'</b></span><span class="pay1"><b>€</b></span></td>
@@ -4590,9 +4629,7 @@ public function RateAddress()
                    
                    echo $Address;
 
-
-
-                    }  else{
+             }  else{
                  
                  $All_Ratings = 5;
             
@@ -4606,10 +4643,8 @@ public function RateAddress()
                               
                                } 
 
-
                      $Address = 
                       
-
                         '<tr>                                         
                          
                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
@@ -4629,7 +4664,7 @@ public function RateAddress()
 
                            <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">
 
-                              <img src="../assets/image/forma-1-copy-19.png" class="round">' . $Service_Provider_Name . '<br>
+                              <img src="'.$Provider_img1.'>' . $Service_Provider_Name . '<br>
                               <span class="time">' .$stars1.' '.$average.'</span>                          
 
                            </td>   
@@ -4673,8 +4708,7 @@ public function RateAddress()
 
              }
 
-
-                    else{
+              else{
 
                     $Address = 
 
@@ -4729,12 +4763,7 @@ public function RateAddress()
 
                         </tr>';
 
-
-
-
                         echo $Address; 
-
-
 
                     }
 
@@ -4764,20 +4793,12 @@ public function RateAddress()
                     $Tim = $row['Tim']; 
                     $totaltime  = $row['TotalHours'];
 
+                    $starttime =  date("H:i", strtotime($Tim)); 
 
-                    
-                        $starttime =  date("H:i", strtotime($Tim)); 
-
-                       
-
-                   
-     
                     $result = [$street, $houseno, $city, $pincode, $ServiceStartDate, $starttime];
 
                     echo json_encode($result);
 
-
-            
                                     }
                                 }
                             }
@@ -4820,8 +4841,6 @@ public function RateAddress()
 
                     echo $Address;
 
-
-            
                                     }
                                 }
                             }
@@ -4873,8 +4892,6 @@ public function RateAddress()
              $database_houseno = $result11['AddressLine2'];
              $database_pincode = $result11['PostalCode'];
              $userid12 = $result11['UserId'];
-
-
 
              $array1 = [
                       'plan_date' => $plan_date,
@@ -4964,7 +4981,6 @@ public function RateAddress()
 
             }
 
-          
             if (count($result)) {
                 foreach ($result as $row) {
                     $ServiceStartDate = $row['ServiceStartDate'];
@@ -4983,7 +4999,6 @@ public function RateAddress()
                     $userid = $row['UserId'];
                     $Provider_name = $row['Provider_Name'];
                 
-
                         $starttime =  date("H:i", strtotime($Tim)); 
                         $startime = str_replace(":", ".", $starttime);
                         $hoursq = intval($startime);
@@ -5135,9 +5150,7 @@ public function RateAddress()
                               
                                } 
 
-
                      $Address = 
-
 
                         '<tr>                                         
                          
@@ -5197,9 +5210,7 @@ public function RateAddress()
                    
                    echo $Address;
 
-
-
-                    }  else{
+              }  else{
                  
                  $All_Ratings = 5;
             
@@ -5213,10 +5224,8 @@ public function RateAddress()
                               
                                } 
 
-
                      $Address = 
                       
-
                         '<tr>                                         
                          
                           <td id=' . $ServiceRequestId . ' class="dashboard" data-toggle="modal" data-target="#schedule-modal">'.$ServiceRequestId.'</td>     
@@ -5280,7 +5289,7 @@ public function RateAddress()
 
              }
 
-                    else{
+            else{
 
                     $Address = 
 
@@ -5335,12 +5344,7 @@ public function RateAddress()
 
                         </tr>';
 
-
-
-
                         echo $Address; 
-
-
 
                     }
 
@@ -5387,7 +5391,5 @@ public function RateAddress()
 
         }
     }
-
-
 
 }
