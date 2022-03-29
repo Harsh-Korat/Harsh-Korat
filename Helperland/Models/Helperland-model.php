@@ -18,8 +18,6 @@ public function __construct() {
 
   }    
 
-
-
     public function ResetKey($email)
     {
         $sql = "select * from user where Email = '$email'";
@@ -45,8 +43,6 @@ public function __construct() {
         return ($result);
 
     }
-
-
 
 
     public function Login($email, $password)
@@ -144,7 +140,6 @@ public function __construct() {
              echo 0; 
         }
     }
-
 
 
 
@@ -275,77 +270,12 @@ public function City($pincode)
         return $result;
     }
 
-    public function DasboardSearchByTable($email)
-    {
-
-        $sql  = " SELECT
-        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
-          FROM servicerequest 
-        JOIN user
-        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1) ORDER BY servicerequest.ServiceRequestId DESC";
-
-        $stmt =  $this->conn->prepare($sql);
-        $stmt->execute();
-        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result;
-    }
-
-    public function DasboardSearchByTable1($email)
-    {
-
-        $sql  = " SELECT
-        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
-          FROM servicerequest 
-        JOIN user
-        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1) ORDER BY servicerequest.ServiceStartDate DESC";
-
-        $stmt =  $this->conn->prepare($sql);
-        $stmt->execute();
-        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result;
-    }
-
-    public function DasboardSearchByTable2($email)
-    {
-
-        $sql  = " SELECT
-        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
-          FROM servicerequest 
-        JOIN user
-        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1) ORDER BY user.FirstName DESC";
-
-        $stmt =  $this->conn->prepare($sql);
-        $stmt->execute();
-        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result;
-    }
-
-    public function DasboardSearchByTable3($email)
-    {
-
-        $sql  = " SELECT
-        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
-          FROM servicerequest 
-        JOIN user
-        ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (0, 1) ORDER BY servicerequest.SubTotal DESC";
-
-        $stmt =  $this->conn->prepare($sql);
-        $stmt->execute();
-        $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $result;
-    }
-
-
 
     public function HistoryValues($email)
     {
 
         $sql  = " SELECT
-        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Total_Time,servicerequest.Provider_Name,servicerequest.Status
+        servicerequest.ServiceStartDate, servicerequest.SubTotal ,servicerequest.ServiceRequestId,servicerequest.Tim,user.UserId,servicerequest.TotalHours,servicerequest.Provider_Name,servicerequest.Status
           FROM servicerequest 
         JOIN user
         ON servicerequest.UserId = user.UserId  where user.Email = '$email' AND servicerequest.Status IN (2, 3)";
@@ -466,8 +396,8 @@ public function City($pincode)
 
     public function ServiceRequest($array)
     {
-        $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices, PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion, Tim, Total_Time, AddressId) 
-            VALUES (:userid,:createddate , :zipcode,:servicefrequency,:servicehourlyrate ,:servicehours, :extrahours ,:subtotal, :discount ,:totalcost, :comments, :totalhours, :totalbed, :totalbath, :effectivecost, :extraservices, :paymentdue, :pets,:status ,:servicedate , :paymentdone,:recordversion,:tim,:totalhours,:addressid)";
+        $sql = "INSERT INTO servicerequest(UserId,ServiceStartDate, ZipCode, ServiceFrequency,  ServiceHourlyRate, ServiceHours, ExtraHours, SubTotal, Discount, TotalCost, Comments,TotalHours, TotalBed, TotalBath, EffectiveCost, ExtraServices, PaymentDue, HasPets, Status, CreatedDate, PaymentDone, RecordVersion, Tim, AddressId) 
+            VALUES (:userid,:createddate , :zipcode,:servicefrequency,:servicehourlyrate ,:servicehours, :extrahours ,:subtotal, :discount ,:totalcost, :comments, :totalhours, :totalbed, :totalbath, :effectivecost, :extraservices, :paymentdue, :pets,:status ,:servicedate , :paymentdone,:recordversion,:tim,:addressid)";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute($array);
        $addressid = $this->conn->lastInsertId();
@@ -695,7 +625,7 @@ public function CustomerUpdateDetails($array)
     public function FavouritePros($Provider_name)
     {
 
-        $sql  = " SELECT user.FirstName, user.LastName, user.UserId as TargetUserId, servicerequest.UserId as UserId  FROM servicerequest 
+        $sql  = " SELECT user.FirstName, user.LastName,user.UserProfilePicture, user.UserId as TargetUserId, servicerequest.UserId as UserId  FROM servicerequest 
         JOIN user
         ON servicerequest.Provider_Name = user.UserId
                
@@ -1034,7 +964,7 @@ public function favoriteandblocked($array1)
 
     public function Usermanagement()
     {
-        $sql =  "SELECT user.UserId, user.FirstName, user.LastName, user.UserTypeId, useraddress.PostalCode, user.Mobile, user.Status, user.CreatedDate FROM user LEFT JOIN useraddress ON user.UserId = useraddress.UserId";
+        $sql =  "SELECT user.UserId, user.FirstName, user.LastName, user.UserTypeId, useraddress.PostalCode, user.Mobile, user.Status, user.CreatedDate FROM user JOIN useraddress ON user.UserId = useraddress.UserId GROUP BY user.UserId";
         $stmt =  $this->conn->prepare($sql);
         $stmt->execute();
         $result  = $stmt->fetchAll(PDO::FETCH_ASSOC);
