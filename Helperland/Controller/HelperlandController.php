@@ -132,7 +132,7 @@ public function ResetPassword()
                     'usertypeid' => 0,
                     'roleid' => 'Customer',
                     'resetkey' => $resetkey,
-                    'creationdt' => date('Y-m-d H:i:s'),
+                    'creationdt' => date('Y-m-d'),
                     'status' => 'New',
                     'isactive' => 'No',
                     'isregistered' => 'yes',
